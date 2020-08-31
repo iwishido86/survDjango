@@ -1,0 +1,69 @@
+{# knight_login.html #}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        td{
+            border-color: #9d9d00;
+            border-size: 2px;
+            vertical-align: middle;
+            margin: 5px auto 5px auto;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+    </script>
+
+
+</head>
+<body>
+ * 참가완료 : {{ joinusercnt }} 명 , 준비완료 : {{ readyusercnt }}  명
+<table>
+    <tr>
+        <td width="150">참가자명</td>
+        <td width="100">참가여부</td>
+        <td width="100">준비완료</td>
+        <td width="50">참가</td>
+        <td width="50">삭제</td>
+        <td width="70">로그인</td>
+    </tr>
+{% for user in userlist %}
+    <tr>
+        <td>{{ user.username }} [ <font color="white">{{ user.assinKnightId }}</font></td>
+        <td>{{ user.joinYn }}</td>
+        <td>{{ user.readyYn }}</td>
+        <td><a href="{% url 'join_view' username=user.username %}">참가</a></td>
+        <td><a href="{% url 'delete_view' username=user.username %}">삭제</a></td>
+        <td><a href="{% url 'knight_select_view' username=user.username %}">로그인</a></td>
+    </tr>
+{% endfor %}
+</table>
+</BR>
+ * 진행중인 원정
+<table>
+    <tr>
+        <td width="70">번호</td>
+        <td width="100">참가자수</td>
+        <td width="100">현재차수</td>
+        <td width="100">차수취소</td>
+        <td width="100">완료</td>
+    </tr>
+{% for game in gamelist %}
+    <tr>
+        <td>{{ game.gameId }} </td>
+        <td>{{ game.joinUserCnt }}</td>
+        <td>{{ game.expeditionSeq }}</td>
+        <td><a href="{% url 'expeditionSeq_ini_view' gameid=game.gameId %}">차수취소</a></td>
+        <td><a href="{% url 'game_complete_view' gameid=game.gameId %}">완료</a></td>
+    </tr>
+{% endfor %}
+</table>
+ </BR>
+<input onclick="location.href={% url 'assin_view' %};return false;" value="원정시작" type="button" width="100%"/>
+<input onclick="location.href={% url 'init_view' %};return false;" value="초기화" type="button" width="100%"/>
+<input onclick="location.href={% url 'start_view' %};return false;" value="새로고침" type="button" width="100%"/>
+</body>
+</html>

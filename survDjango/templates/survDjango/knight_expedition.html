@@ -1,0 +1,84 @@
+{# knight_login.html #}
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .expedition1{
+            background:url("{% static joinusercnt %}_expedition.JPG") no-repeat;
+            background-size:100%;
+            width:100%;
+        }
+
+        .td_expedition{
+            padding : 10px 0px;
+        }
+    </style>
+
+    <script type="text/javascript">
+    var timer = setInterval("timer_procedure();",10000);
+
+    function timer_procedure(){
+        document.location.href = "{% url 'knight_expedition_view' username=username %}";
+    }
+    function submitFrom(){
+        document.forms[0].submit();
+    }
+    </script>
+
+
+</head>
+<body>
+{% include "./top_menu.html" %}
+<form method="post">
+    {% csrf_token %}
+    <br>
+    <a href="{% url 'knight_expedition_view' username=username %}"><input value="새로고침" type="button" width="100%"/></a>
+    {{ form.as_p }}
+    <br>
+    <br>
+    <div class="expedition1">
+    <table  height="120">
+    <tbody>
+        <tr>
+            {% for  expedition in expeditionlist.all %}
+                <td scope="row"  width="20%" class="td_expedition">
+                    <img src="{% static expedition.succYn %}_expedition.JPG" width="100%">
+                </td>
+
+            {% endfor %}
+            {% if expeditionseq < 6 %}
+                <td scope="row" width="100%">
+                    <img src="{% static 'S' %}_expedition.JPG" width="75" onclick="submitFrom();">
+                </td>
+            {% endif %}
+
+        </tr>
+       </tbody>
+     </table>
+</div>
+    <table class="table"  height="80">
+        <tr>
+            <td width="50">차수</td>
+            <td width="150">결과</td>
+            <td width="200">참가자</td>
+        </tr>
+        <tr>
+            {% for  expedition2 in expeditionlist.all %}
+                <tr>
+                    <td>{{ expedition2.expeditionSeq }} </td>
+                    <td>
+                        {{ expedition2.succUserCnt }}/{{ expedition2.expeditionUserCnt }}</td>
+                    <td>{{ expedition2.usernamelist }}</td>
+                </tr>
+            {% endfor %}
+
+        </tr>
+    </table>
+
+</form>
+</body>
+</html>

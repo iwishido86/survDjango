@@ -1,0 +1,32 @@
+{# knight_login.html #}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .card{
+            width : 100px;
+            border-color: #9d9d00;
+            background-color: #9d9d9d;
+            vertical-align: middle;
+            line-height: 100px;
+            margin: 5px auto 5px auto;
+        }
+    </style>
+
+    <script type="text/javascript">
+    </script>
+
+
+</head>
+<body>
+<a href="{% url 'start_view' %}"><input value="원정리더" type="button" align="right" width="100%"/></a>
+<form method="post">
+    {% csrf_token %}
+    에레메세지 : {{ errstr }}
+
+
+</form>
+</body>
+</html>

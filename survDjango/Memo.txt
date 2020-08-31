@@ -1,0 +1,114 @@
+git config --global user.email "iwishido86@gmail.com"
+				git config --global user.name "iwishido86"
+
+iwishido86@gmail.com
+
+python -m venv myvenv
+.\myvenv\scripts\activate.bat
+python -m pip install -U pip
+pip install wheel django djangorestframework pylint
+django-admin startproject config .
+django-admin startapp survDjango
+
+python manage.py createsuperuser
+
+python manage.py makemigrations
+python manage.py migrate
+
+python manage.py runserver
+
+
+python3 manage.py createsuperuser
+
+python3 manage.py makemigrations survDjango
+python3 manage.py migrate survDjango
+python3 manage.py runserver 0.0.0.0:8000
+
+pip install httpie
+
+ps -ef | grep py
+
+
+
+sudo apt-get update
+sudo apt-get install git
+sudo apt-get install python3-pip
+sudo pip3 install django==1.10
+git clone
+
+python3 manage.py runserver
+
+Mac, Windows 공통(계속)
+
+
+14. 커맨드 창이 열리면 "sudo apt-get update"
+
+- 설치할 수 있는 패키지의 정보를 불러오는 것이라고 보면 됨.
+
+15. "sudo apt-get install git", "y"
+
+16. "sudo apt-get install python3-pip", "y"
+
+- python3 모듈을 관리하는 python3버전의 pip 설치
+
+17. "sudo pip3 install django==1.10"
+
+18. "git clone 깃허브 리포지토리 링크"
+
+19. "python3 manage.py runserver"
+
+ln –s python3 python
+
+ln –n /usr/bin/python3 /usr/bin/python
+
+ln –s /usr/bin/python3 /usr/bin/python
+ln /usr/bin/python2.7 /usr/bin/python
+
+git clone https://github.com/iwishido86/survDjango.git
+python3 manage.py runserver
+
+
+wget https://kojipkgs.fedoraproject.org//packages/sqlite/3.8.11/1.fc21/x86_64/sqlite-devel-3.8.11-1.fc21.x86_64.rpm
+
+wget https://kojipkgs.fedoraproject.org//packages/sqlite/3.8.11/1.fc21/x86_64/sqlite-3.8.11-1.fc21.x86_64.rpm
+
+sudo yum install sqlite-3.8.11-1.fc21.x86_64.rpm sqlite-devel-3.8.11-1.fc21.x86_64.rpm
+
+sqlite3 --version
+
+https://github.com/iwishido86/survDjango.git
+
+출처: https://sun2day.tistory.com/216 [보안쟁이-회사원의 일상]
+
+http://ec2-18-223-102-218.us-east-2.compute.amazonaws.com
+
+http://ec2-18-223-102-218.us-east-2.compute.amazonaws.com:8000/
+http://ec2-18-223-102-218.us-east-2.compute.amazonaws.com:8000/knight_ligin/경진
+
+
+1. python manage.py runserver 명령어로 서버를 실행시킨다.
+
+2. 'Ctrl + z' 를 눌러 해당 프로그램을 정지(pause) 시킨 후 shell로 돌아온다.
+
+3. 'bg' 명령어를 쳐서 해당 프로그램을 백그라운드로 보내어 돌린다.
+
+4. 'disown -h' 명령어를 쳐서 ssh 연결이 끊어져도 해당 프로세스가 돌아가도록 한다.
+
+5. 터미널 창을 닫는다.
+
+<실행중인 프로세스 확인>
+
+- "ps -l"
+
+bg
+disown -h
+
+git stash clear
+
+
+python3 manage.py makemigrations survDjango
+python3 manage.py migrate survDjango
+python3 manage.py runserver 0.0.0.0:8000
+
+
+ps -ef | grep py

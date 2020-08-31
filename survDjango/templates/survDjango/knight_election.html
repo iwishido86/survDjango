@@ -1,0 +1,63 @@
+{# knight_login.html #}
+<html lang="en">
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .expedition2{
+            width:100%;
+        }
+
+        .td_expedition{
+            padding : 10px 0px;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+    function submitFrom(succyn){
+        document.forms[0].expeditionseq.value={{expeditionseq}};
+        document.forms[0].succyn.value = succyn;
+        document.forms[0].submit();
+    }
+    </script>
+
+
+</head>
+<body>
+{% include "./top_menu.html" %}
+<form method="post">
+    {% csrf_token %}
+    <br>** {{expeditionseq}} 차 원정 **
+    <a href="{% url 'knight_election_view' username=username %}"><input value="새로고침" type="button" width="100%"/></a>
+    {{ form.as_p }}
+    <br>
+    <br>
+    <div class="expedition2">
+        <img src="{% static 'Y' %}_election.JPG" width="45%" height="30%" onclick="submitFrom('Y');">
+        <img src="{% static 'N' %}_election.JPG" width="45%" height="30%" onclick="submitFrom('N');">
+    </div>
+    <table class="table"  height="80">
+        <tr>
+            <td width="50">차수</td>
+            <td width="150">결과</td>
+            <td width="200">참가자</td>
+        </tr>
+        <tr>
+            {% for  expedition2 in expeditionlist.all %}
+                <tr>
+                    <td>{{ expedition2.expeditionSeq }} </td>
+                    <td>{{ expedition2.succUserCnt }}/{{ expedition2.expeditionUserCnt }}</td>
+                    <td>{{ expedition2.usernamelist }}</td>
+                </tr>
+            {% endfor %}
+
+        </tr>
+    </table>
+
+</form>
+</body>
+</html>

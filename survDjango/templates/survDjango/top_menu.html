@@ -1,0 +1,8 @@
+{# knight_login.html #}
+{{username}}님
+<a href="{% url 'knight_select_view' username=username %}"><input  value="카드선택" type="button" width="100%"/></a>
+<a href="{% url 'mycard_view' username=username %}"><input value="내  카드" type="button" width="100%"/></a>
+<a href="{% url 'knight_expedition_view' username=username %}"><input value="원정상황" type="button" width="100%"/></a>
+<a href="{% url 'start_view' %}"><input value="원정리더" type="button" align="right" width="100%"/></a>
+</br>
+</BR>

@@ -1,0 +1,77 @@
+{# knight_login.html #}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+
+    <script type="text/javascript">
+    var selectCardCnt = 0;
+
+    function nextPage(pageId){
+
+        //document.forms[0].radio1.value
+
+        {% for page in page_arr %}
+        page{{page.page_num}}.style.display = "none";
+        {% endfor %}
+        pageId.style.display = "";
+    }
+    function submitFrom(){
+
+        {% for page in page_arr %}
+            {% for question in page.question_arr %}
+        radio{{ question.questionId }}.value
+            {% endfor %}
+        {% endfor %}
+
+        document.forms[0].submit();
+    }
+    </script>
+
+
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    카드를 고르고 원정을 시작하세요 ->  <input onclick="submitFrom();" value="원정시작" type="button" width="100%"/>
+    {{ form.as_p }}
+    {% load static %}
+
+
+    {% for page in page_arr %}
+    {{page.page_num}}
+        <div class="pageclass" id="page{{page.page_num}}" {%if page.page_num != 1%}style="display:none;"{%endif%}>
+            {% for question in page.question_arr %}
+
+                <!--img class="card" src="{% static  knight.knightId %}.JPG"  name="knightImg{{ question.questionId }}" border="0" onclick="selectKnight( knightImg{{ knight.knightId }} )"-->
+                <!--BR>{{ knight.name }}<-->
+                <div>
+                    <div class="question_number"><label clsss="questionlable">{{ question.questionId }} . </label></div>
+                    <div><label clsss="questionlable">{{ question.title }}</label></div>
+                </div>
+                <div class="ans_radio">
+                    {% for ans in question.ans_arr %}
+
+                        <input id="radio_{{ question.questionId }}_{{ ans.ansId }}" type="radio" name="radio{{ question.questionId }}" value="{{ ans.ansId }}" >
+                            <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" clsss="anslable">{{ ans.content }}</label>
+                        <br>
+                    {% endfor %}
+                </div>
+            <br><br>
+            {% endfor %}
+            <div class="btn_area">
+                {%if page.page_num == last_page_num%}
+                    <input  type="button" name="submit_btn" onclick="submitFrom();" value="제 출">
+                {%endif%}
+                {%if page.page_num != last_page_num%}
+                    <input type="button" name="next_btn" onclick="nextPage(page2);" value="다 음">
+                {%endif%}
+            </div>
+        </div>
+
+    {% endfor %}
+</form>
+</body>
+</html>

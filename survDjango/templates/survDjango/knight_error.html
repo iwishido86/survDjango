@@ -1,0 +1,33 @@
+{# knight_login.html #}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .card{
+            width : 100px;
+            border-color: #9d9d00;
+            background-color: #9d9d9d;
+            vertical-align: middle;
+            line-height: 100px;
+            margin: 5px auto 5px auto;
+        }
+    </style>
+
+    <script type="text/javascript">
+    </script>
+
+
+</head>
+<body>
+{% include "./top_menu.html" %}
+
+<form method="post">
+    {% csrf_token %}
+    에레메세지 : {{ errstr }}
+
+
+</form>
+</body>
+</html>
