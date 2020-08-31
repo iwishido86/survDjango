@@ -28,7 +28,7 @@ urlpatterns = [
 #    path('base/', base_view),
 #    path('knight_login/', knight_login_view),
     path('surv/<int:survid>/', surv_view, name='surv_view'), # 추가
-    path('result/<int:survid>/', result_view, name='result_view'), # 추가
+    path('result/<int:survid>/<int:resultid>', result_view, name='result_view'), # 추가
 
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

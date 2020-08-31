@@ -31,10 +31,12 @@ class SurvForm(forms.Form):
 
     survId = forms.IntegerField(
         label='설문번호',
-        widget=forms.TextInput(attrs={'size': 30}),
+        widget=forms.HiddenInput(attrs={'size': 30}),
         #disabled=True
     )
-    knightliststr = forms.CharField(
-        label='선택기사목록',
-        widget=forms.HiddenInput(attrs={'size': 30})
+
+    questionNum = forms.IntegerField(
+        label='설문번호',
+        widget=forms.HiddenInput(attrs={'size': 30}),
+        #disabled=True
     )

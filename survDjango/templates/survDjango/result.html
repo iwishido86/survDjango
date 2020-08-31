@@ -1,0 +1,33 @@
+{# knight_login.html #}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+
+    <script type="text/javascript">
+
+    </script>
+
+
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% load static %}
+
+    {{ result.resultId }}
+    <br>
+    {{ result.title }}
+    <br>
+    {{ result.content }}
+    <br>
+    {{ result.content2 }}
+    <br>
+    {{ result.imgFile }}
+
+</form>
+</body>
+</html>

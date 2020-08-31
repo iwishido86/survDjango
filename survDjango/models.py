@@ -27,7 +27,7 @@ class QuestionM(models.Model):
     survId = models.IntegerField(default=0, help_text="설문번호")
     questionId = models.IntegerField(default=0, help_text="질문번호")
     title = models.CharField(max_length=100)
-    questionType = models.CharField(default='01',max_length=20)
+    questionType = models.CharField(default='01',max_length=2)
     content = models.TextField()
     deleteYn = models.CharField(default='N', max_length=1)
     orderNum = models.IntegerField(default=0, help_text="정렬순서")
@@ -46,6 +46,7 @@ class AnsM(models.Model):
 class ResultM(models.Model):
     survId = models.IntegerField(default=0, help_text="설문번호")
     resultId = models.IntegerField(default=0, help_text="결과번호")
+    resultType = models.CharField(default='01', max_length=2)
     pointBottom = models.IntegerField(default=0, help_text="pointBottom")
     pointTop = models.IntegerField(default=0, help_text="pointTop")
     title = models.CharField(max_length=100)

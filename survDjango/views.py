@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from .forms import UserLoginForm, SurvForm
-from .models import SurvM, QuestionM, AnsM
+from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM
 from .serializers import RegistrationUserSerializer
 
 
@@ -18,7 +18,38 @@ def surv_view(request,survid):
     template_name = 'survDjango/surv.html'
 
     if request.method == 'POST':
+
+        survId = request.POST.get('survId', '')
+        questionNum = request.POST.get('questionNum', '')
+        historyContent = ""
+        point = 0
+        for i in range(1,int(questionNum)+1):
+            print(request.POST.get('radio'+i.__str__(), ''))
+            ansId = request.POST.get('radio'+i.__str__())
+            historyContent = historyContent + ansId + ";"
+
+            # 여기 튜닝 원쿼리로
+            ans = get_object_or_404(AnsM, survId=survid, questionId=i, ansId=ansId)
+
+            point = point + int(ans.point)
+
+        # 결과
+        resultId = ""
+
+        # 여기 튜닝 원쿼리로
+        result = get_object_or_404(ResultM, survId=survid, pointBottom__lte=point, pointTop__gte=point)
+
+
+        # 내역 저장
+        resultHstoryL  = ResultHstoryL.objects.create()
+
+        resultHstoryL.survId = survId
+        resultHstoryL.resultId = result.resultId
+        resultHstoryL.content = historyContent + ":" + point.__str__()
+
+        resultHstoryL.save()
         # form = KnightSelectForm(request.POST)
+        #
         #
         # username = request.POST.get('username')
         #
@@ -51,18 +82,19 @@ def surv_view(request,survid):
         #     selectKnight.save()
 
         return HttpResponseRedirect(
-            '/mycard/'
+            '/result/' + survId+ '/' + result.resultId.__str__()
         )
 
     else:
         surv = get_object_or_404(SurvM, survId=survid)
-        form = SurvForm()
-        form.fields['survId'].initial = survid
         questionlist = QuestionM.objects.filter(survId=survid).order_by('orderNum')
 
-        page_num = 0
-        page_arr = []
-        page_detail = {}
+        form = SurvForm()
+        form.fields['survId'].initial = survid
+        form.fields['questionNum'].initial = questionlist.count()
+
+        surv_details = surv.__dict__
+        surv_details['question_num'] = questionlist.count()
         question_arr = []
         for question in questionlist:
             question_details = {}
@@ -76,27 +108,12 @@ def surv_view(request,survid):
                 ans_arr.append(ans.__dict__)
 
             question_details['ans_arr'] = ans_arr
+            
+            # 템플릿에서 이거 더하는 법 모름
+            question_details['next_questionId'] = question.questionId + 1
 
             question_arr.append(question_details)
 
-            print(question.questionId % surv.pageNum)
-
-            if question.questionId % surv.pageNum == 0 :
-                page_num = page_num + 1
-                page_detail = {}
-                page_detail['page_num'] = page_num
-                page_detail['question_arr'] = question_arr
-                page_arr.append(page_detail)
-                print(page_arr)
-                question_arr = []
-
-        #마지막
-        if question_arr :
-            page_num = page_num + 1
-            page_detail = {}
-            page_detail['page_num'] = page_num
-            page_detail['question_arr'] = question_arr
-            page_arr.append(page_detail)
 
         # for question in questionlist:
         #     question["anslist"] = AnsM.objects.filter(survId=survid, questionId=question["questionId"]).order_by(
@@ -106,33 +123,27 @@ def surv_view(request,survid):
 
         context = {
             'form': form,
-            'surv': surv,
-            'last_page_num': page_num,
-            'page_arr': page_arr,
+            'surv_details': surv_details,
+            'question_arr': question_arr,
         }
         return render(request, template_name, context)
 
 
 
-def result_view(request,survid):
-    template_name = 'survDjango/surv.html'
+def result_view(request,survid,resultid):
+    template_name = 'survDjango/result.html'
 
 
     surv = get_object_or_404(SurvM, survId=survid)
+
+    result = get_object_or_404(ResultM, resultId=resultid)
+
     form = SurvForm()
-    form.fields['survid'].initial = survid
-    questionlist = QuestionM.objects.filter(survId=survid).order_by('orderNum')
-
-    for question in questionlist:
-        question["anslist"] = AnsM.objects.filter(survId=survid,questionId =question["questionId"]).order_by('questionId','orderNum')
-
-    anslist = AnsM.objects.filter(survId=survid).order_by('questionId','orderNum')
 
     context = {
         'form': form,
-        'survid':survid,
-        'questionlist': questionlist,
-        'anslist' : anslist,
+        'surv':surv,
+        'result': result,
     }
 
     return render(request, template_name, context)
