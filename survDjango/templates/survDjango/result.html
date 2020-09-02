@@ -1,33 +1,32 @@
 {# knight_login.html #}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/static/css/common.css">
+{% extends 'survDjango/base.html' %}
 
-    <script type="text/javascript">
+{% block script %}
 
-    </script>
+{% endblock script %}
 
-
-</head>
-<body>
+{% block body %}
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    {% load static %}
 
-    {{ result.resultId }}
-    <br>
-    {{ result.title }}
-    <br>
-    {{ result.content }}
-    <br>
-    {{ result.content2 }}
-    <br>
-    {{ result.imgFile }}
+    {{ form.as_p }}
+
+    <div class="basic_cont_box">
+    <label class="resultlable">당신은 [{{ result.title }}]입니다.</label>
+    </div>
+    <div class="result_img_box" style="background-image:url('/static/img/{{ result.imgFile }}');">
+        <div class="result_Id"></div>
+        <div class="result_title"><label class="resultlable"></label></div>
+    </div>
+    <div class="result_cont_box3">코로나 걸릴 확률 : {{ result.content3 }}</div>
+
+    <div class="result_cont_box2">
+        <!--div class="result_content">{{ result.content|linebreaks }}</div-->
+        <div class="result_content">{{ result.content2|linebreaks }}</div>
+    </div>
+
+
 
 </form>
-</body>
-</html>
+{% endblock body %}
+

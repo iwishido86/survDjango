@@ -19,14 +19,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token
 
-from survDjango.views import surv_view, result_view
+from survDjango.views import surv_view, result_view, start_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-#    path('api/auth/register/', registration_view, name='register_user'), # 추가
-#    path('api/auth/login/', obtain_auth_token, name='login'), # 추가
-#    path('base/', base_view),
-#    path('knight_login/', knight_login_view),
+    path('start/<int:survid>/', start_view, name='start_view'), # 추가
     path('surv/<int:survid>/', surv_view, name='surv_view'), # 추가
     path('result/<int:survid>/<int:resultid>', result_view, name='result_view'), # 추가
 

@@ -1,12 +1,7 @@
 {# knight_login.html #}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/static/css/common.css">
+{% extends 'survDjango/base.html' %}
 
-    <script type="text/javascript">
+{% block script %}
     var selectCardCnt = 0;
 
     function nextPage(questionId, nextQuestionId){
@@ -27,48 +22,43 @@
 
         document.forms[0].submit();
     }
-    </script>
+{% endblock script %}
 
-
-</head>
-<body>
+{% block body %}
 <form method="post">
     {% csrf_token %}
-    카드를 고르고 원정을 시작하세요 ->  <input onclick="submitFrom();" value="원정시작" type="button" width="100%"/>
-    {{ form.as_p }}
-    {% load static %}
 
+    {{ form.as_p }}
 
     {% for question in question_arr %}
         <div class="questionclass" id="question{{question.questionId}}" {%if question.questionId != 1%}style="display:none;"{%endif%}>
 
-            <!--img class="card" src="{% static  knight.knightId %}.JPG"  name="knightImg{{ question.questionId }}" border="0" onclick="selectKnight( knightImg{{ knight.knightId }} )"-->
-            <!--BR>{{ knight.name }}<-->
-            <div>
-                <div class="question_number"><label clsss="questionlable">{{ question.questionId }} . </label></div>
-                <div><label clsss="questionlable">{{ question.title }}</label></div>
+            <div class="brd_cont_box">
+                <div class="question_number"><label class="questionlable">NO. {{ question.questionId }}</label></div>
+                <div class="question_title"><label class="questionlable">{{ question.content|linebreaks }}</label></div>
             </div>
-            <div class="ans_radio">
+            <div class="ans_cont_box">
                 {% for ans in question.ans_arr %}
-                    {%if question.questionId == surv_details.question_num%}
+
+                    {%if question.questionId == surv.question_num%}
                     <a onclick="submitFrom() ;">
                     {%endif%}
-                    {%if question.questionId != surv_details.question_num%}
+                    {%if question.questionId != surv.question_num%}
                     <a onclick="nextPage(question{{question.questionId}} ,question{{question.next_questionId}});">
                     {%endif%}
+                        <input id="radio_{{ question.questionId }}_{{ ans.ansId }}" type="radio" name="radio{{ question.questionId }}" value="{{ ans.ansId }}" class="ans_radio">
 
-                        <input id="radio_{{ question.questionId }}_{{ ans.ansId }}" type="radio" name="radio{{ question.questionId }}" value="{{ ans.ansId }}" >
-                        <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" clsss="anslable">{{ ans.content }}</label>
+                        <!--div class="ans_div" for="radio_{{ question.questionId }}_{{ ans.ansId }}"-->
+                            <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" class="anslable">{{ ans.content|linebreaks }}</label>
+
+                        <!--/div-->
                     </a>
-                    <br>
                 {% endfor %}
             </div>
 
             <br><br>
-
         </div>
     {% endfor %}
 
 </form>
-</body>
-</html>
+{% endblock body %}

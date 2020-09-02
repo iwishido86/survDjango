@@ -1,13 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+{# base.html #}
+<html lang="kr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{surv.title}}</title>
+    <link rel="stylesheet" href="/static/css/common.css">
+
+    <script type="text/javascript">
+    {% block script %}
+
+    {% endblock script %}
+    </script>
+
+
 </head>
 <body>
-{% block body %}
-BASE_BODY
-{% endblock body %}
+    {% load static %}
+
+    {% block body %}
+    BASE_BODY
+    {% endblock body %}
+
 </body>
 </html>

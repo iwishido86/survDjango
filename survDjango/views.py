@@ -24,14 +24,15 @@ def surv_view(request,survid):
         historyContent = ""
         point = 0
         for i in range(1,int(questionNum)+1):
-            print(request.POST.get('radio'+i.__str__(), ''))
+            #print(request.POST.get('radio'+i.__str__(), ''))
             ansId = request.POST.get('radio'+i.__str__())
-            historyContent = historyContent + ansId + ";"
 
             # 여기 튜닝 원쿼리로
             ans = get_object_or_404(AnsM, survId=survid, questionId=i, ansId=ansId)
 
             point = point + int(ans.point)
+
+            historyContent = historyContent + ansId + "-" + ans.point.__str__() + ":"
 
         # 결과
         resultId = ""
@@ -45,56 +46,24 @@ def surv_view(request,survid):
 
         resultHstoryL.survId = survId
         resultHstoryL.resultId = result.resultId
-        resultHstoryL.content = historyContent + ":" + point.__str__()
+        resultHstoryL.content = historyContent + ":::" + point.__str__()
 
         resultHstoryL.save()
-        # form = KnightSelectForm(request.POST)
-        #
-        #
-        # username = request.POST.get('username')
-        #
-        # user, created = User.objects.get_or_create(
-        #     username=username
-        # )
-        #
-        # user.username = username
-        # user.readyYn = 'Y'
-        # user.joinYn = 'Y'
-        #
-        # user.save()
-        #
-        # delSelectKnightList = SelectKnight.objects.filter(username=username)
-        #
-        # delSelectKnightList.delete()
-        #
-        # knightliststr = request.POST.get('knightliststr')
-        #
-        # knightlist = knightliststr.split(';')
-        #
-        # for knightId in knightlist :
-        #     if knightId == '':
-        #         break
-        #
-        #     selectKnight, created = SelectKnight.objects.get_or_create(
-        #         username=username,
-        #         knightId=knightId
-        #     )
-        #     selectKnight.save()
 
         return HttpResponseRedirect(
             '/result/' + survId+ '/' + result.resultId.__str__()
         )
 
     else:
-        surv = get_object_or_404(SurvM, survId=survid)
+        surv_model = get_object_or_404(SurvM, survId=survid)
         questionlist = QuestionM.objects.filter(survId=survid).order_by('orderNum')
 
         form = SurvForm()
         form.fields['survId'].initial = survid
         form.fields['questionNum'].initial = questionlist.count()
 
-        surv_details = surv.__dict__
-        surv_details['question_num'] = questionlist.count()
+        surv = surv_model.__dict__
+        surv['question_num'] = questionlist.count()
         question_arr = []
         for question in questionlist:
             question_details = {}
@@ -114,36 +83,41 @@ def surv_view(request,survid):
 
             question_arr.append(question_details)
 
-
-        # for question in questionlist:
-        #     question["anslist"] = AnsM.objects.filter(survId=survid, questionId=question["questionId"]).order_by(
-        #         'questionId', 'orderNum')
-        #
-        # anslist = AnsM.objects.filter(survId=survid).order_by('questionId', 'orderNum')
-
         context = {
             'form': form,
-            'surv_details': surv_details,
+            'surv': surv,
             'question_arr': question_arr,
         }
         return render(request, template_name, context)
 
 
-
 def result_view(request,survid,resultid):
     template_name = 'survDjango/result.html'
 
-
     surv = get_object_or_404(SurvM, survId=survid)
-
     result = get_object_or_404(ResultM, resultId=resultid)
 
     form = SurvForm()
 
     context = {
         'form': form,
-        'surv':surv,
+        'surv': surv,
         'result': result,
+    }
+
+    return render(request, template_name, context)
+
+
+def start_view(request,survid):
+    template_name = 'survDjango/start.html'
+
+    surv = get_object_or_404(SurvM, survId=survid)
+
+    form = SurvForm()
+
+    context = {
+        'form': form,
+        'surv': surv,
     }
 
     return render(request, template_name, context)

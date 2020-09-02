@@ -1,60 +1,128 @@
 body{
-  margin      : 0;
-  padding     : 1.5em;
-  font-family: 'NEXON Gothic',"나눔고딕",NanumGothic,NanumGothicWebFont,"Malgun Gothic","맑은 고딕",Dotum,"돋움",Helvetica,"Apple SD Gothic Neo",sans-serif;
+  margin        : 0;
+  padding       : 1.5em;
+  font-family   : 'NEXON Gothic Bold', 'Nanum Gothic', 'Malgun Gothic', '돋움', 'dotum', 'AppleGothic', Helvetica, Arial, Sans-Serif !important
 }
 
-.questionlable{
-  font-size     : 1.5em;
-  line-height   : 2.5em;
+.basic_cont_box {
+    text-align          : center;
 }
 
-.anslable{
-  font-size     : 1.0em;
-  line-height   : 2.5em;
+a{
+}
+p{
+    display                 : block;
+    margin-block-start      : 0em;
+    margin-block-end        : 0em;
+    margin-inline-start     : 0px;
+    margin-inline-end       : 0px;
 }
 
-.example{
-  margin-bottom : 1.5em;
+@media (max-width: 575.98px)
+.brd_cont_box {
+    border-width: 3px;
+
 }
 
-.question_number{
-  float         : left;
-  width         : 6%;
-  margin        : 0px 10px 5px 0px;
+.brd_cont_box {
+    border-width        : 3px;
+    padding             : 2rem 1rem;
+    text-align          : center;
+    background-color    : #FFF;
+    border              : 5px solid #FAECCD;
+    border-radius       : 0.5rem;
+}
+
+.question_title{
+    font-weight     : 400 !important;
+    font-size       : 1.5em;
+    padding-top     : 1.75rem;
+    font-size       : 1.4rem;
+    line-height     : 1.5rem;
 }
 
 .ans_radio{
-  padding       : 10px 0px 0px 10px;
+    display       : none;
+}
+
+.ans_cont_box {
+    border-width: 3px;
+    margin-top : 1.5em;
+    margin-bottom : 1.5em;
+    text-align: center;
+    background-color: #FFF;
+    border-radius: 0.5rem;
+}
+
+.anslable {
+    display         : block;
+    border-width    : 3px;
+    padding         : 0.7rem 2rem 0.7rem 0.7rem;
+    margin-top      : 1.0em;
+    margin-bottom   : 1.0em;
+    text-align      : left;
+    background-color: #FAECCD;
+    border-radius   : 0.5rem;
+    font-size       : 1.2em;
+    line-height     : 1.2em;
+    font-weight     : bolder;
+    border          : 2px solid #000;
 }
 
 
-.question_title{
-  float         : right;
-    width         : 94%;
+.questionlable{
 }
 
-input[type=checkbox]:not(old),
-input[type=radio   ]:not(old){
-  width   : 28px;
-  margin  : 0;
-  padding : 0;
-  opacity : 0;
+.question_number{
+  font-weight   : bolder;
+  margin        : 0px 0px 0px 0px;
+  font-size     : 2.0rem;
 }
 
-input[type=checkbox]:not(old) + label,
-input[type=radio   ]:not(old) + label{
-  display      : inline-block;
-  margin-left  : -28px;
-  padding-left : 28px;
-  background   : url('../img/checks.png') no-repeat 0 0;
-  line-height  : 24px;
+.result_cont_box2 {
+    font-size           : 1.2em;
+    margin-top          : 0.5em;
+    padding             : 2rem 1rem;
+    text-align          : center;
+    background-color    : #FAECCD;
+    border              : 2px solid #000;
+    border-radius       : 0.5rem;
+    line-height         : 1.5rem;
 }
 
-input[type=checkbox]:not(old):checked + label{
-  background-position : 0 -24px;
+.result_img_box {
+    font-weight         : bolder;
+    margin-top          : 1.5em;
+    padding             : 13rem 0.5rem 0.5rem 1rem;
+    text-align          : right;
+    vertical-align      : bottom;
+    background-color    : #FFF;
+    border              : 2px solid #000;
+    border-radius       : 0.5rem;
 }
 
-input[type=radio]:not(old):checked + label{
-  background-position : 0 -48px;
+.result_cont_box3 {
+    margin-top          : 0.5em;
+    padding             : 0rem 0rem 0.5rem 1rem;
+    text-align          : right;
+    vertical-align      : bottom;
+    background-color    : #FFF;
+}
+
+.resultlable{
+    font-weight   : bolder;
+    font-size       : 1.5em;
+    padding-top     : 1.75rem;
+    line-height     : 1.5rem;
+}
+
+.start_box {
+    font-weight         : bolder;
+    font-size           : 1.5em;
+    margin              : 1.5em 3.5em;
+    text-align          : center;
+    padding             : 1rem 0.5rem;
+    background-color    : #FFF;
+    border              : 2px solid #000;
+    border-radius       : 0.5rem;
 }
