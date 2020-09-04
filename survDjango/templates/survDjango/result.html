@@ -12,7 +12,7 @@
     {{ form.as_p }}
 
     <div class="basic_cont_box">
-    <label class="resultlable">당신은 [{{ result.title }}]입니다.</label>
+        <label class="resultlable">당신은 [ <b>{{ result.title }}</b> ]입니다.</label>
     </div>
     <div class="result_img_box" style="background-image:url('/static/img/{{ result.imgFile }}');">
         <div class="result_Id"></div>
@@ -28,5 +28,11 @@
 
 
 </form>
+
+<script src="https://ads-partners.coupang.com/g.js"></script>
+<script>
+	new PartnersCoupang.G({ id:316611 });
+</script>
+
 {% endblock body %}
 

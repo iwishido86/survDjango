@@ -1,3 +1,5 @@
+AF7859400
+
 git config --global user.email "iwishido86@gmail.com"
 				git config --global user.name "iwishido86"
 
@@ -633,3 +635,154 @@ def knight_expedition_view(request, username):
         }
 
     return render(request, template_name, context)
+
+
+
+
+	$(document).ready(
+			function() {
+					$("#link-copy-btn").click(function() {
+						copyShareLink();
+					});
+					$("#tag-copy-btn").click(function() {
+						copyTag();
+					});
+					$("#btn_notice_close").click(function() {
+						$("#contents").hide();
+					});
+					$("#fb-link-btn").click(function() {
+						location.href="http://www.facebook.com/sharer/sharer.php?u=https://app.m-nitpick.com/psytest/mc";
+					});
+
+					//roulette
+					var count = $('div.roulette').children().length
+					$('div.roulette').roulette(option);
+					var currentClickedIndex = -1;
+					var btns = $(".quest-answer");
+					$.each(btns, function(index, value) {
+						$(this).click(
+								function() {
+									var btn = $(this);
+									$(this).parent().parent().fadeOut(300,function(){
+										if(index == currentClickedIndex){
+											return;
+										}
+										var qNo = btn.attr('id');
+										var val = btn.attr('value');
+										addOption(qNo,val);
+										swiper.slideNext();
+										currentClickedIndex = index;
+										if (qNo == 12) {
+											showResultBtn();
+										}
+									})
+
+								})
+					});
+				});
+	var option = {
+			speed : 20,
+			duration : 1,
+			stopImageNumber : 0
+		}
+	var optionArr = Array(4).fill(0);
+	function addOption(no, a) {
+		//onsole.log("addOption addOption : " + no + " / " + a);
+		let index = (no - 1) % 4;
+		optionArr[index] = optionArr[index] + parseInt(a);
+		//console.log("addOption index : " + index+", a :"+a);
+		//console.log("addOption optionArr : " + optionArr);
+	}
+	function showResultBtn() {
+		$('.show-result-btn').delay(3000).fadeIn(2000);
+	}
+	function resultTest() {
+		var resultStr = calTestResultMC(optionArr);
+		var psyobjs = $(".psyobj");
+		var resultIndex = 1;
+ 		$.each(psyobjs, function(index, obj) {
+			//var id = $(this).attr('id');
+			var val = $(this).attr('value');
+		 	if(resultStr == val){
+				resultIndex = index;
+				//console.log("psyobj matching!! resultStr /val : "+ resultStr + ": " + val);
+			}
+			//console.log("psyobj id /val : "+ index + ": " + val);
+		});
+
+		option.stopImageNumber = resultIndex;
+		$('div.roulette').roulette('option', option).roulette('start');
+		var ssid = $('#ssid').val();
+		$.ajax({
+            type: 'POST',
+            url: '/v1/web/event/psy/result/2/'+resultStr,
+            beforeSend: function(request) {
+        	    request.setRequestHeader("SSID", ssid);
+        	  },
+            dataType: 'json',
+            success: function(data){ // response is returned by server
+					if(data.resultCode == 200){
+						//alert(data.resultData.sName);
+						var count = data.resultData.totalCount;
+						if(count < 500){
+							$("#result_percent").hide();
+						} else {
+							$("#result_rate").text(data.resultData.nRate+"%");
+							$("#result_total_count").text(comma(count));
+						}
+						$("#result_name").text(data.resultData.sName+"-"+data.resultData.sType);
+						$("#result_name_link").text(data.resultData.sName);
+						$("#result_title").text(data.resultData.sResultTitle);
+						$("#result_msg").text(data.resultData.sResultMsg);
+						$("#result_same_type_name").text(data.resultData.sameTypeObj.sName+"-"+data.resultData.sameTypeObj.sType);
+						$("#result_other_type_name").text(data.resultData.otherTypeObj.sName+"-"+data.resultData.otherTypeObj.sType);
+						//var imgPath = $(".fin").attr("data-path");
+						$("#result_same_type_img").attr("src", '/img/event/12/'+data.resultData.sameTypeObj.sType+".png");
+						$("#result_other_type_img").attr("src", '/img/event/12/'+data.resultData.otherTypeObj.sType+".png");
+					} else {
+						//alert("실패!!\n사유: "+data.resultMsg);
+					}
+            },
+            error: function(response){
+         	   //alert("실패!!\n사유: "+response);
+            },
+       });
+	}
+	//룰렛 멈춤시 호출
+	function stopCallback() {
+		//$('.result_msg_mid').show("slow");
+		//$('.result_msg_bottom').show(1500);
+ 		 $( ".result_msg_mid" ).slideDown( 1200, function() {
+			    // Animation complete.
+			    $( ".sns-link" ).show();
+
+		 });
+	}
+	//테스트 링크복사
+	function copyShareLink() {
+		  /* Get the text field */
+		  var copyText = document.getElementById("myInput");
+		  /* Select the text field */
+		  copyText.select();
+		  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+		  /* Copy the text inside the text field */
+		  document.execCommand("copy");
+		  /* Alert the copied text */
+		  alert("공유링크 복사완료 !!");
+		}
+	//태그복사
+	function copyTag() {
+		  /* Get the text field */
+		  var copyText = document.getElementById("myTag");
+		  /* Select the text field */
+		  copyText.select();
+		  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+		  /* Copy the text inside the text field */
+		  document.execCommand("copy");
+		  /* Alert the copied text */
+		  alert("해시태그 복사완료!!");
+		}
+	// SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+	Kakao.init(kakaoSDKKey);
+	// SDK 초기화 여부를 판단합니다.
+	//console.log('Kakao isInit::'+Kakao.isInitialized());
