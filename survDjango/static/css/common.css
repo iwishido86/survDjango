@@ -42,7 +42,7 @@ p{
 .brd_cont_box {
     text-align          : center;
     background-color    : #FFF;
-    border              : 2px solid #FAECCD;
+    border              : 2px solid #FAECC5;
     border-radius       : 0.5rem;
 }
 
@@ -79,7 +79,7 @@ p{
     margin-top      : 1.0em;
     margin-bottom   : 1.0em;
     text-align      : left;
-    background-color: #FAECCD;
+    background-color: #FAECC5;
     border-radius   : 0.5rem;
     font-size       : 1.1em;
     line-height     : 1.2em;
@@ -100,7 +100,7 @@ p{
     margin-top          : 0.5em;
     padding             : 0.7rem 0.7rem;
     text-align          : center;
-    background-color    : #FAECCD;
+    background-color    : #FAECC5;
     border              : 1px solid #555;
     border-radius       : 0.5rem;
     line-height         : 1.5rem;
@@ -123,6 +123,13 @@ p{
     background-color    : #FFF;
 }
 
+.result_link_box {
+    margin-top          : 0.5em;
+    text-align          : center;
+    background-color    : #FFF;
+}
+
+
 .resultlable{
     font-size       : 1.4em;
     line-height     : 1.5rem;
@@ -134,7 +141,7 @@ p{
     margin              : 1.5em 3.5em;
     text-align          : center;
     padding             : 1rem 0.5rem;
-    background-color    : #FFF;
+    background-color    : #D4F4FA;
     border              : 2px solid #000;
     border-radius       : 0.5rem;
 }
@@ -145,10 +152,22 @@ p{
     margin-top          : 0.5em;
     padding             : 0.7rem 0.7rem;
     text-align          : center;
-    background-color    : #FAECCD;
+    background-color    : #FAECC5;
     border              : 2px solid #555;
     border-radius       : 0.5rem;
     line-height         : 1.5rem;
+}
+
+.result_img_box {
+    padding             : 0.5rem;
+    text-align          : right;
+    vertical-align      : bottom;
+    background-color    : #FFF;
+    min-height          : 250px;
+    margin-bottom       : 1.0em;
+    background-size     : 100%;
+    background-position : 50% 100%;
+    background-repeat   : no-repeat;
 }
 
 
@@ -162,9 +181,12 @@ p{
 }
 
 .top_cont_box {
-    background-color    : #ddd;
+    background-image:url('/static/img/corona_title.jpg');
     min-height          : 80px;
     margin-bottom       : 1.0em;
+    background-size     : 70%;
+    background-position: 50% 100%;
+    background-repeat   : no-repeat;
 }
 
 .top_logo_box1 {

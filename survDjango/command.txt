@@ -1,0 +1,55 @@
+git config --global user.email "iwishido86@gmail.com"
+git config --global user.name "iwishido86"
+
+iwishido86@gmail.com
+
+python -m venv myvenv
+.\myvenv\scripts\activate.bat
+python -m pip install -U pip
+pip install wheel django djangorestframework pylint
+django-admin startproject config .
+django-admin startapp survDjango
+
+python manage.py createsuperuser
+
+python manage.py makemigrations
+python manage.py migrate
+
+python manage.py runserver
+
+
+python3 manage.py createsuperuser
+
+python3 manage.py makemigrations survDjango
+python3 manage.py migrate survDjango
+python3 manage.py runserver 0.0.0.0:80
+
+pip install httpie
+
+ps -ef | grep py
+
+
+
+
+bg
+disown -h
+
+git stash clear
+
+http://ec2-18-223-102-218.us-east-2.compute.amazonaws.com
+
+--- 개발환경설정 --------------
+sudo apt-get update
+sudo apt-get install git
+sudo apt-get install python3-pip
+sudo pip3 install django==1.10
+git clone
+
+
+ln –s python3 python
+
+ln –n /usr/bin/python3 /usr/bin/python
+
+git clone https://github.com/iwishido86/survDjango.git
+python3 manage.py runserver
+

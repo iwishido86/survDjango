@@ -20,6 +20,8 @@ class SurvM(models.Model):
     content2 = models.TextField()
     content3 = models.TextField()
     imgFile = models.CharField(default='N',max_length=100)
+    linkUrl = models.CharField(default='N',max_length=100)
+    addScript = models.CharField(default='N', max_length=200)
     completeYn = models.CharField(default='N', max_length=1)
     pageNum = models.IntegerField(default=0, help_text="설문번호")
     deleteYn = models.CharField(default='N', max_length=1)

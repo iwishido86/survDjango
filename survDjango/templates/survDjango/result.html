@@ -2,6 +2,18 @@
 {% extends 'survDjango/base.html' %}
 
 {% block script %}
+	function copyShareLink() {
+		  /* Get the text field */
+		  var copyText = document.getElementById("result_link_input");
+		  /* Select the text field */
+		  copyText.select();
+		  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+		  /* Copy the text inside the text field */
+		  document.execCommand("copy");
+		  /* Alert the copied text */
+		  alert("공유링크 복사완료 !!");
+		}
+
 
 {% endblock script %}
 
@@ -28,11 +40,17 @@
 
 
 </form>
-
+<br>
 <script src="https://ads-partners.coupang.com/g.js"></script>
 <script>
-	new PartnersCoupang.G({ id:316611 });
+	new PartnersCoupang.G({ id:{{surv.addScript}} });
 </script>
+<br>
+    <div class="result_link_box">
+        <input type="text" id="result_link_input" value="{{surv.linkUrl}}">
+        <button id="link-copy-btn" onclick="copyShareLink();">링크공유</button>
+    </div>
+
 
 {% endblock body %}
 
