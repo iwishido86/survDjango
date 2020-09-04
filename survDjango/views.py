@@ -122,6 +122,10 @@ def start_view(request,survid):
 
     return render(request, template_name, context)
 
+
+def index_view(request):
+    return start_view(request,1)
+
 #
 #
 # def knight_select_view(request, username):

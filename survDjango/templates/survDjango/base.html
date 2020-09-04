@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{surv.title}}</title>
     <link rel="stylesheet" href="/static/css/common.css">
-
+    <script data-ad-client="ca-pub-7965464586995993" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script type="text/javascript">
     {% block script %}
 
@@ -16,11 +16,14 @@
 
 </head>
 <body>
+    <div class="body_cont_box">
+        {% include "./top_layout.html" %}
     {% load static %}
 
     {% block body %}
     BASE_BODY
     {% endblock body %}
-
+    </div>
+    {% include "./bottom_layout.html" %}
 </body>
 </html>

@@ -34,8 +34,10 @@
         <div class="questionclass" id="question{{question.questionId}}" {%if question.questionId != 1%}style="display:none;"{%endif%}>
 
             <div class="brd_cont_box">
-                <div class="question_number"><label class="questionlable">NO. {{ question.questionId }}</label></div>
                 <div class="question_title"><label class="questionlable">{{ question.content|linebreaks }}</label></div>
+            </div>
+            <div class="question_page_box">
+                <label class="question_page">{{ question.questionId }} / {{ surv.question_num }} </label>
             </div>
             <div class="ans_cont_box">
                 {% for ans in question.ans_arr %}
