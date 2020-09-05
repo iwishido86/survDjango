@@ -18,6 +18,13 @@ body{
     text-align          : center;
 }
 
+
+
+.basic_cont1_box {
+    text-align          : center;
+    margin-bottom       : 1.0em;
+}
+
 a{
 }
 p{
@@ -73,6 +80,17 @@ p{
     text-align: center;
     background-color: #FFF;
     border-radius: 0.5rem;
+}
+
+#link_copy_btn {
+    font-weight         : bolder;
+    font-size           : 0.9em;
+    text-align          : center;
+    padding             : 0rem 0.5rem;
+    background-color    : #DDECFE;
+    border              : 1px solid #000;
+    border-radius       : 0.3rem;
+    vertical-align      : middle;
 }
 
 .anslable {
@@ -143,6 +161,9 @@ p{
     border-radius       : 0.5rem;
 }
 
+
+
+
 .start_cont_box2 {
     font-weight         : bolder;
     font-size           : 1.1em;
@@ -162,7 +183,7 @@ p{
     text-align          : right;
     vertical-align      : bottom;
     background-color    : #FFF;
-    min-height          : 200px;
+    min-height          : 250px;
     margin-bottom       : 1.0em;
     background-size     : 100%;
     background-position : 50% 100%;
