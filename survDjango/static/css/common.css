@@ -26,6 +26,8 @@ p{
     margin-block-end        : 0em;
     margin-inline-start     : 0px;
     margin-inline-end       : 0px;
+    margin                  : 0;
+    padding                 : 0;
 }
 
 
@@ -42,7 +44,7 @@ p{
 .brd_cont_box {
     text-align          : center;
     background-color    : #FFF;
-    border              : 2px solid #FAECC5;
+    border              : 2px solid #DDECFE;
     border-radius       : 0.5rem;
 }
 
@@ -75,16 +77,19 @@ p{
 
 .anslable {
     display         : block;
-    padding         : 0.7rem 2rem 0.7rem 0.7rem;
+    padding         : 0.5rem 0.77rem 0.5rem 2rem;
     margin-top      : 1.0em;
-    margin-bottom   : 1.0em;
     text-align      : left;
-    background-color: #FAECC5;
+    background-color: #DDECFE;
     border-radius   : 0.5rem;
     font-size       : 1.1em;
     line-height     : 1.2em;
     font-weight     : bolder;
     border          : 2px solid #555;
+
+    background-size     : 2.0rem 2.0rem;
+    background-position : 0% 50%;
+    background-repeat   : no-repeat;
 
 }
 
@@ -101,23 +106,15 @@ p{
     padding             : 0.7rem 0.7rem;
     text-align          : center;
     background-color    : #FAECC5;
+    background-color    : #FCE7DA;
     border              : 1px solid #555;
     border-radius       : 0.5rem;
     line-height         : 1.5rem;
 }
 
-.result_img_box {
-    font-weight         : bolder;
-    margin-top          : 1.0em;
-    padding             : 13rem 0.5rem 0.5rem 1rem;
-    text-align          : right;
-    vertical-align      : bottom;
-    background-color    : #FFF;
-}
-
 .result_cont_box3 {
     margin-top          : 0.5em;
-    padding             : 0rem 0rem 0rem 1rem;
+    padding             : 0rem 1rem 0rem 1rem;
     text-align          : right;
     vertical-align      : bottom;
     background-color    : #FFF;
@@ -141,7 +138,7 @@ p{
     margin              : 1.5em 3.5em;
     text-align          : center;
     padding             : 1rem 0.5rem;
-    background-color    : #D4F4FA;
+    background-color    : #DDECFE;
     border              : 2px solid #000;
     border-radius       : 0.5rem;
 }
@@ -153,12 +150,26 @@ p{
     padding             : 0.7rem 0.7rem;
     text-align          : center;
     background-color    : #FAECC5;
+
+    background-color    : #FCE7DA;
     border              : 2px solid #555;
     border-radius       : 0.5rem;
     line-height         : 1.5rem;
 }
 
 .result_img_box {
+    padding             : 0.5rem;
+    text-align          : right;
+    vertical-align      : bottom;
+    background-color    : #FFF;
+    min-height          : 200px;
+    margin-bottom       : 1.0em;
+    background-size     : 100%;
+    background-position : 50% 100%;
+    background-repeat   : no-repeat;
+}
+
+.start_img_box {
     padding             : 0.5rem;
     text-align          : right;
     vertical-align      : bottom;

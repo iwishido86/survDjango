@@ -50,7 +50,7 @@
                         <input id="radio_{{ question.questionId }}_{{ ans.ansId }}" type="radio" name="radio{{ question.questionId }}" value="{{ ans.ansId }}" class="ans_radio">
 
                         <!--div class="ans_div" for="radio_{{ question.questionId }}_{{ ans.ansId }}"-->
-                            <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" class="anslable">{{ ans.content|linebreaks }}</label>
+                            <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" class="anslable" style="background-image:url('/static/img/anslable{{ ans.ansId }}.jpg');">{{ ans.content|linebreaks }}</label>
 
                         <!--/div-->
                     </a>
