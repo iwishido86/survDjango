@@ -37,6 +37,7 @@ disown -h
 git stash clear
 
 http://ec2-18-223-102-218.us-east-2.compute.amazonaws.com
+http://asq.kr/IPOa4KEbsaqc
 
 --- 개발환경설정 --------------
 sudo apt-get update

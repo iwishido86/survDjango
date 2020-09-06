@@ -22,7 +22,7 @@ body{
 
 .basic_cont1_box {
     text-align          : center;
-    margin-bottom       : 1.0em;
+    margin-bottom       : 0.5em;
 }
 
 a{
@@ -105,8 +105,8 @@ p{
     font-weight     : bolder;
     border          : 2px solid #555;
 
-    background-size     : 2.0rem 2.0rem;
-    background-position : 0% 50%;
+    background-size     : 2.4rem 2.4rem;
+    background-position: -1% -3px;
     background-repeat   : no-repeat;
 
 }
@@ -153,7 +153,7 @@ p{
 .start_box {
     font-weight         : bolder;
     font-size           : 1.5em;
-    margin              : 1.5em 3.5em;
+    margin              : 1em 3.5em;
     text-align          : center;
     padding             : 1rem 0.5rem;
     background-color    : #DDECFE;
@@ -165,17 +165,16 @@ p{
 
 
 .start_cont_box2 {
-    font-weight         : bolder;
-    font-size           : 1.1em;
+    font-size           : 1.0em;
     margin-top          : 0.5em;
-    padding             : 0.7rem 0.7rem;
+    padding             : 0.5rem 0.5rem;
     text-align          : center;
     background-color    : #FAECC5;
 
     background-color    : #FCE7DA;
     border              : 2px solid #555;
     border-radius       : 0.5rem;
-    line-height         : 1.5rem;
+    line-height         : 1.3rem;
 }
 
 .result_img_box {
@@ -184,7 +183,7 @@ p{
     vertical-align      : bottom;
     background-color    : #FFF;
     min-height          : 250px;
-    margin-bottom       : 1.0em;
+    margin-bottom       : 0.5em;
     background-size     : 100%;
     background-position : 50% 100%;
     background-repeat   : no-repeat;
@@ -196,7 +195,7 @@ p{
     vertical-align      : bottom;
     background-color    : #FFF;
     min-height          : 250px;
-    margin-bottom       : 1.0em;
+    margin-bottom       : 0.5em;
     background-size     : 100%;
     background-position : 50% 100%;
     background-repeat   : no-repeat;
@@ -215,7 +214,7 @@ p{
 .top_cont_box {
     background-image:url('/static/img/corona_title.jpg');
     min-height          : 80px;
-    margin-bottom       : 1.0em;
+    margin-bottom       : 0.5em;
     background-size     : 70%;
     background-position: 50% 100%;
     background-repeat   : no-repeat;
