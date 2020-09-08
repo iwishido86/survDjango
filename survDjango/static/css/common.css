@@ -118,6 +118,14 @@ p{
   font-size     : 2.0rem;
 }
 
+.loading_gif_box {
+    position        : absolute;
+    top             : 25%;
+    left            : 25%;
+    z-index         : 9999;
+
+}
+
 .result_cont_box2 {
     font-size           : 1.1em;
     margin-top          : 0.5em;

@@ -1,6 +1,6 @@
 from random import random, randint
 
-from django.db.models import Q, Max
+from django.db.models import Q, Max, Count
 from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -47,6 +47,7 @@ def surv_view(request,survid):
         resultHstoryL.survId = survId
         resultHstoryL.resultId = result.resultId
         resultHstoryL.content = historyContent + ":::" + point.__str__()
+        resultHstoryL.content2 = point.__str__()
 
         resultHstoryL.save()
 

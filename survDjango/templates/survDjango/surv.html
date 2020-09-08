@@ -4,15 +4,17 @@
 {% block script %}
     var selectCardCnt = 0;
 
-    function nextPage(questionId, nextQuestionId){
-
+    function nextPage(questionId, nextQuestionId,ansId){
+        ansId.style.backgroundColor = "#999";
         //document.forms[0].radio1.value
 
         questionId.style.display = "none";
         nextQuestionId.style.display = "";
     }
-    function submitFrom(){
-
+    function submitFrom(questionId,ansId){
+        ansId.style.backgroundColor = "#999";
+        questionId.style.display = "none";
+        loading_cont_box.style.display = "";
         {% for page in page_arr %}
             {% for question in page.question_arr %}
         radio{{ question.questionId }}.value
@@ -42,15 +44,15 @@
                 {% for ans in question.ans_arr %}
 
                     {%if question.questionId == surv.question_num%}
-                    <a onclick="submitFrom() ;">
+                    <a onclick="submitFrom(question{{question.questionId}},anslabel_{{ question.questionId }}_{{ ans.ansId }}) ;">
                     {%endif%}
                     {%if question.questionId != surv.question_num%}
-                    <a onclick="nextPage(question{{question.questionId}} ,question{{question.next_questionId}});">
+                    <a onclick="nextPage(question{{question.questionId}} ,question{{question.next_questionId}} ,anslabel_{{ question.questionId }}_{{ ans.ansId }});">
                     {%endif%}
                         <input id="radio_{{ question.questionId }}_{{ ans.ansId }}" type="radio" name="radio{{ question.questionId }}" value="{{ ans.ansId }}" class="ans_radio">
 
                         <!--div class="ans_div" for="radio_{{ question.questionId }}_{{ ans.ansId }}"-->
-                            <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" class="anslable" style="background-image:url('/static/img/anslabel{{ ans.ansId }}.png');">{{ ans.content|linebreaks }}</label>
+                            <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" id="anslabel_{{ question.questionId }}_{{ ans.ansId }}" class="anslable" style="background-image:url('/static/img/anslabel{{ ans.ansId }}.png');">{{ ans.content|linebreaks }}</label>
 
                         <!--/div-->
                     </a>
@@ -60,6 +62,16 @@
             <br><br>
         </div>
     {% endfor %}
+    <div class=loading_cont_box" id="loading_cont_box" style="display:none;">
+        <div class="loading_gif_box">
+            <img src="/static/img/loading.gif">
+        </div>
 
+        <div class="start_img_box" style="background-image:url('/static/img/{{ surv.imgFile }}');">
+        </div>
+        <div class="start_cont_box2">
+            <div class="result_content">수달 제약에서 분석중입니다.</div>
+        </div>
+    </div>
 </form>
 {% endblock body %}
