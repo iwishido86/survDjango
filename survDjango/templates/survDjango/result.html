@@ -2,6 +2,7 @@
 {% extends 'survDjango/base.html' %}
 
 {% block headblock %}
+    <link rel="image_src" href="https://kimsudal.com/static/img/{{ result.imgFile }}">
     <meta itemprop="image" content="https://kimsudal.com/static/img/{{ result.imgFile }}">
     <meta property="og:image" content="https://kimsudal.com/static/img/{{ result.imgFile }}">
     <meta property="twitter:image" content="https://kimsudal.com/static/img/{{ result.imgFile }}">
@@ -18,7 +19,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kimsudal.com">
     <meta property="twitter:url" content="https://kimsudal.com">
-    {% endblock headblock %}
+{% endblock headblock %}
 
 {% block script %}
     {% load static %}
