@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR /lk 'subdir'.
 
-BASE_URL = 'http://kimsudal.com'
+
 BASE_DIR = BASE_DIR = Path(__file__).resolve(strict=True).parent
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -137,8 +137,5 @@ REST_FRAMEWORK = {
     ]
 }
 # ...
-<<<<<<< Updated upstream
-=======
 
 
->>>>>>> Stashed changes
