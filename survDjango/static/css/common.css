@@ -85,17 +85,6 @@ p{
     border-radius: 0.5rem;
 }
 
-#link_copy_btn {
-    font-weight         : bolder;
-    font-size           : 1.5em;
-    text-align          : center;
-    padding             : 0.5rem 0.5rem;
-    background-color    : #DDECFE;
-    border              : 2px solid #000;
-    border-radius       : 0.5rem;
-    vertical-align      : middle;
-}
-
 .anslable {
     display         : block;
     padding         : 0.5rem 0.77rem 0.5rem 2rem;
