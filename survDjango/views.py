@@ -58,11 +58,11 @@ def surv_view(request,survid):
 
         resultHstoryL.save()
 
-        sumresult= ResultHstoryL.objects.values('resultId').annotate(totalcnt=Count('resultId'))
-        print(sumresult)
+        #sumresult= ResultHstoryL.objects.values('resultId').annotate(totalcnt=Count('resultId'))
+        #print(sumresult)
 
-        sumresult= ResultHstoryL.objects.count()
-        print(sumresult)
+        #sumresult= ResultHstoryL.objects.count()
+        #print(sumresult)
 
 
         return HttpResponseRedirect(
