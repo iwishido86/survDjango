@@ -5,23 +5,23 @@
     var selectCardCnt = 0;
 
     function nextPage(questionId, nextQuestionId,ansId){
-        ansId.style.backgroundColor = "#999";
+        //ansId.style.backgroundColor = "#999";
         //document.forms[0].radio1.value
+        ansId.className = ansId.className +  "  animate__animated animate__fadeIn selected";
 
-        questionId.style.display = "none";
-        nextQuestionId.style.display = "";
+
+        setTimeout(function() {
+            questionId.style.display = "none";
+            nextQuestionId.style.display = "";
+        }, 500);
     }
     function submitFrom(questionId,ansId){
-        ansId.style.backgroundColor = "#999";
+        ansId.className = ansId.className +  "  animate__animated animate__fadeIn selected";
         questionId.style.display = "none";
         loading_cont_box.style.display = "";
-        {% for page in page_arr %}
-            {% for question in page.question_arr %}
-        radio{{ question.questionId }}.value
-            {% endfor %}
-        {% endfor %}
-
-        document.forms[0].submit();
+        setTimeout(function() {
+            document.forms[0].submit();
+        }, 1500);
     }
 {% endblock script %}
 
@@ -52,7 +52,8 @@
                         <input id="radio_{{ question.questionId }}_{{ ans.ansId }}" type="radio" name="radio{{ question.questionId }}" value="{{ ans.ansId }}" class="ans_radio">
 
                         <!--div class="ans_div" for="radio_{{ question.questionId }}_{{ ans.ansId }}"-->
-                            <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" id="anslabel_{{ question.questionId }}_{{ ans.ansId }}" class="anslable" style="background-image:url('/static/img/anslabel{{ ans.ansId }}.png');">{{ ans.content|linebreaks }}</label>
+                            <label for="radio_{{ question.questionId }}_{{ ans.ansId }}" id="anslabel_{{ question.questionId }}_{{ ans.ansId }}"
+                                   class="anslable" style="background-image:url('/static/img/anslabel{{ ans.ansId }}.png');">{{ ans.content|linebreaks }}</label>
 
                         <!--/div-->
                     </a>

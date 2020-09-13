@@ -26,6 +26,8 @@ class SurvM(models.Model):
     pageNum = models.IntegerField(default=0, help_text="설문번호")
     deleteYn = models.CharField(default='N', max_length=1)
     orderNum = models.IntegerField(default=0, help_text="정렬순서")
+    cnt = models.IntegerField(default=0, help_text="검사건수")
+
 
 
 class QuestionM(models.Model):
@@ -61,6 +63,7 @@ class ResultM(models.Model):
     imgFile = models.CharField(max_length=100)
     deleteYn = models.CharField(default='N', max_length=1)
     orderNum = models.IntegerField(default=0, help_text="정렬순서")
+    cnt = models.IntegerField(default=0, help_text="검사건수")
 
 
 class ResultHstoryL(models.Model):

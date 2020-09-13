@@ -1,6 +1,7 @@
 from random import random, randint
 
-from django.db.models import Q, Max, Count
+from astropy.io.votable.converters import Int
+from django.db.models import Q, Max, Count, Sum
 from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -39,7 +40,13 @@ def surv_view(request,survid):
 
         # 여기 튜닝 원쿼리로
         result = get_object_or_404(ResultM, survId=survid, pointBottom__lte=point, pointTop__gte=point)
+        result.cnt = result.cnt + 1
+        result.save()
 
+        surv = get_object_or_404(SurvM, survId=survId)
+
+        surv.cnt = surv.cnt + 1
+        surv.save()
 
         # 내역 저장
         resultHstoryL  = ResultHstoryL.objects.create()
@@ -50,6 +57,13 @@ def surv_view(request,survid):
         resultHstoryL.content2 = point.__str__()
 
         resultHstoryL.save()
+
+        sumresult= ResultHstoryL.objects.values('resultId').annotate(totalcnt=Count('resultId'))
+        print(sumresult)
+
+        sumresult= ResultHstoryL.objects.count()
+        print(sumresult)
+
 
         return HttpResponseRedirect(
             '/result/' + survId+ '/' + result.resultId.__str__()
@@ -97,12 +111,21 @@ def result_view(request,survid,resultid):
 
     surv = get_object_or_404(SurvM, survId=survid)
     result = get_object_or_404(ResultM, resultId=resultid)
-
     form = SurvForm()
+
+    rank = ResultM.objects.filter(pointTop__gt=result.pointTop).aggregate(totalcnt=Sum('cnt'))
+    #print(rank)
+    rate = 0.0
+    if rank['totalcnt'] :
+        rate = (rank['totalcnt'].__int__() / surv.cnt) * 100
+    else :
+        rate = 0.01
 
     context = {
         'form': form,
         'surv': surv,
+        'rank': rank,
+        'rate': rate,
         'result': result,
     }
 

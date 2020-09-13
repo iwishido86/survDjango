@@ -1,61 +1,113 @@
 {# knight_login.html #}
 {% extends 'survDjango/base.html' %}
 
+{% block headblock %}
+    <meta itemprop="image" content="http://kimsudal.com/static/img/{{ result.imgFile }}">
+    <meta property="og:image" content="http://kimsudal.com/static/img/{{ result.imgFile }}">
+    <meta property="twitter:image" content="http://kimsudal.com/static/img/{{ result.imgFile }}">
+
+    <meta name="title" content="당신은 {{ result.title }}입니다.">
+    <meta property="og:title" content="당신은 {{ result.title }}입니다.">
+    <meta property="twitter:title" content="당신은 {{ result.title }}입니다.">
+
+    <meta name="description" content="{{surv.content}}">
+    <meta property="og:description" content="{{surv.content}}">
+    <meta property="twitter:description" content="{{surv.content}}">
+    <meta name="keywords" content="무의식심리테스트,코로나,진단키트,코로나테스트">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kimsudal.com">
+    <meta property="twitter:url" content="https://kimsudal.com">
+    {% endblock headblock %}
+
 {% block script %}
-	function copyShareLink() {
-		  /* Get the text field */
-		  var copyText = document.getElementById("result_link_input");
-		  /* Select the text field */
-		  copyText.select();
-		  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-		  /* Copy the text inside the text field */
-		  document.execCommand("copy");
-		  /* Alert the copied text */
-		  alert("공유링크 복사완료 !!");
-		}
-
-
+    {% load static %}
 {% endblock script %}
-
 {% block body %}
 <form method="post">
     {% csrf_token %}
 
     {{ form.as_p }}
 
-    <div class="basic_cont1_box">
+    <div class="result_cont_box1">
         <label class="resultlable">당신은 [ <b>{{ result.title }}</b> ]입니다.</label>
     </div>
     <div class="result_img_box" style="background-image:url('/static/img/{{ result.imgFile }}');">
         <div class="result_Id"></div>
         <div class="result_title"><label class="resultlable"></label></div>
     </div>
-    <div class="result_cont_box3">코로나 걸릴 확률 : <label class="resultlable"><b>{{ result.content3 }}</b></label></div>
 
     <div class="result_cont_box2">
+        <label class="resultlable2">걸릴 확률 : <b>{{ result.content3 }}</b></label><BR>
+        <label class="resultlable2">방역 순위 : <b>상위 {{ rate|stringformat:".2f%%" }} ( 전체 : {{surv.cnt}} 명 )</b></label><BR><BR>
+
         <!--div class="result_content">{{ result.content|linebreaks }}</div-->
-        <div class="result_content">{{ result.content2|linebreaks }}</div>
+        <label class="result_content2">{{ result.content2|linebreaks }}</label>
     </div>
-
-
-
-
-
 </form>
 <br>
-<script src="https://ads-partners.coupang.com/g.js"></script>
+<!--script src="https://ads-partners.coupang.com/g.js"></script>
 <script>
 	new PartnersCoupang.G({ id:{{surv.addScript}} });
-</script>
-<br>
-    <div class="result_link_box">
-        <input type="text" id="result_link_input" value="{{surv.linkUrl}}">
-        <label id="link_copy_btn" onclick="copyShareLink();">검사링크공유</label>
+</script-->
+    <div class="result_cont_box3">
+        <a href="javascript:sendLink()"><img src="/static/img/share_kakao.png" width="50"/></a>
+        <a href="javascript:copyShareLink()"><img src="/static/img/share_api.png" width="50" /></a>
     </div>
 
-    <div class="start_box" onclick="document.location.href='{% url 'surv_view' survid=surv.survId %}';">
+    <div class="start_box" id="start_box" onclick="submitFrom();">
         다 시 검 사
     </div>
 
 {% endblock body %}
+
+
+{% block script2 %}
+    {% load static %}
+    Kakao.init('ccdb3f124d4dff07a4947714b9989267'); // 초기화
+
+    function sendLink() {
+        Kakao.Link.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: document.title,
+                description: '당신은 {{ result.title }}입니다.',
+                imageUrl: 'http://kimsudal.com' + '/static/img/{{ result.imgFile }}',
+                link: {
+                    mobileWebUrl: document.location.href,
+                    webUrl: document.location.href,
+                },
+            },
+            buttons: [
+                {
+                    title: '코로나 온라인 진단',
+                    link: {
+                        mobileWebUrl: document.location.href,
+                        webUrl: document.location.href,
+                    },
+                }
+            ],
+        })
+    }
+
+    if (typeof navigator.share === "undefined") {
+        // 공유하기 버튼을 지원하지 않는 경우에 대한 폴백 처리
+        //link_copy_btn.style.display = 'none';
+    }
+
+    function copyShareLink() {
+        navigator.share({
+            title: '당신은 {{ result.title }}입니다.',
+            text: '{{surv.content}}',
+            url: document.location.href,
+        });
+    }
+
+    function submitFrom(){
+        start_box.className = start_box.className +  "  animate__animated animate__fadeIn selected";
+        setTimeout(function() {
+            document.location.href='{% url 'surv_view' survid=surv.survId %}';
+        }, 1000);
+    }
+{% endblock script2 %}
 

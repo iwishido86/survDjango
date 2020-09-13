@@ -1,5 +1,6 @@
 AF7859400
 
+3.18.90.222
 git config --global user.email "iwishido86@gmail.com"
 				git config --global user.name "iwishido86"
 
@@ -83,6 +84,8 @@ https://github.com/iwishido86/survDjango.git
 출처: https://sun2day.tistory.com/216 [보안쟁이-회사원의 일상]
 
 http://ec2-18-223-102-218.us-east-2.compute.amazonaws.com
+18.216.208.215
+ec2-3-137-120-42.us-east-2.compute.amazonaws.com
 
 http://ec2-18-223-102-218.us-east-2.compute.amazonaws.com:8000/
 http://ec2-18-223-102-218.us-east-2.compute.amazonaws.com:8000/knight_ligin/경진

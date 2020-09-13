@@ -1,14 +1,39 @@
 <!DOCTYPE html>
 {# base.html #}
+
 <html lang="kr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{surv.title}}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="/static/css/common.css">
-    <script data-ad-client="ca-pub-7965464586995993" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
+    {% block headblock %}
+    <meta itemprop="image" content="{{surv.imgFile}}">
+    <meta property="og:image" content="{{surv.imgFile}}">
+    <meta property="twitter:image" content="{{surv.imgFile}}">
+
+    <meta name="title" content="{{surv.title}}">
+    <meta property="og:title" content="{{surv.title}}">
+    <meta property="twitter:title" content="{{surv.title}}">
+
+    <meta name="description" content="{{surv.content}}">
+    <meta property="og:description" content="{{surv.content}}">
+    <meta property="twitter:description" content="{{surv.content}}">
+    <meta name="keywords" content="무의식심리테스트,코로나,진단키트,코로나테스트">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kimsudal.com">
+    <meta property="twitter:url" content="https://kimsudal.com">
+    {% endblock headblock %}
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
     <script type="text/javascript">
     {% block script %}
+
 
     {% endblock script %}
     </script>
@@ -17,8 +42,9 @@
 </head>
 <body>
     <div class="body_cont_box">
-        {% include "./top_layout.html" %}
+    {% include "./top_layout.html" %}
     {% load static %}
+
 
     {% block body %}
     BASE_BODY
@@ -26,4 +52,12 @@
     </div>
     {% include "./bottom_layout.html" %}
 </body>
+
+    <script type="text/javascript">
+    {% block script2 %}
+
+
+    {% endblock script2 %}
+    </script>
+
 </html>

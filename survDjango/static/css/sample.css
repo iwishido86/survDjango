@@ -1,0 +1,660 @@
+@font-face {
+  font-family: "CookieRun";
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/CookieRunFont/CookieRun Regular.woff2") format("woff2"), url("../fonts/CookieRunFont/CookieRun Regular.woff") format("woff"), url("../fonts/CookieRunFont/CookieRun Regular.otf") format("truetype");
+}
+@font-face {
+  font-family: "CookieRun";
+  font-style: normal;
+  font-weight: 700;
+  src: url("../fonts/CookieRunFont/CookieRun Bold.woff2") format("woff2"), url("../fonts/CookieRunFont/CookieRun Bold.woff") format("woff"), url("../fonts/CookieRunFont/CookieRun Bold.otf") format("truetype");
+}
+@font-face {
+  font-family: "CookieRun";
+  font-style: normal;
+  font-weight: 900;
+  src: url("../fonts/CookieRunFont/CookieRun Black.woff2") format("woff2"), url("../fonts/CookieRunFont/CookieRun Black.woff") format("woff"), url("../fonts/CookieRunFont/CookieRun Black.otf") format("truetype");
+}
+html,
+body {
+  height: 100%;
+}
+html #wrap.promotion,
+body #wrap.promotion {
+  height: 100%;
+  padding-top: 0;
+}
+html .btn-area .btn,
+body .btn-area .btn {
+  display: block;
+  width: 312px;
+  height: 72px;
+  text-align: center;
+  color: #252525;
+}
+html .rounding-box,
+body .rounding-box {
+  position: relative;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media screen and (min-width: 768px) {
+  html .rounding-box,
+  body .rounding-box {
+    width: 480px;
+  }
+}
+html .rounding-box > .top,
+body .rounding-box > .top,
+html .rounding-box > .bottom,
+body .rounding-box > .bottom {
+  width: 100%;
+  height: 40px;
+  padding: 0 40px;
+  position: relative;
+}
+html .rounding-box > .top::before,
+body .rounding-box > .top::before,
+html .rounding-box > .bottom::before,
+body .rounding-box > .bottom::before,
+html .rounding-box > .top::after,
+body .rounding-box > .top::after,
+html .rounding-box > .bottom::after,
+body .rounding-box > .bottom::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+}
+html .rounding-box > .top::before,
+body .rounding-box > .top::before,
+html .rounding-box > .bottom::before,
+body .rounding-box > .bottom::before {
+  left: 0;
+}
+html .rounding-box > .top::after,
+body .rounding-box > .top::after,
+html .rounding-box > .bottom::after,
+body .rounding-box > .bottom::after {
+  right: 0;
+}
+html .rounding-box > .top .center,
+body .rounding-box > .top .center,
+html .rounding-box > .bottom .center,
+body .rounding-box > .bottom .center {
+  width: 100%;
+  height: 40px;
+}
+html .rounding-box > .top::before,
+body .rounding-box > .top::before {
+  background: url("../img/promotion/img_left.png") 0 0 repeat-x;
+  background-size: 40px auto;
+}
+html .rounding-box > .top::after,
+body .rounding-box > .top::after {
+  background: url("../img/promotion/img_right.png") 0 0 repeat-x;
+  background-size: 40px auto;
+}
+html .rounding-box > .top .center,
+body .rounding-box > .top .center {
+  background: url("../img/promotion/img_bridege_top.png") 0 0 repeat-x;
+  background-size: 232px auto;
+}
+html .rounding-box > .bottom::before,
+body .rounding-box > .bottom::before {
+  background: url("../img/promotion/img_left_bottom.png") 0 0 repeat-x;
+  background-size: 40px auto;
+}
+html .rounding-box > .bottom::after,
+body .rounding-box > .bottom::after {
+  background: url("../img/promotion/img_right_bottom.png") 0 0 repeat-x;
+  background-size: 40px auto;
+}
+html .rounding-box > .bottom .center,
+body .rounding-box > .bottom .center {
+  background: url("../img/promotion/img_bridege_bottom.png") 0 top repeat-x;
+  background-size: 232px auto;
+}
+html .rounding-box .body,
+body .rounding-box .body {
+  width: 100%;
+  position: relative;
+}
+html .rounding-box .body .inner-contents,
+body .rounding-box .body .inner-contents {
+  position: relative;
+  background-color: #fff;
+  z-index: 1;
+}
+html .rounding-box .body::before,
+body .rounding-box .body::before,
+html .rounding-box .body::after,
+body .rounding-box .body::after {
+  content: '';
+  width: 40px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+html .rounding-box .body::before,
+body .rounding-box .body::before {
+  left: 0;
+  background: url("../img/promotion/img_bridge_left.png") 0 0 repeat-y;
+  background-size: 40px auto;
+}
+html .rounding-box .body::after,
+body .rounding-box .body::after {
+  right: 0;
+  background: url("../img/promotion/img_bridge_right.png") 0 0 repeat-y;
+  background-size: 40px auto;
+}
+html .promotion-wrapper,
+body .promotion-wrapper {
+  width: 100%;
+  height: 100%;
+}
+html .promotion-wrapper .loading-panel,
+body .promotion-wrapper .loading-panel {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background: #fbfbfb url("../img/promotion/img_background_m@2x.png") center no-repeat;
+  background-size: 100% auto;
+}
+@media screen and (min-width: 768px) {
+  html .promotion-wrapper .loading-panel,
+  body .promotion-wrapper .loading-panel {
+    background: #fbfbfb url("../img/promotion/img_background_intro.png");
+    background-size: cover;
+  }
+}
+html .promotion-wrapper .loading-panel div,
+body .promotion-wrapper .loading-panel div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  -webkit-transform: translate3d(-50%, -50%, 0);
+}
+body .promotion-wrapper .loading-panel h2 {
+  font: bold 24px "CookieRun";
+  text-align: center;
+  margin-bottom: 18px;
+}
+html .promotion-wrapper.intro,
+body .promotion-wrapper.intro {
+  background-color: #fff9eb;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% auto;
+  background-image: url("../img/promotion/img_background_intro_m@2x.png");
+}
+@media screen and (min-width: 768px) {
+  html .promotion-wrapper.intro,
+  body .promotion-wrapper.intro {
+    background-image: url("../img/promotion/img_background_intro.png");
+    background-size: cover;
+  }
+}
+html .promotion-wrapper.intro .contents,
+body .promotion-wrapper.intro .contents {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  -webkit-transform: translate3d(-50%, -50%, 0);
+  margin-top: -30px;
+}
+html .promotion-wrapper.intro header h1,
+body .promotion-wrapper.intro header h1 {
+  text-align: center;
+}
+html .promotion-wrapper.intro header h1::before,
+body .promotion-wrapper.intro header h1::before {
+  content: "";
+  display: block;
+  width: 112px;
+  height: 27px;
+  margin: 0 auto 10px;
+  background: url("../img/promotion/img_grass_m@2x.png") 0 0 no-repeat;
+  background-size: 112px auto;
+}
+@media screen and (min-width: 768px) {
+  html .promotion-wrapper.intro header h1::before,
+  body .promotion-wrapper.intro header h1::before {
+    width: 161px;
+    height: 37px;
+    margin-bottom: 16px;
+    background: url("../img/promotion/img_grass@2x.png") 0 0 no-repeat;
+    background-size: 161px auto;
+  }
+}
+html .promotion-wrapper.intro header h2,
+body .promotion-wrapper.intro header h2 {
+  margin-bottom: 56px;
+  font: 20px "CookieRun";
+  color: #2f2f2f;
+  text-align: center;
+}
+@media screen and (min-width: 768px) {
+  html .promotion-wrapper.intro header h2,
+  body .promotion-wrapper.intro header h2 {
+    margin-bottom: 52px;
+    font-size: 28px;
+  }
+}
+html .promotion-wrapper.intro .btn-area .btn,
+body .promotion-wrapper.intro .btn-area .btn {
+  margin: 0 auto;
+  font: 20px/72px "CookieRun";
+  background: url("../img/promotion/img_btn_intro_m@2x.png") 0 0 no-repeat;
+  background-size: 312px auto;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+@media screen and (min-width: 768px) {
+  html .promotion-wrapper.intro .btn-area .btn,
+  body .promotion-wrapper.intro .btn-area .btn {
+    width: 480px;
+    height: 96px;
+    line-height: 96px;
+    font-size: 28px;
+    background: url("../img/promotion/img_btn_intro@2x.png") 0 0 no-repeat;
+    background-size: 480px auto;
+  }
+}
+html .promotion-wrapper.question,
+body .promotion-wrapper.question {
+  background: #fcf9eb url("../img/promotion/img_background_m@2x.png") center no-repeat;
+  background-size: 100% auto;
+}
+@media screen and (min-width: 768px) {
+  html .promotion-wrapper.question,
+  body .promotion-wrapper.question {
+    background: #fcf9eb url("../img/promotion/img_background_intro.png");
+    background-size: cover;
+  }
+}
+html .promotion-wrapper.question .contents,
+body .promotion-wrapper.question .contents {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  -webkit-transform: translate3d(-50%, -50%, 0);
+  margin-top: -40px;
+}
+html .promotion-wrapper.question .icon,
+body .promotion-wrapper.question .icon {
+  width: 56px;
+  height: 58px;
+  margin: 0 auto 16px;
+  background: url("../img/promotion/img_fairy@2x.png") center no-repeat;
+  background-size: 58px auto;
+}
+html .promotion-wrapper.question .question-box,
+body .promotion-wrapper.question .question-box {
+  width: 312px;
+  margin: 0 auto 40px;
+  box-sizing: border-box;
+}
+@media screen and (min-width: 768px) {
+  html .promotion-wrapper.question .question-box,
+  body .promotion-wrapper.question .question-box {
+    width: 480px;
+  }
+}
+html .promotion-wrapper.question .question-box .body,
+body .promotion-wrapper.question .question-box .body {
+  padding: 0 38px;
+}
+html .promotion-wrapper.question .question-box .q,
+body .promotion-wrapper.question .question-box .q {
+  margin-bottom: 5px;
+  color: #252525;
+  font: bold 20px "CookieRun";
+  text-align: center;
+}
+html .promotion-wrapper.question .question-box h1,
+body .promotion-wrapper.question .question-box h1 {
+  color: #252525;
+  font: 18px "CookieRun";
+  text-align: center;
+}
+html .promotion-wrapper.question .answer-list .btn,
+body .promotion-wrapper.question .answer-list .btn {
+  position: relative;
+  margin: 0 auto 16px;
+  overflow: hidden;
+  color: #7426d7;
+  border-radius: 50px;
+  background: url("../img/promotion/img_btn_m@2x.png") 0 0 no-repeat;
+  background-size: 312px auto;
+  cursor: pointer;
+}
+html .promotion-wrapper.question .answer-list .btn span,
+body .promotion-wrapper.question .answer-list .btn span {
+  position: relative;
+  z-index: 10;
+  font: 18px/72px "CookieRun";
+}
+body .promotion-wrapper.question .answer-list .btn.smallFont span {
+  font: 16px/72px "CookieRun";
+}
+html .promotion-wrapper.question .answer-list .btn::before,
+body .promotion-wrapper.question .answer-list .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #7426d7;
+  border-radius: 50px;
+  transform-origin: center;
+  -webkit-transform-origin: center;
+  transform: scaleX(0);
+  -webkit-transform: scaleX(0);
+  transition: transform 0.3s;
+  -webkit-transition: -webkit-transform 0.3s;
+}
+html .promotion-wrapper.question .answer-list .btn.selected,
+body .promotion-wrapper.question .answer-list .btn.selected {
+  color: #fff;
+}
+html .promotion-wrapper.question .answer-list .btn.selected::before,
+body .promotion-wrapper.question .answer-list .btn.selected::before {
+  transform: scaleX(1);
+  -webkit-transform: scaleX(1);
+}
+html .promotion-wrapper.question .answer-list .btn:last-child,
+body .promotion-wrapper.question .answer-list .btn:last-child {
+  margin-bottom: 0;
+}
+html .promotion-wrapper.question .page-info,
+body .promotion-wrapper.question .page-info {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  color: #252525;
+  font: bold 20px "CookieRun";
+}
+html .promotion-wrapper.result .rounding-box,
+body .promotion-wrapper.result .rounding-box {
+  margin-bottom: 16px;
+}
+html .promotion-wrapper.result .rounding-box .body,
+body .promotion-wrapper.result .rounding-box .body {
+  padding: 0 20px;
+}
+@media screen and (min-width: 768px) {
+  html .promotion-wrapper.result .rounding-box .body,
+  body .promotion-wrapper.result .rounding-box .body {
+    padding: 0 38px;
+  }
+}
+html .promotion-wrapper.result .contents,
+body .promotion-wrapper.result .contents {
+  display: none;
+  padding: 48px 24px 56px;
+  background: #74857f;
+}
+html .promotion-wrapper.result .contents.show,
+body .promotion-wrapper.result .contents.show {
+  display: block;
+}
+html .promotion-wrapper.result .contents .about-character h2,
+body .promotion-wrapper.result .contents .about-character h2 {
+  margin-bottom: 8px;
+  font: bold 24px/36px "CookieRun";
+  color: #1b1b1b;
+  text-align: center;
+}
+html .promotion-wrapper.result .contents .about-character h3,
+body .promotion-wrapper.result .contents .about-character h3 {
+  margin-bottom: 20px;
+  font: 18px "CookieRun";
+  color: #141414;
+  text-align: center;
+}
+html .promotion-wrapper.result .contents .about-character .character,
+body .promotion-wrapper.result .contents .about-character .character {
+  margin-bottom: 24px;
+  text-align: center;
+}
+html .promotion-wrapper.result .contents .about-character .description,
+body .promotion-wrapper.result .contents .about-character .description {
+  margin-bottom: 28px;
+  font: 500 14px/28px "Noto Sans KR";
+  color: #494949;
+  word-break: break-all;
+}
+html .promotion-wrapper.result .contents .about-character .healing > dt,
+body .promotion-wrapper.result .contents .about-character .healing > dt {
+  margin-bottom: 20px;
+  font: 600 16px/28px "Noto Sans KR";
+  color: #1b1b1b;
+  word-break: break-all;
+}
+html .promotion-wrapper.result .contents .about-character .healing dd li,
+body .promotion-wrapper.result .contents .about-character .healing dd li {
+  margin-bottom: 16px;
+}
+html .promotion-wrapper.result .contents .about-character .healing dd li:last-child,
+body .promotion-wrapper.result .contents .about-character .healing dd li:last-child {
+  margin-bottom: 0;
+}
+html .promotion-wrapper.result .contents .about-character .healing dd li dt,
+body .promotion-wrapper.result .contents .about-character .healing dd li dt {
+  margin-bottom: 8px;
+  font: 400 16px/28px "Noto Sans KR";
+  color: #7a4bb6;
+}
+html .promotion-wrapper.result .contents .about-character .healing dd li dd,
+body .promotion-wrapper.result .contents .about-character .healing dd li dd {
+  font: 500 16px "Noto Sans KR";
+  color: #494949;
+}
+html .promotion-wrapper.result .contents .match-character h2,
+body .promotion-wrapper.result .contents .match-character h2 {
+  margin-bottom: 12px;
+  font: 18px "CookieRun";
+  color: #1b1b1b;
+  text-align: center;
+}
+html .promotion-wrapper.result .contents .match-character h2 strong,
+body .promotion-wrapper.result .contents .match-character h2 strong {
+  margin-top: 10px;
+  display: block;
+  font: bold 18px "CookieRun";
+}
+html .promotion-wrapper.result .contents .match-character .character,
+body .promotion-wrapper.result .contents .match-character .character {
+  text-align: center;
+}
+html .promotion-wrapper.result .contents .share-sns,
+body .promotion-wrapper.result .contents .share-sns {
+  margin-bottom: 0;
+}
+html .promotion-wrapper.result .contents .share-sns h2,
+body .promotion-wrapper.result .contents .share-sns h2 {
+  margin-bottom: 20px;
+  font: 18px "CookieRun";
+  color: #1b1b1b;
+  text-align: center;
+}
+html .promotion-wrapper.result .contents .share-sns ul,
+body .promotion-wrapper.result .contents .share-sns ul {
+  display: flex;
+  justify-content: center;
+}
+html .promotion-wrapper.result .contents .share-sns ul li,
+body .promotion-wrapper.result .contents .share-sns ul li {
+  margin-right: 32px;
+}
+html .promotion-wrapper.result .contents .share-sns ul li:last-child,
+body .promotion-wrapper.result .contents .share-sns ul li:last-child {
+  margin-right: 0;
+}
+html .promotion-wrapper.result .contents .btn-retry,
+body .promotion-wrapper.result .contents .btn-retry {
+  padding-top: 24px;
+  text-align: center;
+}
+html .promotion-wrapper.result .contents .btn-retry .btn,
+body .promotion-wrapper.result .contents .btn-retry .btn {
+  position: relative;
+  display: inline-block;
+  padding-right: 15px;
+  color: #fff;
+  font: 18px "CookieRun";
+}
+html .promotion-wrapper.result .contents .btn-retry .btn::after,
+body .promotion-wrapper.result .contents .btn-retry .btn::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  border-bottom: 2px solid #fff;
+  border-right: 2px solid #fff;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+html .promotion-wrapper.result .about-app,
+body .promotion-wrapper.result .about-app {
+  padding: 0px 24px 0px;
+  text-align: -webkit-center;
+}
+html .promotion-wrapper.result .about-app .inner-about-app,
+body .promotion-wrapper.result .about-app .inner-about-app{
+  position: relative;
+  padding: 48px 0px 56px;
+  max-width: 420px;
+  background: url("../img/promotion/img_app 1@3x.png") center bottom no-repeat;;
+  background-size: cover;
+}
+html .promotion-wrapper.result .about-app h2,
+body .promotion-wrapper.result .about-app h2 {
+  margin-bottom: 16px;
+  color: #1b1b1b;
+  font: 400 20px/32px 'Noto Sans KR';
+  text-align: center;
+}
+html .promotion-wrapper.result .about-app h2 strong,
+body .promotion-wrapper.result .about-app h2 strong {
+  display: block;
+  font-weight: 600;
+}
+html .promotion-wrapper.result .about-app .tip-box,
+body .promotion-wrapper.result .about-app .tip-box {
+  max-width: 312px;
+  padding: 8px 0;
+  margin: 0 auto 244px;
+  border-radius: 24px;
+  background: #f1f1f1;
+  color: #2d2d2d;
+  font: 400 14px/24px 'Noto Sans KR';
+  letter-spacing: -0.28px;
+  text-align: center;
+}
+html .promotion-wrapper.result .about-app .tip-box strong,
+body .promotion-wrapper.result .about-app .tip-box strong {
+  color: #ff6e65;
+  font-weight: 400;
+}
+html .promotion-wrapper.result .about-app .coupon-image,
+body .promotion-wrapper.result .about-app .coupon-image {
+  margin-bottom: 20px;
+  text-align: center;
+}
+html .promotion-wrapper.result .about-app .btn-area,
+body .promotion-wrapper.result .about-app .btn-area {
+  width: 312px;
+  margin: 0 auto;
+}
+html .promotion-wrapper.result .about-app .btn-area .btn,
+body .promotion-wrapper.result .about-app .btn-area .btn {
+  height: 64px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  font: 400 16px/64px 'Noto Sans KR';
+}
+html .promotion-wrapper.result .about-app .btn-area .btn::before,
+body .promotion-wrapper.result .about-app .btn-area .btn::before {
+  content: '';
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+html .promotion-wrapper.result .about-app .btn-area .btn:last-child,
+body .promotion-wrapper.result .about-app .btn-area .btn:last-child {
+  margin-bottom: 0;
+}
+html .promotion-wrapper.result .about-app .btn-area .btn.btn-download,
+body .promotion-wrapper.result .about-app .btn-area .btn.btn-download {
+  background: #5136bc;
+  color: #fff;
+}
+html .promotion-wrapper.result .about-app .btn-area .btn.btn-download::before,
+body .promotion-wrapper.result .about-app .btn-area .btn.btn-download::before {
+  top: 21px;
+  width: 33px;
+  height: 21px;
+  margin-right: 5px;
+  background: url("../img/promotion/ic_download@2x.png") 0 0 no-repeat;
+  background-size: 33px auto;
+}
+html .promotion-wrapper.result .about-app .btn-area .btn.btn-coupon,
+body .promotion-wrapper.result .about-app .btn-area .btn.btn-coupon {
+  border: 1px solid #5136bc;
+  color: #5136bc;
+}
+html .promotion-wrapper.result .about-app .btn-area .btn.btn-coupon::before,
+body .promotion-wrapper.result .about-app .btn-area .btn.btn-coupon::before {
+  top: 14px;
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+  background: url("../img/promotion/ic_coupon@2x.png") 0 0 no-repeat;
+  background-size: 32px auto;
+}
+html .promotion-wrapper.result .notice,
+body .promotion-wrapper.result .notice {
+  padding: 72px 24px 48px;
+  background: #f3f3f3;
+}
+html .promotion-wrapper.result .notice dt,
+body .promotion-wrapper.result .notice dt {
+  margin-bottom: 12px;
+  font: 700 12px 'Noto Sans KR';
+  color: #595959;
+}
+html .promotion-wrapper.result .notice dd li,
+body .promotion-wrapper.result .notice dd li {
+  position: relative;
+  padding-left: 11px;
+  margin-bottom: 7px;
+  color: #595959;
+  font: 400 12px 'Noto Sans KR';
+}
+html .promotion-wrapper.result .notice dd li strong,
+body .promotion-wrapper.result .notice dd li strong {
+  font-weight: 500;
+}
+html .promotion-wrapper.result .notice dd li::before,
+body .promotion-wrapper.result .notice dd li::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 4px;
+  height: 1px;
+  background: #595959;
+}
