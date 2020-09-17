@@ -35,6 +35,13 @@
         <div class="questionclass" id="question{{question.questionId}}" {%if question.questionId != 1%}style="display:none;"{%endif%}>
 
             <div class="brd_cont_box">
+                {%if question.imgFile%}
+                <div class="question_cont_box1" style="background-image:url('/static/img/{{ question.imgFile }}');">
+                    <div class="question_cont_box2">
+                        {{question.content2}}
+                    </div>
+                </div>
+                {%endif%}
                 <div class="question_title"><label class="questionlable">{{ question.content|linebreaks }}</label></div>
             </div>
             <div class="question_page_box">

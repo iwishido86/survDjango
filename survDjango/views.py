@@ -23,47 +23,81 @@ def surv_view(request,survid):
         survId = request.POST.get('survId', '')
         questionNum = request.POST.get('questionNum', '')
         historyContent = ""
-        point = 0
-        for i in range(1,int(questionNum)+1):
-            #print(request.POST.get('radio'+i.__str__(), ''))
-            ansId = request.POST.get('radio'+i.__str__())
-
-            # 여기 튜닝 원쿼리로
-            ans = get_object_or_404(AnsM, survId=survid, questionId=i, ansId=ansId)
-
-            point = point + int(ans.point)
-
-            historyContent = historyContent + ansId + "-" + ans.point.__str__() + ":"
-
-        # 결과
-        resultId = ""
-
-        # 여기 튜닝 원쿼리로
-        result = get_object_or_404(ResultM, survId=survid, pointBottom__lte=point, pointTop__gte=point)
-        result.cnt = result.cnt + 1
-        result.save()
+        historyContent2 = ""
 
         surv = get_object_or_404(SurvM, survId=survId)
+        
+        if surv.survType == '01' :          # 점수제
+            point = 0
+            for i in range(1,int(questionNum)+1):
+                #print(request.POST.get('radio'+i.__str__(), ''))
+                ansId = request.POST.get('radio'+i.__str__())
+
+                # 여기 튜닝 원쿼리로
+                ans = get_object_or_404(AnsM, survId=survid, questionId=i, ansId=ansId)
+
+                point = point + int(ans.point)
+
+                historyContent = historyContent + ansId + "-" + ans.point.__str__() + ":"
+
+            # 결과
+            resultId = ""
+
+            historyContent2 = point.__str__()
+            # 여기 튜닝 원쿼리로
+            result = get_object_or_404(ResultM, survId=survid, pointBottom__lte=point, pointTop__gte=point)
+            result.cnt = result.cnt + 1
+            result.save()
+
+        if surv.survType == '02':  # 점수제
+            # TODO 동적으로 바꾸자 지금은 4개만됨
+            typeArr = [0,0,0,0]
+            for i in range(1, int(questionNum) + 1):
+                # print(request.POST.get('radio'+i.__str__(), ''))
+                ansId = request.POST.get('radio' + i.__str__())
+
+                # 여기 튜닝 원쿼리로
+                ans = get_object_or_404(AnsM, survId=survid, questionId=i, ansId=ansId)
+
+                #TODO for문 인덱스 모르겟다
+                index = 0
+                for j in ans.typeArr.split(','):
+                    
+                    typeArr[index] = typeArr[index] + int(j)
+                    index = index + 1
+
+                historyContent = historyContent + ansId + "-" + ans.typeArr.__str__() + ":"
+
+            # 결과
+            typeStr = ""
+            print(typeArr)
+            for typeInt in typeArr:
+                if typeInt >= 0:
+                    typeStr = typeStr + "1"
+                else:
+                    typeStr = typeStr + "0"
+
+            historyContent = historyContent + ":::" + typeStr
+            historyContent2 = typeStr
+            print(historyContent)
+            print(historyContent2)
+            # 여기 튜닝 원쿼리로
+            result = get_object_or_404(ResultM, survId=survid, matchingPattern=typeStr)
+            result.cnt = result.cnt + 1
+            result.save()
 
         surv.cnt = surv.cnt + 1
         surv.save()
 
         # 내역 저장
-        resultHstoryL  = ResultHstoryL.objects.create()
+        resultHstoryL = ResultHstoryL.objects.create()
 
         resultHstoryL.survId = survId
         resultHstoryL.resultId = result.resultId
-        resultHstoryL.content = historyContent + ":::" + point.__str__()
-        resultHstoryL.content2 = point.__str__()
+        resultHstoryL.content = historyContent
+        resultHstoryL.content2 = historyContent2
 
         resultHstoryL.save()
-
-        #sumresult= ResultHstoryL.objects.values('resultId').annotate(totalcnt=Count('resultId'))
-        #print(sumresult)
-
-        #sumresult= ResultHstoryL.objects.count()
-        #print(sumresult)
-
 
         return HttpResponseRedirect(
             '/result/' + survId+ '/' + result.resultId.__str__()
@@ -110,7 +144,7 @@ def result_view(request,survid,resultid):
     template_name = 'survDjango/result.html'
 
     surv = get_object_or_404(SurvM, survId=survid)
-    result = get_object_or_404(ResultM, resultId=resultid)
+    result = get_object_or_404(ResultM, survId=survid, resultId=resultid)
     form = SurvForm()
 
     rank = ResultM.objects.filter(pointTop__gt=result.pointTop).aggregate(totalcnt=Sum('cnt'))

@@ -1,2 +1,3 @@
 /myvenv/
 /survDjango/migrations/
+/survDjango/db.sqlite3

@@ -12,7 +12,7 @@ body{
     font-family     : 'NEXON Gothic Bold', 'Nanum Gothic', 'Malgun Gothic', '돋움', 'dotum', 'AppleGothic', Helvetica, Arial, Sans-Serif !important;
     height          : 97%;
     color           : #555;
-    word-break      : break-word
+    word-break      : keep-all
 
 
 }
@@ -56,6 +56,31 @@ p{
     background-color    : #FFF;
     border              : 2px solid #DDECFE;
     border-radius       : 0.5rem;
+}
+
+.question_cont_box1{
+    position            : relative;
+    text-align          : left;
+    min-height          : 6rem;
+    background-color    : #FFF;
+    margin              : 0.5rem 0.5rem 0rem 0.5rem;
+    border              : 2px solid #DDECFE;
+    border-radius       : 0.5rem;
+    padding             : 0rem 1rem 0rem 6rem;
+    vertical-align      : middle;
+
+    background-size     : 6rem 6rem;
+    background-position : -5% 100%;
+    background-repeat   : no-repeat;
+
+}
+
+
+
+.question_cont_box2{
+    font-weight   : bolder;
+    font-size     : 1.0rem;
+    margin        : 1.5rem 0rem;
 }
 
 .question_title{
