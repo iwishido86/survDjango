@@ -38,7 +38,7 @@
                 {%if question.imgFile%}
                 <div class="question_cont_box1" style="background-image:url('/static/img/{{ question.imgFile }}');">
                     <div class="question_cont_box2">
-                        {{question.content2}}
+                        {{question.content2|linebreaks}}
                     </div>
                 </div>
                 {%endif%}
@@ -75,10 +75,10 @@
             <img src="/static/img/loading.gif">
         </div>
 
-        <div class="start_img_box" style="background-image:url('/static/img/{{ surv.imgFile }}');">
+        <div class="start_img_box" >
         </div>
         <div class="start_cont_box2">
-            <div class="result_content">수달 제약에서 분석중입니다.</div>
+            <div class="result_content"><b>{{surv.content3}}에서 분석중입니다.</b></div>
         </div>
     </div>
 </form>

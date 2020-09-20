@@ -1,0 +1,44 @@
+{% extends 'survDjango/result.html' %}
+
+        {% block headblock %}
+            <link rel="image_src" href="https://kimsudal.com/static/img/{{ result.imgFile }}">
+            <meta itemprop="image" content="https://kimsudal.com/static/img/{{ result.imgFile }}">
+            <meta property="og:image" content="https://kimsudal.com/static/img/{{ result.imgFile }}">
+            <meta property="twitter:image" content="https://kimsudal.com/static/img/{{ result.imgFile }}">
+
+            <meta name="title" content="당신의 투자유형은 {{ result.title }}입니다.">
+            <meta property="og:title" content="당신의 투자유형은 {{ result.title }}입니다.">
+            <meta property="twitter:title" content="당신의 투자유형은 {{ result.title }}입니다.">
+
+            <meta name="description" content="{{surv.content}}">
+            <meta property="og:description" content="{{surv.content}}">
+            <meta property="twitter:description" content="{{surv.content}}">
+            <meta name="keywords" content="무의식심리테스트,진단키트,코로나테스트,주식투자,주식적성검사">
+
+            <meta property="og:type" content="website">
+            <meta property="og:url" content="https://kimsudal.com">
+            <meta property="twitter:url" content="https://kimsudal.com">
+        {% endblock headblock %}
+
+
+        {% block content2 %}
+
+        <div class="result_cont_box1">
+            <label class="resultlable2">당신의 투자유형은 [ <b>{{ result.title }}</b> ]입니다.</label>
+        </div>
+        <div class="result_img_box" style="background-image:url('/static/img/{{ result.imgFile }}');">
+            <div class="result_Id"></div>
+            <div class="result_title"><label class="resultlable"></label></div>
+        </div>
+
+        <div class="result_cont_box2">
+
+                <label class="resultlable2">예상수익률 : <b>{{ result.content3 }}</b></label><BR>
+                <label class="resultlable2">{{ result.title }} 비율 : <b>{{ rate|stringformat:".2f%%" }}</b></label><BR>
+                <label class="resultlable2">전체검사건 : <b> {{surv.cnt}} 건</b></label><BR><BR>
+
+                <!--div class="result_content">{{ result.content|linebreaks }}</div-->
+                <label class="result_content2">{{ result.content2|linebreaks }}</label>
+
+        </div>
+        {% endblock content2 %}

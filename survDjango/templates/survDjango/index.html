@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{# base.html #}
+{# index.html #}
 
 <html lang="ko">
 <head>
@@ -15,7 +15,6 @@
     <link rel="icon" href="/static/img/favicon.png" />
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
-    {% block headblock %}
     <link rel="image_src" href="https://kimsudal.com/static/img/{{ surv.imgFile }}">
 
     <meta itemprop="image" content="https://kimsudal.com/static/img/{{surv.imgFile}}">
@@ -34,13 +33,17 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kimsudal.com">
     <meta property="twitter:url" content="https://kimsudal.com">
-    {% endblock headblock %}
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
     <script type="text/javascript">
     {% block script %}
-
+    function submitFrom(btn,url){
+        btn.className = btn.className +  "  animate__animated animate__fadeIn selected";
+        setTimeout(function() {
+            document.location.href=url;
+        }, 1000);
+    }
 
     {% endblock script %}
     </script>
@@ -49,13 +52,33 @@
 </head>
 <body>
     <div class="body_cont_box">
-    {% include "./top_layout.html" %}
     {% load static %}
 
+        {% csrf_token %}
 
-    {% block body %}
-    BASE_BODY
-    {% endblock body %}
+    {{ form.as_p }}
+
+    {% for surv2 in survlist %}
+        <div class="index_cont_box1">
+            <div class="index_title_box1">
+                <B>{{ surv2.title|linebreaks }}</B>
+            </div>
+            <div class="index_cont_box2" id="index_cont_box" style="background-image:url('/static/img/{{ surv2.iconImgFile }}');">
+
+                <div>
+                    <div class="index_title_box2">
+                            {{surv2.content2}}
+                    </div>
+                    <div class="start_box2" id="start_box{{surv2.survId}}" onclick="submitFrom(start_box{{surv2.survId}},'{{ surv2.linkUrl }}');">
+                        시 작 하 기
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+
+
     </div>
     {% include "./bottom_layout.html" %}
 </body>

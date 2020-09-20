@@ -49,7 +49,7 @@ def surv_view(request,survid):
             result.cnt = result.cnt + 1
             result.save()
 
-        if surv.survType == '02':  # 점수제
+        elif surv.survType == '02':  # 점수제
             # TODO 동적으로 바꾸자 지금은 4개만됨
             typeArr = [0,0,0,0]
             for i in range(1, int(questionNum) + 1):
@@ -70,17 +70,17 @@ def surv_view(request,survid):
 
             # 결과
             typeStr = ""
-            print(typeArr)
+            #print(typeArr)
             for typeInt in typeArr:
-                if typeInt >= 0:
+                if typeInt > 0:
                     typeStr = typeStr + "1"
                 else:
                     typeStr = typeStr + "0"
 
-            historyContent = historyContent + ":::" + typeStr
+            historyContent = historyContent + ":::" + typeArr.__str__()
             historyContent2 = typeStr
-            print(historyContent)
-            print(historyContent2)
+            #print(historyContent)
+            #print(historyContent2)
             # 여기 튜닝 원쿼리로
             result = get_object_or_404(ResultM, survId=survid, matchingPattern=typeStr)
             result.cnt = result.cnt + 1
@@ -141,26 +141,35 @@ def surv_view(request,survid):
 
 
 def result_view(request,survid,resultid):
-    template_name = 'survDjango/result.html'
+    template_name = 'survDjango/result'+survid.__str__()+'.html'
 
     surv = get_object_or_404(SurvM, survId=survid)
     result = get_object_or_404(ResultM, survId=survid, resultId=resultid)
     form = SurvForm()
 
-    rank = ResultM.objects.filter(pointTop__gt=result.pointTop).aggregate(totalcnt=Sum('cnt'))
-    #print(rank)
     rate = 0.0
-    if rank['totalcnt'] :
-        rate = (rank['totalcnt'].__int__() / surv.cnt) * 100
-    else :
-        rate = 0.01
+    if surv.survType == '01':  # 점수제
+        rank = ResultM.objects.filter(pointTop__gt=result.pointTop).aggregate(totalcnt=Sum('cnt'))
+
+        rank = ResultM.objects.filter(resultId=resultid).aggregate(totalcnt=Sum('cnt'))
+
+        #print(rank)
+
+        if rank['totalcnt'] :
+            rate = (rank['totalcnt'].__int__() / surv.cnt) * 100
+        else :
+            rate = 0.01
+    elif surv.survType == '02':  # 타입
+        rate = (result.cnt / surv.cnt) * 100
+
+    survlist = SurvM.objects.filter(~Q(survId=survid)).order_by('orderNum')
 
     context = {
         'form': form,
         'surv': surv,
-        'rank': rank,
         'rate': rate,
         'result': result,
+        'survlist':survlist,
     }
 
     return render(request, template_name, context)
@@ -182,7 +191,16 @@ def start_view(request,survid):
 
 
 def index_view(request):
-    return start_view(request,1)
+    template_name = 'survDjango/index.html'
+
+    survlist = SurvM.objects.order_by('orderNum')
+
+
+    context = {
+        'survlist': survlist,
+    }
+
+    return render(request, template_name, context)
 
 #
 #

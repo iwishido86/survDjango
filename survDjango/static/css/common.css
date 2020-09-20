@@ -8,7 +8,7 @@ body{
     min-width       : 320px;
     max-width       : 460px;
     margin          : 0;
-    padding         : 1em;
+    padding         : 0em 1em 1em 1em ;
     font-family     : 'NEXON Gothic Bold', 'Nanum Gothic', 'Malgun Gothic', '돋움', 'dotum', 'AppleGothic', Helvetica, Arial, Sans-Serif !important;
     height          : 97%;
     color           : #555;
@@ -69,8 +69,8 @@ p{
     padding             : 0rem 1rem 0rem 6rem;
     vertical-align      : middle;
 
-    background-size     : 6rem 6rem;
-    background-position : -5% 100%;
+    background-size     : contain;
+    background-position : 0% 100%;
     background-repeat   : no-repeat;
 
 }
@@ -79,7 +79,7 @@ p{
 
 .question_cont_box2{
     font-weight   : bolder;
-    font-size     : 1.0rem;
+    font-size     : 1.2rem;
     margin        : 1.5rem 0rem;
 }
 
@@ -194,7 +194,18 @@ p{
     border              : 2px solid #555;
     border-radius       : 0.5rem;
     line-height         : 2.0rem;
+    margin              : 0em 0em 1em 0em;
 }
+
+.result_cont_box4 {
+    text-align          : center;
+    background-color    : #DDECFE;
+    border              : 2px solid #555;
+    border-radius       : 0.5rem;
+    line-height         : 2.0rem;
+    margin              : 2rem 0rem 1rem 0rem;
+}
+
 
 .result_link_box {
     margin-top          : 1em;
@@ -207,7 +218,9 @@ p{
     font-size       : 1.4em;
 }
 
-
+.resultlable2{
+    font-size       : 1.0em;
+}
 .resultlable2{
     font-size       : 1.0em;
     line-height     : 2.4rem;
@@ -248,7 +261,7 @@ p{
     background-color    : #FCE7DA;
     border              : 2px solid #555;
     border-radius       : 0.5rem;
-    line-height         : 1.3rem;
+    line-height         : 2rem;
 }
 
 .result_img_box {
@@ -287,9 +300,8 @@ p{
 
 .top_cont_box {
     background-image:url('/static/img/corona_title.jpg');
-    min-height          : 80px;
-    margin-bottom       : 1em;
-    background-size     : 70%;
+    min-height          : 100px;
+    background-size     : contain;
     background-position: 50% 100%;
     background-repeat   : no-repeat;
 }
@@ -304,5 +316,70 @@ p{
     background-color    : #aaa;
     float               : right;
     vertical-align      : top;
+}
+
+
+.index_cont_box1{
+    position            : relative;
+    text-align          : center;
+    background-color    : #FFF;
+    margin              : 1rem 0rem 1rem 0rem;
+    border              : 2px solid #DDECFE;
+    border-radius       : 0.5rem;
+    padding             : 0rem 0rem 0rem 0rem;
+    vertical-align      : middle;
+
+}
+.index_cont_box2{
+    position            : relative;
+    text-align          : left;
+    min-height          : 10rem;
+    background-color    : #FFF;
+    padding             : 0rem 1rem 0rem 10rem;
+    vertical-align      : middle;
+
+    background-size     : 10rem 10rem;
+    background-position : -5% 100%;
+    background-repeat   : no-repeat;
+
+}
+
+.index_title_box1{
+    position            : relative;
+    padding             : 0rem 1rem 0rem 1rem;
+    margin              : 1rem 0rem 1rem 0rem;
+    vertical-align      : middle;
+    font-weight         : bolder;
+    font-size           : 1.4rem;
+}
+
+.index_title_box2{
+    position            : relative;
+    vertical-align      : middle;
+    font-size           : 1.0rem;
+    line-height         : 1.3rem;
+}
+
+.start_box2 {
+    font-weight         : bolder;
+    font-size           : 1.4em;
+    margin              : 1em 1em;
+    text-align          : center;
+    padding             : 1rem 0.5rem;
+    background-color    : #DDECFE;
+    border              : 2px solid #000;
+    border-radius       : 0.5rem;
+}
+
+.start_box2.selected {
+    background-color: #FCE7DA;
+    transform-origin: center;
+    transition: transform 0.3s;
+
+}
+
+.start_box2 .selected::before {
+  transform: scaleX(1);
+  -webkit-transform: scaleX(1);
 }
 

@@ -1,0 +1,19 @@
+{% extends 'survDjango/result.html' %}
+
+        {% block content2 %}
+        <div class="result_cont_box1">
+            <label class="resultlable2">당신의 투자유형은 [ <b>{{ result.title }}</b> ]입니다.</label>
+        </div>
+        <div class="result_img_box" style="background-image:url('/static/img/{{ result.imgFile }}');">
+            <div class="result_Id"></div>
+            <div class="result_title"><label class="resultlable"></label></div>
+        </div>
+
+        <div class="result_cont_box2">
+                <label class="resultlable2">걸릴 확률 : <b>{{ result.content3 }}</b></label><BR>
+                <label class="resultlable2">방역 순위 : <b>상위 {{ rate|stringformat:".2f%%" }} ( 전체 : {{surv.cnt}} 명 )</b></label><BR><BR>
+
+                <!--div class="result_content">{{ result.content|linebreaks }}</div-->
+                <label class="result_content2">{{ result.content2|linebreaks }}</label>
+        </div>
+        {% endblock content2 %}

@@ -14,7 +14,7 @@
     <meta name="description" content="{{surv.content}}">
     <meta property="og:description" content="{{surv.content}}">
     <meta property="twitter:description" content="{{surv.content}}">
-    <meta name="keywords" content="무의식심리테스트,코로나,진단키트,코로나테스트">
+    <meta name="keywords" content="무의식심리테스트,진단키트,코로나테스트,주식투자,주식적성검사">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kimsudal.com">
@@ -29,22 +29,26 @@
     {% csrf_token %}
 
     {{ form.as_p }}
+    {% block content2 %}
 
-    <div class="result_cont_box1">
-        <label class="resultlable">당신은 [ <b>{{ result.title }}</b> ]입니다.</label>
-    </div>
-    <div class="result_img_box" style="background-image:url('/static/img/{{ result.imgFile }}');">
-        <div class="result_Id"></div>
-        <div class="result_title"><label class="resultlable"></label></div>
-    </div>
+        <div class="result_cont_box1">
+            <label class="resultlable">당신은 [ <b>{{ result.title }}</b> ]입니다.</label>
+        </div>
+        <div class="result_img_box" style="background-image:url('/static/img/{{ result.imgFile }}');">
+            <div class="result_Id"></div>
+            <div class="result_title"><label class="resultlable"></label></div>
+        </div>
 
-    <div class="result_cont_box2">
-        <label class="resultlable2">걸릴 확률 : <b>{{ result.content3 }}</b></label><BR>
-        <label class="resultlable2">방역 순위 : <b>상위 {{ rate|stringformat:".2f%%" }} ( 전체 : {{surv.cnt}} 명 )</b></label><BR><BR>
+        <div class="result_cont_box2">
 
-        <!--div class="result_content">{{ result.content|linebreaks }}</div-->
-        <label class="result_content2">{{ result.content2|linebreaks }}</label>
-    </div>
+            <label class="resultlable2">걸릴 확률 : <b>{{ result.content3 }}</b></label><BR>
+            <label class="resultlable2">방역 순위 : <b>상위 {{ rate|stringformat:".2f%%" }} ( 전체 : {{surv.cnt}} 명 )</b></label><BR><BR>
+
+            <!--div class="result_content">{{ result.content|linebreaks }}</div-->
+            <label class="result_content2">{{ result.content2|linebreaks }}</label>
+
+        </div>
+    {% endblock content2 %}
 </form>
 <br>
 <!--script src="https://ads-partners.coupang.com/g.js"></script>
@@ -56,9 +60,31 @@
         <a href="javascript:copyShareLink()"><img id="link_copy_btn" src="/static/img/share_api.png" width="50" /></a>
     </div>
 
-    <div class="start_box" id="start_box" onclick="submitFrom();">
-        다 시 검 사
+    <div class="start_box" id="start_box" onclick="submitFrom(start_box,'{{ surv.linkUrl }}');">
+        검 사 시 작
     </div>
+    <br><br>
+
+    <div class="result_cont_box4">수달 연구소의 다른 테스트</div>
+
+    {% for surv in survlist %}
+        <div class="index_cont_box1">
+            <div class="index_title_box1">
+                <B>{{ surv.title|linebreaks }}</B>
+            </div>
+            <div class="index_cont_box2" id="index_cont_box" style="background-image:url('/static/img/{{ surv.iconImgFile }}');">
+
+                <div>
+                    <div class="index_title_box2">
+                            {{surv.content2}}
+                    </div>
+                    <div class="start_box2" id="start_box{{surv.survId}}" onclick="submitFrom(start_box{{surv.survId}},'{{ surv.linkUrl }}');">
+                        시작하기
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
 {% endblock body %}
 
@@ -81,7 +107,7 @@
             },
             buttons: [
                 {
-                    title: '코로나 온라인 진단',
+                    title: '{{ surv.title }}',
                     link: {
                         mobileWebUrl: document.location.href,
                         webUrl: document.location.href,
@@ -104,10 +130,10 @@
         });
     }
 
-    function submitFrom(){
-        start_box.className = start_box.className +  "  animate__animated animate__fadeIn selected";
+    function submitFrom(btn,url){
+        btn.className = btn.className +  "  animate__animated animate__fadeIn selected";
         setTimeout(function() {
-            document.location.href='{% url 'surv_view' survid=surv.survId %}';
+            document.location.href=url;
         }, 1000);
     }
 {% endblock script2 %}
