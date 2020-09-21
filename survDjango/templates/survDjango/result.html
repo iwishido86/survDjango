@@ -51,10 +51,7 @@
     {% endblock content2 %}
 </form>
 <br>
-<!--script src="https://ads-partners.coupang.com/g.js"></script>
-<script>
-	new PartnersCoupang.G({ id:{{surv.addScript}} });
-</script-->
+
     <div class="result_cont_box3">
         <a href="javascript:sendLink()"><img src="/static/img/share_kakao.png" width="50"/></a>
         <a href="javascript:copyShareLink()"><img id="link_copy_btn" src="/static/img/share_api.png" width="50" /></a>
@@ -63,6 +60,11 @@
     <div class="start_box" id="start_box" onclick="submitFrom(start_box,'{{ surv.linkUrl }}');">
         검 사 시 작
     </div>
+    <br><br>
+<script src="https://ads-partners.coupang.com/g.js"></script>
+<script>
+	new PartnersCoupang.G({ id:{{surv.addScript}} });
+</script>
     <br><br>
 
     <div class="result_cont_box4">수달 연구소의 다른 테스트</div>
