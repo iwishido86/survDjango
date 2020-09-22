@@ -89,15 +89,15 @@ def surv_view(request,survid):
         surv.cnt = surv.cnt + 1
         surv.save()
 
-        # 내역 저장
-        resultHstoryL = ResultHstoryL.objects.create()
-
-        resultHstoryL.survId = survId
-        resultHstoryL.resultId = result.resultId
-        resultHstoryL.content = historyContent
-        resultHstoryL.content2 = historyContent2
-
-        resultHstoryL.save()
+        # 내역 저장 - 속도,용량 맞추려고 당분간 아웃
+        # resultHstoryL = ResultHstoryL.objects.create()
+        # 
+        # resultHstoryL.survId = survId
+        # resultHstoryL.resultId = result.resultId
+        # resultHstoryL.content = historyContent
+        # resultHstoryL.content2 = historyContent2
+        # 
+        # resultHstoryL.save()
 
         return HttpResponseRedirect(
             '/result/' + survId+ '/' + result.resultId.__str__()
@@ -114,15 +114,18 @@ def surv_view(request,survid):
         surv = surv_model.__dict__
         surv['question_num'] = questionlist.count()
         question_arr = []
+
+        anslist = AnsM.objects.filter(survId=survid,).order_by('questionId', 'orderNum')
+
         for question in questionlist:
             question_details = {}
 
-            anslist = AnsM.objects.filter(survId=survid, questionId=question.questionId).order_by('questionId', 'orderNum')
-
             question_details = question.__dict__
 
+            anslist2 = anslist.filter(survId=survid, questionId=question.questionId)
+
             ans_arr = []
-            for ans in anslist:
+            for ans in anslist2:
                 ans_arr.append(ans.__dict__)
 
             question_details['ans_arr'] = ans_arr
