@@ -124,6 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+DEBUG=False
 
 
 # ... 처음이시면 위치에 신경 쓸 필요 없고
