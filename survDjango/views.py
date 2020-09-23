@@ -152,10 +152,9 @@ def result_view(request,survid,resultid):
 
     rate = 0.0
     if surv.survType == '01':  # 점수제
-        rank = ResultM.objects.filter(pointTop__gt=result.pointTop).aggregate(totalcnt=Sum('cnt'))
+        rank = ResultM.objects.filter(survId=survid,pointTop__gt=result.pointTop).aggregate(totalcnt=Sum('cnt'))
 
-        rank = ResultM.objects.filter(resultId=resultid).aggregate(totalcnt=Sum('cnt'))
-
+        #rank = ResultM.objects.filter(survId=survid,resultId=resultid).aggregate(totalcnt=Sum('cnt'))
         #print(rank)
 
         if rank['totalcnt'] :
