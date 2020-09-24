@@ -335,11 +335,11 @@ p{
     text-align          : left;
     min-height          : 10rem;
     background-color    : #FFF;
-    padding             : 0rem 1rem 0rem 10rem;
+    padding             : 0rem 0.5rem 0rem 10rem;
     vertical-align      : middle;
 
     background-size     : 10rem 10rem;
-    background-position : -5% 100%;
+    background-position : 0% 100%;
     background-repeat   : no-repeat;
 
 }
@@ -358,12 +358,13 @@ p{
     vertical-align      : middle;
     font-size           : 1.0rem;
     line-height         : 1.3rem;
+    text-align          : center;
 }
 
 .start_box2 {
     font-weight         : bolder;
     font-size           : 1.4em;
-    margin              : 1em 1em;
+    margin              : 0.5em 0.5em;
     text-align          : center;
     padding             : 1rem 0.5rem;
     background-color    : #DDECFE;

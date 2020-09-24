@@ -60,15 +60,35 @@
     <div class="start_box" id="start_box" onclick="submitFrom(start_box,'{{ surv.linkUrl }}');">
         검 사 시 작
     </div>
-    <br><br>
-<script src="https://ads-partners.coupang.com/g.js"></script>
-<script>
-	new PartnersCoupang.G({ id:{{surv.addScript}} });
-</script>
-    <br><br>
+    <br>
+<div id="add_pc_box">
+    <script src="https://ads-partners.coupang.com/g.js"></script>
+    <script>
+        new PartnersCoupang.G({ id:{{surv.addScript}} });
+    </script>
+</div>
+<div id="add_mobile_box">
+    <div class="result_cont_box4">수달 연구소 혜 택 존</div>
+    <div class="index_cont_box1">
+        <div class="index_title_box1">
+            <B>케이뱅크 신규 계좌개설</B>
+        </div>
+        <div class="index_cont_box2" id="index_cont_box2" style="background-image:url('/static/img/kbank_add.jpg');">
 
+            <div>
+                <div class="index_title_box2">
+                    행운상자 100개 제공
+                    100만원 당첨 기회
+                    평균 7천원 수령
+                </div>
+                <div class="start_box2" id="add_start_box" onclick="kbankAddSubmit(add_start_box,'https://m.kbanknow.com/banking/k/JGpJUfx');">
+                    가입하기
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="result_cont_box4">수달 연구소의 다른 테스트</div>
-
     {% for surv in survlist %}
         <div class="index_cont_box1">
             <div class="index_title_box1">
@@ -137,6 +157,25 @@
         setTimeout(function() {
             document.location.href=url;
         }, 1000);
+    }
+
+
+    function kbankAddSubmit(btn,url){
+        if(confirm('* 케이뱅크 신규가입 계좌개설 이벤트 *\n믿을 만한 1금융권으로 상당히 후한 보상!!\n1. 앱설치, 신분증 필요\n2. 약 10분소요\n3. 행운상자 100개받아서 까면 꿀잼\n좀 귀찮긴 한데 소일거리로 하쉴??')){
+            submitFrom(btn,url);
+        }
+    }
+
+    // Kbank 광고 모바일 체크
+    var mobileArr = new Array("iPhone", "iPod", "BlackBerry", "Android", "Windows CE", "LG", "MOT", "SAMSUNG", "SonyEricsson");
+
+    if(mobileArr.indexOf(navigator.platform) < 0){
+        // PC는 쿠팡만 보임
+        add_mobile_box.style.display = 'none';
+        add_pc_box.style.display = '';
+    }else{
+        add_mobile_box.style.display = '';
+        add_pc_box.style.display = 'none';
     }
 {% endblock script2 %}
 
