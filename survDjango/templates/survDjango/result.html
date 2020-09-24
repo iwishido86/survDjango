@@ -61,12 +61,13 @@
         검 사 시 작
     </div>
     <br>
-<div id="add_pc_box">
+<!--div id="add_pc_box">
     <script src="https://ads-partners.coupang.com/g.js"></script>
     <script>
         new PartnersCoupang.G({ id:{{surv.addScript}} });
     </script>
-</div>
+</div-->
+
 <div id="add_mobile_box">
     <div class="result_cont_box4">수달 연구소 혜 택 존</div>
     <div class="index_cont_box1">
@@ -88,6 +89,7 @@
         </div>
     </div>
 </div>
+
     <div class="result_cont_box4">수달 연구소의 다른 테스트</div>
     {% for surv in survlist %}
         <div class="index_cont_box1">
@@ -166,16 +168,5 @@
         }
     }
 
-    // Kbank 광고 모바일 체크
-    var mobileArr = new Array("iPhone", "iPod", "BlackBerry", "Android", "Windows CE", "LG", "MOT", "SAMSUNG", "SonyEricsson");
-
-    if(mobileArr.indexOf(navigator.platform) < 0){
-        // PC는 쿠팡만 보임
-        add_mobile_box.style.display = 'none';
-        add_pc_box.style.display = '';
-    }else{
-        add_mobile_box.style.display = '';
-        add_pc_box.style.display = 'none';
-    }
 {% endblock script2 %}
 
