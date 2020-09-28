@@ -2,7 +2,7 @@
 {% extends 'survDjango/base.html' %}
 
 {% block script %}
-    function submitFrom(){
+    function submitBtn(){
         start_box.className = start_box.className +  "  animate__animated animate__fadeIn selected";
         setTimeout(function() {
             document.location.href='{% url 'surv_view' survid=surv.survId %}';
@@ -22,7 +22,7 @@
     </div-->
     <div class="start_img_box" style="background-image:url('/static/img/{{ surv.imgFile }}');">
     </div>
-    <div class="start_box" id="start_box" onclick="submitFrom();">
+    <div class="start_box" id="start_box" onclick="submitBtn();">
         시작하기
     </div>
     <div class="start_cont_box2">

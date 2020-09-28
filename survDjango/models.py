@@ -80,3 +80,13 @@ class ResultHstoryL(models.Model):
     createDate = models.DateTimeField(auto_now=True)
 
 
+class ResultCommentL(models.Model):
+    survId = models.IntegerField(default=0, help_text="설문번호")
+    resultId = models.IntegerField(default=0, help_text="결과번호")
+    content = models.CharField(max_length=300)
+    content2 = models.CharField(default='N',max_length=300)
+    passwd = models.CharField(default='N', max_length=300)
+    likeCnt = models.IntegerField(default=0, help_text="좋아요순위")
+    createDate = models.DateTimeField(auto_now=True)
+
+

@@ -177,7 +177,7 @@ p{
 }
 
 .result_cont_box3 {
-    margin-top          : 1em;
+    margin-top          : 0.5em;
     padding             : 0.7rem 0.7rem;
     text-align          : center;
     background-color    : #FAECC5;
@@ -203,7 +203,7 @@ p{
     border              : 2px solid #555;
     border-radius       : 0.5rem;
     line-height         : 2.0rem;
-    margin              : 2rem 0rem 1rem 0rem;
+    margin              : 1rem 0rem 0.5rem 0rem;
 }
 
 
@@ -212,6 +212,62 @@ p{
     text-align          : center;
     background-color    : #FFF;
 }
+
+.result_comment_box {
+    text-align          : center;
+    background-color    : #FFF;
+    border              : 2px solid #DDECFE;
+    vertical-align      : middle;
+    border-radius       : 0.5rem;
+    padding             : 0.3rem 0.1rem 0.3rem 0.3rem;
+
+}
+.comment_box {
+    text-align          : center;
+    display             : inline-block;
+    vertical-align      : middle;
+    background-color    : #DDECFE;
+    border              : 2px solid #555;
+    border-radius       : 0.5rem;
+    padding             : 0.5rem 0.5rem;
+
+}
+
+.comment_table {
+    margin-top          : 0.3rem;
+    border-top          : 1px solid #aaa;
+    text-align          : left;
+    width               : 100%;
+}
+
+.comment_table_td1 {
+    border-bottom       : 1px solid #aaa;
+    width               : 90%;
+    font-size           : 0.7em;
+    color               : #666;
+    line-height         : 1.3rem;
+    padding             : 0.3rem 0.0rem 0.1rem 0rem;
+}
+
+.comment_table_td2 {
+    font-size           : 0.5em;
+    color               : #999;
+    text-align          : center;
+    padding             : 0.0rem 0.0rem 0.0rem 0.0rem;
+}
+
+
+.link_img_box {
+    vertical-align      : middle;
+}
+
+.result_comment_input {
+    vertical-align      : middle;
+    border              : 2px solid #DDECFE;
+    width               : 75%;
+}
+
+
 
 
 .resultlable{
@@ -323,7 +379,7 @@ p{
     position            : relative;
     text-align          : center;
     background-color    : #FFF;
-    margin              : 1rem 0rem 1rem 0rem;
+    margin              : 0rem 0rem 1rem 0rem;
     border              : 2px solid #DDECFE;
     border-radius       : 0.5rem;
     padding             : 0rem 0rem 0rem 0rem;

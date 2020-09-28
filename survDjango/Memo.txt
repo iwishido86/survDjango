@@ -789,3 +789,30 @@ def knight_expedition_view(request, username):
 	Kakao.init(kakaoSDKKey);
 	// SDK 초기화 여부를 판단합니다.
 	//console.log('Kakao isInit::'+Kakao.isInitialized());
+
+	$(".rec_like").click(function () { // .like 버튼을 클릭 감지
+        var pk = $(this).attr('name')
+        $.ajax({ // ajax로 서버와 통신
+            type: "POST",
+            url: "{% url 'recipe:recipe_like' %}",
+            data: { 'pk': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+            dataType: "json",
+            success: function (response) {
+                alert(response.message);
+                $("#rec_count-" + pk).html("좋아요&nbsp;" + response.rec_likes_count + "개");
+                if (response.message == "좋아요")
+
+                    {
+                        $('#rec_heart' + pk).attr("class", "fas fa-heart")
+                    } else if (response.message == "좋아요 취소")
+
+                    {
+                        $('#rec_heart' + pk).attr("class", "far fa-heart")
+                    }
+            },
+            error: function (request, status, error) { // 실패
+                alert("로그인이 필요합니다.")
+                window.location.replace("/accounts/login/") // 로그인 페이지로 넘어가기
+            },
+        });
+    })

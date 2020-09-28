@@ -3,7 +3,7 @@ from django.contrib.admin.views.main import ChangeList
 from django.db.models import Count
 
 from .models import SurvM, QuestionM, AnsM, ResultM, \
-    ResultHstoryL  # 추가
+    ResultHstoryL, ResultCommentL  # 추가
 
 # Register your models here.
 
@@ -37,9 +37,15 @@ class ResultHstoryLAdmin(admin.ModelAdmin):
     search_fields = ('survId',)
 
 
+class ResultCommentLAdmin(admin.ModelAdmin):
+    list_display = ('survId', 'resultId', 'content', 'content2', 'likeCnt', 'createDate',)
+    list_filter = ('survId', 'resultId',)
+    search_fields = ('survId',)
+
 
 admin.site.register(SurvM,SurvMAdmin)  # 추가
 admin.site.register(QuestionM,QuestionMAdmin)  # 추가
 admin.site.register(AnsM,AnsMAdmin)  # 추가
 admin.site.register(ResultHstoryL,ResultHstoryLAdmin)  # 추가
 admin.site.register(ResultM, ResultMAdmin)
+admin.site.register(ResultCommentL, ResultCommentLAdmin)

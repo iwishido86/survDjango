@@ -49,18 +49,32 @@
 
         </div>
     {% endblock content2 %}
+    <div class="result_cont_box4">
+        검 사 소 감
+    </div>
+    <div class="result_comment_box">
+        {%if request.session.completeYn == 'Y'%}
+            <textarea name="comment" class="result_comment_input" id="comment" size="100" rows = "2" cols = "54" maxlength="100" ></textarea>
+            <span class="comment_box" id="comment_box" onclick="submitFrom(comment_box);">등 록</span>
+        {%endif%}
+        <table class="comment_table">
+            {% for comment in commentlist %}
+                <tr  class="comment_table_tr">
+                    <td class="comment_table_td1">{{ comment.content|linebreaks }}</td>
+                    <td class="comment_table_td2">{{ comment.createDate|date:"m d"  }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 </form>
-<br>
-
     <div class="result_cont_box3">
-        <a href="javascript:sendLink()"><img src="/static/img/share_kakao.png" width="50"/></a>
-        <a href="javascript:copyShareLink()"><img id="link_copy_btn" src="/static/img/share_api.png" width="50" /></a>
+        <a href="javascript:sendLink()"><img src="/static/img/share_kakao.png" width="50" class="link_img_box"/></a>
+        <a href="javascript:copyShareLink()"><img id="link_copy_btn" src="/static/img/share_api.png" width="50" class="link_img_box"/></a>
     </div>
 
-    <div class="start_box" id="start_box" onclick="submitFrom(start_box,'{{ surv.linkUrl }}');">
+    <div class="start_box" id="start_box" onclick="submitBtn(start_box,'{{ surv.linkUrl }}');">
         검 사 시 작
     </div>
-    <br>
 <!--div id="add_pc_box">
     <script src="https://ads-partners.coupang.com/g.js"></script>
     <script>
@@ -78,11 +92,11 @@
 
             <div>
                 <div class="index_title_box2">
-                    행운상자 100개 제공
-                    100만원 당첨 기회
+                    행운상자 100개 제공<br>
+                    100만원 당첨 기회<br>
                     평균 7천원 GET!
                 </div>
-                <div class="start_box2" id="add_start_box" onclick="kbankAddSubmit(add_start_box,'https://m.kbanknow.com/banking/k/JGpJUfx');">
+                <div class="start_box2" id="add_start_box" onclick="submitBtn(add_start_box,'https://m.kbanknow.com/banking/k/JGpJUfx');">
                     가입하기
                 </div>
             </div>
@@ -102,7 +116,7 @@
                     <div class="index_title_box2">
                             {{surv.content2}}
                     </div>
-                    <div class="start_box2" id="start_box{{surv.survId}}" onclick="submitFrom(start_box{{surv.survId}},'{{ surv.linkUrl }}');">
+                    <div class="start_box2" id="start_box{{surv.survId}}" onclick="submitBtn(start_box{{surv.survId}},'{{ surv.linkUrl }}');">
                         시작하기
                     </div>
                 </div>
@@ -154,7 +168,7 @@
         });
     }
 
-    function submitFrom(btn,url){
+    function submitBtn(btn,url){
         btn.className = btn.className +  "  animate__animated animate__fadeIn selected";
         setTimeout(function() {
             document.location.href=url;
@@ -164,9 +178,12 @@
 
     function kbankAddSubmit(btn,url){
         if(confirm('* 케이뱅크 신규가입 계좌개설 이벤트 *\n믿을 만한 1금융권으로 상당히 후한 보상!!\n1. 앱설치, 신분증 필요\n2. 약 10분소요\n3. 행운상자 100개받아서 까면 꿀잼\n좀 귀찮긴 한데 소일거리로 하쉴??')){
-            submitFrom(btn,url);
+            submitBtn(btn,url);
         }
     }
 
+    function submitFrom(submitBtn){
+        document.forms[0].submit();
+    }
 {% endblock script2 %}
 

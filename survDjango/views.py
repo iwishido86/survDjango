@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from .forms import UserLoginForm, SurvForm
-from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM
+from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM, ResultCommentL
 from .serializers import RegistrationUserSerializer
 
 
@@ -89,19 +89,21 @@ def surv_view(request,survid):
         surv.cnt = surv.cnt + 1
         surv.save()
 
+        request.session['completeYn'] = 'Y'
         # 내역 저장 - 속도,용량 맞추려고 당분간 아웃
-        # resultHstoryL = ResultHstoryL.objects.create()
-        # 
-        # resultHstoryL.survId = survId
-        # resultHstoryL.resultId = result.resultId
-        # resultHstoryL.content = historyContent
-        # resultHstoryL.content2 = historyContent2
-        # 
-        # resultHstoryL.save()
+        resultHstoryL = ResultHstoryL.objects.create()
+
+        resultHstoryL.survId = survId
+        resultHstoryL.resultId = result.resultId
+        resultHstoryL.content = historyContent
+        resultHstoryL.content2 = historyContent2
+
+        resultHstoryL.save()
+
 
         return HttpResponseRedirect(
-            '/result/' + survId+ '/' + result.resultId.__str__()
-        )
+                '/result/' + survId+ '/' + result.resultId.__str__()
+            )
 
     else:
         surv_model = get_object_or_404(SurvM, survId=survid)
@@ -144,6 +146,17 @@ def surv_view(request,survid):
 
 
 def result_view(request,survid,resultid):
+    if request.method == 'POST':
+        resultComment = ResultCommentL.objects.create()
+
+        resultComment.survId = survid
+        resultComment.resultId = resultid
+        resultComment.content = request.POST.get('comment', '')
+        
+        resultComment.save()
+        #한번만 입력
+        request.session['completeYn'] = 'N'
+
     template_name = 'survDjango/result'+survid.__str__()+'.html'
 
     surv = get_object_or_404(SurvM, survId=survid)
@@ -164,6 +177,8 @@ def result_view(request,survid,resultid):
     elif surv.survType == '02':  # 타입
         rate = (result.cnt / surv.cnt) * 100
 
+    commentlist = ResultCommentL.objects.filter(survId=survid, resultId=resultid).order_by('-createDate')[0:10]
+
     survlist = SurvM.objects.filter(~Q(survId=survid)).order_by('orderNum')
 
     context = {
@@ -172,6 +187,8 @@ def result_view(request,survid,resultid):
         'rate': rate,
         'result': result,
         'survlist':survlist,
+        'commentlist': commentlist,
+
     }
 
     return render(request, template_name, context)
@@ -197,6 +214,8 @@ def index_view(request):
 
     survlist = SurvM.objects.order_by('orderNum')
 
+    resultHstoryL = ResultHstoryL.objects.all()
+    resultHstoryL.delete()
 
     context = {
         'survlist': survlist,
