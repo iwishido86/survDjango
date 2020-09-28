@@ -214,8 +214,8 @@ def index_view(request):
 
     survlist = SurvM.objects.order_by('orderNum')
 
-    resultHstoryL = ResultHstoryL.objects.all()
-    resultHstoryL.delete()
+    # resultHstoryL = ResultHstoryL.objects.all()
+    # resultHstoryL.delete()
 
     context = {
         'survlist': survlist,
