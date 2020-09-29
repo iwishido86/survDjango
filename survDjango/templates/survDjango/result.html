@@ -183,6 +183,15 @@
     }
 
     function submitFrom(submitBtn){
+
+        if(comment.value.length < 5) {
+
+            alert("좀 길게 써줘잉");
+
+            comment.focus();
+            return;
+        }
+
         document.forms[0].submit();
     }
 {% endblock script2 %}

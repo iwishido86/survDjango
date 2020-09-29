@@ -147,15 +147,16 @@ def surv_view(request,survid):
 
 def result_view(request,survid,resultid):
     if request.method == 'POST':
-        resultComment = ResultCommentL.objects.create()
+        if request.session['completeYn'] == 'Y':
+            resultComment = ResultCommentL.objects.create()
 
-        resultComment.survId = survid
-        resultComment.resultId = resultid
-        resultComment.content = request.POST.get('comment', '')
-        
-        resultComment.save()
-        #한번만 입력
-        request.session['completeYn'] = 'N'
+            resultComment.survId = survid
+            resultComment.resultId = resultid
+            resultComment.content = request.POST.get('comment', '')
+
+            resultComment.save()
+            #한번만 입력
+            request.session['completeYn'] = 'N'
 
     template_name = 'survDjango/result'+survid.__str__()+'.html'
 
