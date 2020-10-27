@@ -1,0 +1,29 @@
+{# knight_login.html #}
+{% extends 'survDjango/base.html' %}
+
+{% block script %}
+{% endblock script %}
+
+
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <!--div class="basic_cont_box">
+    <label class="resultlable">{{ surv.title }}</label>
+    </div-->
+    <div class="start_box" id="start_box" onclick="submitBtn();">
+        시작하기
+    </div>
+    <div class="start_cont_box2">
+        <div class="result_content">1111</div>
+    </div>
+    {% autoescape off %}
+    {{ plot_div }}
+    {% endautoescape %}
+
+</form>
+{% endblock body %}
+

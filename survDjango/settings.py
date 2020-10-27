@@ -124,8 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-DEBUG=False
-
+DEBUG=True
 
 # ... 처음이시면 위치에 신경 쓸 필요 없고
 # ... settings.py에 있기만 해도 됩니다.

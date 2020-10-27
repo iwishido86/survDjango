@@ -1,0 +1,39 @@
+{# knight_login.html #}
+{% extends 'survDjango/sym_base.html' %}
+
+{% block script %}
+{% endblock script %}
+
+
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    분석기준일 : {{analdate}}    종목 : {{symbol.Symbol}}  예상수익률 : {{recoSymbol.Content1|stringformat:".2f%%"}}     패턴코드 : {{recoSymbol.Content3}}
+
+    {{ form.as_p }}
+    <br>
+    <img src="https://ssl.pstatic.net/imgfinance/chart/item/candle/day/{{symbol.Symbol}}.png?sidcode=1603459099064">
+    <br>
+    {% autoescape off %}
+    {{ plot_div }}
+
+
+    {% for reco_candle in reco_candlelist %}
+        <div class="index_cont_box1">
+            <div class="index_title_box1">
+                <B>{{ reco_candle.BaseDate}}</B><B>{{ reco_candle.Symbol}}</B>
+
+            </div>
+        </div>
+    {% endfor %}
+
+
+    {% endautoescape %}
+        'plot_div': plot_div,
+        'analdate': analDateM.AnalDate.strftime("%Y-%m-%d"),
+        'symbol': symbolM,
+        'recoSymbol': recoSymbolL,
+        'reco_candlelist': reco_candlelist,
+</form>
+{% endblock body %}
+

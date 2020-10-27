@@ -3,7 +3,7 @@ from django.contrib.admin.views.main import ChangeList
 from django.db.models import Count
 
 from .models import SurvM, QuestionM, AnsM, ResultM, \
-    ResultHstoryL, ResultCommentL  # 추가
+    ResultHstoryL, ResultCommentL, SymbolM, CandleL, SimCandleL, SimContentL, RecoSymbolL, RecoCandleL, AnalDateM  # 추가
 
 # Register your models here.
 
@@ -43,6 +43,55 @@ class ResultCommentLAdmin(admin.ModelAdmin):
     search_fields = ('survId',)
 
 
+class SymbolMAdmin(admin.ModelAdmin):
+    list_display = ('SymbolId', 'SysMarketCd', 'Symbol', 'Market', 'Name', 'Sector',)
+    list_filter = ( 'SysMarketCd',)
+    search_fields = ('SysMarketCd', 'Symbol', 'Market',  'Name',)
+
+
+class CandleLAdmin(admin.ModelAdmin):
+    list_display = ('BaseDate', 'Symbol', 'Open', 'High', 'Low' ,'Close','Volume','Content3',)
+    list_filter = ( 'BaseDate',)
+    search_fields = ( 'BaseDate','Symbol','Content3',)
+
+
+class SimCandleLAdmin(admin.ModelAdmin):
+    list_display = ('BaseDate', 'Symbol', 'SimBaseDate', 'SimSymbol', 'ChartNum' ,'Content1','Content2',)
+    list_filter = ( 'BaseDate','Symbol', 'SimBaseDate', 'SimSymbol',)
+    search_fields = ( 'BaseDate','Symbol',)
+
+
+class SimContentLAdmin(admin.ModelAdmin):
+    list_display = ('AnalDate', 'SimTypeCd', 'Content', 'SimSymbolCnt', 'Content1' ,'Content2','Content3',)
+    list_filter = ('AnalDate','Content',)
+    search_fields = ('AnalDate','Content',)
+
+
+class RecoSymbolLAdmin(admin.ModelAdmin):
+    list_display = ('AnalDate', 'Symbol', 'RecoTypeCd', 'SimSymbolCnt', 'Content1' ,'Content2','Content3','Content4',)
+    list_filter = ('AnalDate','Symbol',)
+    search_fields = ('AnalDate','Symbol',)
+
+
+class RecoCandleLAdmin(admin.ModelAdmin):
+    list_display = ('BaseDate', 'Symbol', 'Open', 'High', 'Low' ,'Close','Volume','Content3','Content4',)
+    list_filter = ( 'BaseDate',)
+    search_fields = ( 'BaseDate','Symbol','Content3',)
+
+
+class AnalDateMAdmin(admin.ModelAdmin):
+    list_display = ('AnalDate',)
+    list_filter = ('AnalDate',)
+    search_fields = ('AnalDate',)
+
+
+admin.site.register(AnalDateM,AnalDateMAdmin)  # 추가
+admin.site.register(RecoSymbolL,RecoSymbolLAdmin)  # 추가
+admin.site.register(RecoCandleL,RecoCandleLAdmin)  # 추가
+admin.site.register(SimContentL,SimContentLAdmin)  # 추가
+admin.site.register(SimCandleL,SimCandleLAdmin)  # 추가
+admin.site.register(CandleL,CandleLAdmin)  # 추가
+admin.site.register(SymbolM,SymbolMAdmin)  # 추가
 admin.site.register(SurvM,SurvMAdmin)  # 추가
 admin.site.register(QuestionM,QuestionMAdmin)  # 추가
 admin.site.register(AnsM,AnsMAdmin)  # 추가

@@ -4,13 +4,20 @@ git config --global user.name "iwishido86"
 3.18.90.222
 
 http://kimsudal.com
-
+python manage.py createsuperuser
 iwishido86@gmail.com
 
 python -m venv myvenv
 .\myvenv\scripts\activate.bat
 python -m pip install -U pip
+
 pip install wheel django djangorestframework pylint
+
+
+pip install plotly
+
+pip install -U finance_datareader
+
 django-admin startproject config .
 
 django-admin startapp survDjango
@@ -26,6 +33,9 @@ python manage.py runserver --insecure
 
 pip3 install psycopg2
 
+
+115310
+
 python3 manage.py createsuperuser
 
 python3 manage.py makemigrations survDjango
@@ -39,11 +49,49 @@ pip install httpie
 
 ps -ef | grep py
 
-
-
-
 bg
 disown -h
+
+
+class CandleL(models.Model):
+    BaseDate = models.DateTimeField()
+    Symbol = models.CharField(max_length=100)
+    Open = models.FloatField(blank=True, null=True)
+    High = models.FloatField(blank=True, null=True)
+    Low = models.FloatField(blank=True, null=True)
+    Close = models.FloatField(blank=True, null=True)
+    Volume = models.FloatField(blank=True, null=True)
+    Change = models.FloatField(default=0,blank=True, null=True)
+    Content1 = models.FloatField(default=0)
+    Content2 = models.FloatField(default=0)
+    Content3 = models.CharField(max_length=100, blank=True, null=True)
+    Content4 = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        unique_together = (('BaseDate', 'Symbol'),)
+        indexes = [
+            models.Index(fields=['BaseDate', 'Symbol']),
+            models.Index(fields=['Content3']),
+            models.Index(fields=['Content4']),
+        ]
+
+    # {'Open': 15850.0, 'High': 15850.0, 'Low': 15350.0, 'Close': 15350.0, 'Volume': 18616.0, 'Change': -0.025396825396825418}
+
+
+class SimCandleL(models.Model):
+    BaseDate = models.DateTimeField()
+    Symbol = models.CharField(max_length=100)
+    SimBaseDate = models.DateTimeField()
+    SimSymbol = models.CharField(max_length=100)
+    SimTypeCd = models.CharField(max_length=2, help_text="유사유형:01:단기차트:02:추세")
+    ChartNum = models.FloatField(default=0, help_text="수정주가대수")
+    Content1 = models.FloatField(default=0, help_text="단기수익률")
+    Content2 = models.FloatField(default=0, help_text="장기수익률")
+    Content3 = models.FloatField(default=0)
+    Content4 = models.FloatField(default=0)
+    Content5 = models.CharField(max_length=100, blank=True, null=True)
+    Content6 = models.CharField(max_length=100, blank=True, null=True)
+
 
 git stash clear
 

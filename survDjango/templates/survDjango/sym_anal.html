@@ -1,0 +1,29 @@
+{# knight_login.html #}
+{% extends 'survDjango/base.html' %}
+
+{% block script %}
+{% endblock script %}
+
+
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <!--div class="basic_cont_box">
+    <label class="resultlable">{{ surv.title }}</label>
+    </div-->
+    {% for content in candlelist %}
+    {{ content.BaseDate }}  {{ content.Symbol }}  {{ content.mappingCon3 }}
+    <BR><BR>
+        {% for simCandle in content.simCandlelist %}
+            {{ simCandle.BaseDate }}  {{ simCandle.Symbol }}  {{ simCandle.Content3 }}
+            <BR>***********************<BR>
+        {% endfor %}
+    <BR>------------------------<BR>
+    {% endfor %}
+
+</form>
+{% endblock body %}
+

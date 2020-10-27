@@ -1,0 +1,88 @@
+{# knight_login.html #}
+{% extends 'survDjango/sym_base.html' %}
+
+{% block script %}
+{% endblock script %}
+
+
+{% block body %}
+<form method="post">
+    <div class="cont_box">
+        {% csrf_token %}
+        <div class="analdate_box">
+        분석기준일 : {{analdate|date:"m/d"}}
+        </div>
+
+        <table  class="reco_table_box">
+            <tr>
+                <td class="reco_cont_td_box1">종목 :</td>
+                <td class="reco_cont_td_box2">
+                    {{symbol.Name}} ({{symbol.Symbol}})
+                </td>
+            </tr>
+        </table>
+
+
+        {{ form.as_p }}
+
+        현재차트 :<BR>
+        <div class="reco_list_box">
+            <img class="reco_chart_img_box" src="https://ssl.pstatic.net/imgfinance/chart/item/candle/day/{{symbol.Symbol}}.png?sidcode=1603459099064">
+        </div>
+        <BR><BR><BR>
+        <div class="symbol_serch_box">
+            <span class="symbol_name_span">유사 차트 탐색 결과</span>
+        </div>
+        {% if simconlist %}
+
+
+            {% for simcon in simconlist %}
+
+            <div class="index_cont_box1">
+                <table class="reco_table_box">
+                    <tr>
+                        <td class="reco_cont_td_box1">분석일 :</td>
+                        <td class="reco_cont_td_box2">
+                            {{simcon.AnalDate|date:"y/m/d"}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="reco_cont_td_box1">차트 분석유형 :</td>
+                        <td class="reco_cont_td_box2">
+                            {%if simcon.SimTypeCd == '01' %}10일 차트 분석
+                            {%elif simcon.SimTypeCd == '02' %}5일 차트 분석
+                            {%elif simcon.SimTypeCd == '03' %}특이점 없는 차트
+                            {%elif simcon.SimTypeCd == '04' %}유사차트 없음
+                            {%else %} 기타
+                            {%endif%}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="reco_cont_td_box1">유사한 차트 :</td>
+                        <td class="reco_cont_td_box2">{{simcon.SimSymbolCnt}}개 발견</td>
+                    </tr>
+                    <tr>
+                        <td class="reco_cont_td_box1">평균수익률 :</td>
+                        <td class="reco_cont_td_box2">
+                            {%if simcon.Content1 == 0 %}<span class="prorate_zero_font_span">{{ simcon.Content1|stringformat:".2f%%"}}</span>
+                            {%elif simcon.Content1 > 0 %}<span class="prorate_up_font_span">{{ simcon.Content1|stringformat:".2f%%"}}</span>
+                            {%else %}<span class="prorate_down_font_span">{{ simcon.Content1|stringformat:".2f%%"}}</span>
+                            {%endif%}
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            {% endfor %}
+        </table>
+        * 차트지원 개발중<br>
+        {% else %}
+            분석결과 없음.<br>
+        * 분석데이터 저장 중이라 없는 종목이 많습니다.<br>
+        {% endif %}
+        <span class="recoBtn" id="homeBtn" onclick="sendHome(homeBtn);">홈으로</span>
+        <span class="recoBtn" id="naverBtn" onclick="sendNaver(naverBtn,'{{recoSymbol.Symbol}}');">네이버</span>
+    </div>
+</form>
+{% endblock body %}
+

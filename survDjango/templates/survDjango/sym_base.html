@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{# base.html #}
+
+<html lang="ko">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>{{surv.title}}</title>
+
+    <meta name="naver-site-verification" content="6c40c1beed5cb7d1b535150c2209f310a1704763" />
+
+    <link rel="stylesheet" href="/static/css/sym_common.css">
+    <link rel="icon" href="/static/img/favicon.png" />
+
+    {% block headblock %}
+    <link rel="image_src" href="https://kimsudal.com/static/img/{{ surv.imgFile }}">
+
+    <meta itemprop="image" content="https://kimsudal.com/static/img/{{surv.imgFile}}">
+    <meta property="og:image" content="https://kimsudal.com/static/img/{{surv.imgFile}}">
+    <meta property="twitter:image" content="https://kimsudal.com/static/img/{{surv.imgFile}}">
+
+    <meta name="title" content="{{surv.title}}">
+    <meta property="og:title" content="{{surv.title}}">
+    <meta property="twitter:title" content="{{surv.title}}">
+
+    <meta name="description" content="{{surv.content}}">
+    <meta property="og:description" content="{{surv.content}}">
+    <meta property="twitter:description" content="{{surv.content}}">
+    <meta name="keywords" content="주식차트,주식차트분석,로보어드바이저,차트분석">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kimsudal.com">
+    <meta property="twitter:url" content="https://kimsudal.com">
+    {% endblock headblock %}
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <!-- google adsense -->
+    <script data-ad-client="ca-pub-7965464586995993" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- google analitics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177844921-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-177844921-1');
+    </script>
+
+
+    <script type="text/javascript">
+
+
+        function submitFrom(submitBtn){
+
+            document.forms[0].submit();
+        }
+
+        function submitDisp(SysMarketCd,Symbol){
+            //setTimeout(function() {
+                document.location.href='/chart/disp/'+ SysMarketCd + '/' + Symbol;
+            //}, 1000);
+        }
+
+        function submitReco(SysMarketCd,Symbol){
+            //setTimeout(function() {
+                document.location.href='/chart/reco/'+ SysMarketCd + '/' + Symbol;
+            //}, 1000);
+        }
+
+
+        function closeSerchBox(){
+            //setTimeout(function() {
+                location.reload(true);
+            //}, 1000);
+        }
+
+        function sendHome(homeBtn){
+            //setTimeout(function() {
+                document.location.href='/chart/';
+            //}, 1000);
+        }
+
+        function sendNaver(homeBtn, symbol){
+            //setTimeout(function() {
+                window.open("https://finance.naver.com/item/main.nhn?code=" + symbol,"left=0, top=0");
+            //}, 1000);
+        }
+
+    {% block script %}
+    {% endblock script %}
+    </script>
+
+
+</head>
+<body>
+    <div class="body_cont_box">
+    {% include "./top_layout.html" %}
+    {% load static %}
+
+
+    {% block body %}
+    BASE_BODY
+    {% endblock body %}
+    </div>
+    {% include "./bottom_layout.html" %}
+</body>
+
+    <script type="text/javascript">
+    {% block script2 %}
+
+
+    {% endblock script2 %}
+    </script>
+
+</html>
