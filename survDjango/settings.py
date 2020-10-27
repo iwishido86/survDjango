@@ -26,7 +26,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'kqtkh=@^mzr_(8h4b*9f$9n7=h7)lv9ss88h*pt^t&yjpig(zs'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -124,8 +124,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-DEBUG=True
-
 # ... 처음이시면 위치에 신경 쓸 필요 없고
 # ... settings.py에 있기만 해도 됩니다.
 REST_FRAMEWORK = {
@@ -138,4 +136,4 @@ REST_FRAMEWORK = {
 }
 # ...
 
-
+SESSION_COOKIE_AGE = 60000
