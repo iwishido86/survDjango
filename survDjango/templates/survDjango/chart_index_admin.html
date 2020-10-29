@@ -1,0 +1,94 @@
+{# knight_login.html #}
+{% extends 'survDjango/sym_base.html' %}
+
+{% block script %}
+
+        function anal2Click(clickBtn){
+            //setTimeout(function() {
+                document.location.href='/symbol/anal2/KRX/'+adminAnaldate.value;
+            //}, 1000);
+        }
+{% endblock script %}
+
+
+{% block body %}
+<form method="post">
+    <div class="cont_box">
+        {% csrf_token %}
+        <div class="analdate_box">
+        분석기준일 : {{analdate|date:"m/d"}}
+        </div>
+
+        {{ form.as_p }}
+        <!-- 종목검색 부분 -->
+        <div class="symbol_serch_box">
+            <div class="symbol_serch_input_box">
+                <input name="serchInput" class="serchInput" id="serchInput" maxlength="20" placeholder="종목명 or 종목번호">
+                <span class="serchBtn" id="serchBtn" onclick="submitFrom(serchBtn);">검 색</span>
+            </div>
+            {%if symbollist%}
+            <div class="symbol_serch_box">
+                {% for symbol in symbollist %}
+                    <div class="symbol_serch_list_box">
+                        <a onclick="submitDisp('{{ symbol.SysMarketCd}}' ,'{{ symbol.Symbol}}');">
+                            {{ symbol.Name}} ( {{ symbol.Symbol}} )
+                        </a>
+                    </div>
+                {% endfor %}
+                <div class="symbol_serch_list_box">
+                    <a onclick="closeSerchBox();">
+                        닫 기
+                    </a>
+                </div>
+            </div>
+            {%endif%}
+        </div>
+        <!-- 종목검색 종료 -->
+        <div class="reco_list_box">
+            분석일 :
+            <input name="adminAnaldate" class="serchInput" id="adminAnaldate" maxlength="20" value='{{analdate|date:"yy-m-d"}}'><br>
+            <span class="serchBtn" id="anal2Btn" onclick="anal2Click(anal2Btn);">중기분석</span>
+            <span class="serchBtn" id="anal3Btn" onclick="anal3Click(anal3Btn);">단기분석</span>
+            <span class="serchBtn" id="anal4Btn" onclick="anal4Click(anal4Btn);">종목선정</span>
+
+        </div>
+        {% for dict_reco in dict_recolist %}
+            <div class="reco_list_box">
+                <table class="reco_table_box">
+                    <tr>
+                        <td class="reco_td_box1">
+                            <span class="small_font_span">분석일</span>
+                            <br>
+                            {{ dict_reco.AnalDate|date:"m/d"}}
+                        </td>
+                        <td class="reco_td_box2">
+                            <span class="symbol_name_span">{{ dict_reco.Name}}</span><br>
+                            <span class="small_font_span">예상수익률 : </span>
+                            {%if dict_reco.Content1 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                            {%elif dict_reco.Content1 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                            {%endif%}
+                            &nbsp;&nbsp;&nbsp;
+                            <span class="small_font_span">현재수익률 : </span>
+                            {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                            {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                            {%endif%}
+                            <br>
+                            유형코드 : {{ dict_reco.RecoTypeCd}}, 유사갯수 : {{ dict_reco.SimSymbolCnt}} , 유사갯수 : {{ dict_reco.Symbol}}
+                        </td>
+                        <td class="reco_td_box3">
+                            <a onclick="submitReco('KRX' ,'{{ dict_reco.Symbol}}');">
+                                <div class="serchBtn">분 석</div>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
+
+
+</div>
+</form>
+{% endblock body %}
+

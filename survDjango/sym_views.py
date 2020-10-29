@@ -322,7 +322,10 @@ def sym_anal2_view(request,sysmarketcd,analdate):
     del_simContentList.delete()
     #logger.info(dt_analdate)
     #candlelist = CandleL.objects.filter(Symbol__gte=symbol, BaseDate=analdate).order_by('Symbol')[0:50]
-    candleGrplist = CandleL.objects.filter(BaseDate=analdate).values('Content3').annotate(CandleCnt=Count('Content3')).order_by('-CandleCnt')
+    #candleGrplist = CandleL.objects.filter(BaseDate=analdate).values('Content3').annotate(CandleCnt=Count('Content3')).order_by('-CandleCnt')
+    candleGrplist = CandleL.objects.filter().values('Content3').annotate(CandleCnt=Count('Content3')).annotate(
+        MaxBaseDate=Max('BaseDate')).filter(MaxBaseDate=analdate).order_by('-CandleCnt')
+
     logger.info(candleGrplist.count().__str__())
 
     dict_candlelist = []
@@ -341,17 +344,29 @@ def sym_anal2_view(request,sysmarketcd,analdate):
         # Content2 = models.FloatField(default=0, help_text="장기수익률")
         # Content3 = models.CharField(max_length=100, blank=True, null=True)
         # Content4 = models.CharField(max_length=100, blank=True, null=True)
-
-        if len(candleGrp["Content3"].split('207')) > 6 \
-            or len(candleGrp["Content3"].split('07')) == 9 \
-            or len(candleGrp["Content3"][12:].split('07')) == 5 \
-            or candleGrp["Content3"] == '20C20C20C20C20C20C20C20C'\
+        # 20개 이상
+        if candleGrp["CandleCnt"] > 10 \
             or len(candleGrp["Content3"]) < 24:
             simcandle = SimContentL(
                 AnalDate=analdate,
                 SimTypeCd='03',
                 Content=candleGrp["Content3"],
                 SimSymbolCnt=candleGrp["CandleCnt"],
+                Content1=0,
+                Content2=0,
+                Content3='',
+                Content4='',
+            )
+            model_instances.append(simcandle)
+            continue
+
+        #하나만 있는 경우
+        elif candleGrp["CandleCnt"] <= 1:
+            simcandle = SimContentL(
+                AnalDate=analdate,
+                SimTypeCd='04',
+                Content=candleGrp["Content3"],
+                SimSymbolCnt=0,
                 Content1=0,
                 Content2=0,
                 Content3='',
@@ -400,7 +415,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
                 AnalDate=analdate,
                 SimTypeCd='01',
                 Content=candleGrp["Content3"],
-                SimSymbolCnt=sim_candlelist.count(),
+                SimSymbolCnt=candleGrp["CandleCnt"],
                 Content1=sum_content1/sim_candlelist.count(),
                 Content2=0,
                 Content3='',
@@ -435,8 +450,11 @@ def sym_anal3_view(request,sysmarketcd,analdate):
     today =  current_tz.localize(datetime.datetime.now())
     queryday = today - datetime.timedelta(days=10)
 
-    candleGrplist = CandleL.objects.filter(BaseDate=analdate).values('Content4').annotate(CandleCnt=Count('Content4')).order_by('-CandleCnt')
+    #candleGrplist = CandleL.objects.filter(BaseDate=analdate).values('Content4').annotate(CandleCnt=Count('Content4')).order_by('-CandleCnt')
+    candleGrplist = CandleL.objects.filter().values('Content4').annotate(CandleCnt=Count('Content4')).annotate(
+        MaxBaseDate=Max('BaseDate')).filter(MaxBaseDate=analdate).order_by('-CandleCnt')
     logger.info(candleGrplist.count().__str__())
+
 
     dict_candlelist = []
     model_instances = []
@@ -447,13 +465,12 @@ def sym_anal3_view(request,sysmarketcd,analdate):
         logger.info("1::"+ candleGrp["Content4"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
         index = index + 1
 
-        if len(candleGrp["Content4"].split('207')) > 3 \
-            or len(candleGrp["Content4"].split('07')) >= 4 \
-            or candleGrp["Content4"] == '20C20C20C20C'\
-            or len(candleGrp["Content4"]) < 12:
+        if candleGrp["CandleCnt"] > 10 \
+                or len(candleGrp["Content4"]) < 12:
 
             continue
-
+        elif candleGrp["CandleCnt"] <= 1 :
+            continue
         dict_sim_candle = []
         set_sim_candle = {}
 

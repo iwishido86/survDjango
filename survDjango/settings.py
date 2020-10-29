@@ -136,8 +136,6 @@ REST_FRAMEWORK = {
 }
 # ...
 
-SESSION_COOKIE_AGE = 60000
-
 LOG_FILE = os.path.join(os.path.dirname(__file__), '..', 'myLog.log')
 LOGGING = { 'version': 1,
             'disable_existing_loggers': False,
