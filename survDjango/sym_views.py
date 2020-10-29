@@ -1,3 +1,4 @@
+import logging
 from datetime import timezone
 from random import random, randint
 
@@ -25,6 +26,7 @@ from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM, ResultCommen
     AnalDateM, SimContentL, RecoSymbolL, RecoCandleL
 
 from .serializers import RegistrationUserSerializer
+logger = logging.getLogger(__name__)
 
 #http://127.0.0.1:8000/symbol/
 def sym_index_view(request):
@@ -48,7 +50,7 @@ def sym_index_view(request):
         set_simCon['NAME'] = sim_symbolM.Name
         dict_simCon1List.append(set_simCon)
 
-    print(dict_simCon1List)
+    logger.info(dict_simCon1List)
 
     dict_simCon2List = []
     set_simCon = {}
@@ -63,7 +65,7 @@ def sym_index_view(request):
         set_simCon['NAME'] = sim_symbolM.Name
         dict_simCon2List.append(set_simCon)
 
-    print(dict_simCon2List)
+    logger.info(dict_simCon2List)
 
     context = {
         dict_simCon1List : 'simcon1list',
@@ -72,7 +74,7 @@ def sym_index_view(request):
 
     return render(request, template_name, context)
 
-
+#https://kimsudal.com/anal_init/KRX
 def ca_init_view(request,sysmarketcd):
     template_name = 'survDjango/ca_init.html'
 
@@ -85,7 +87,7 @@ def ca_init_view(request,sysmarketcd):
     # plt.rcParams['lines.linewidth'] = 2
     # plt.rcParams["axes.grid"] = True
     #
-    # print(fdr.__version__)
+    # logger.info(fdr.__version__)
 
     # 한국거래소 상장종목 전체
     df_krx = fdr.StockListing(sysmarketcd)
@@ -93,7 +95,7 @@ def ca_init_view(request,sysmarketcd):
     # '특수 목적용 기계 제조업', 'Industry': 'OLED Mask 인장기, OLED Mask 검사기 등', 'ListingDate': Timestamp('2017-07-20
     #  00:00:00'), 'SettleMonth': '12월', 'Representative': '김주환', 'HomePage': 'http://www.hims.co.kr', 'Region': '인천
     # 광역시'
-    #print(df_krx.T.to_dict())
+    #logger.info(df_krx.T.to_dict())
 
     dict_krx = df_krx.T.to_dict()
 
@@ -101,7 +103,7 @@ def ca_init_view(request,sysmarketcd):
     # symbolMall.delete()
 
     for sequrity in dict_krx:
-        print(dict_krx[sequrity])
+        logger.info(dict_krx[sequrity])
 
         symbolM, created = SymbolM.objects.get_or_create(
             SysMarketCd=sysmarketcd,
@@ -150,7 +152,7 @@ def sym_bulk_view(request,sysmarketcd,symbol):
     for symbolM in symbolMlist :
 
         before_candle = CandleL().__init__()
-        print(symbolM.Symbol)
+        logger.info(symbolM.Symbol)
 
         CandleL.objects.filter(Symbol=symbolM.Symbol).delete()
 
@@ -162,7 +164,7 @@ def sym_bulk_view(request,sysmarketcd,symbol):
             candle = create_anal_candle(symbolM.Symbol, before_candle, record, current_tz, pd)
             model_instances.append(candle)
             before_candle = candle
-        #print(model_instances)
+        #logger.info(model_instances)
 
     CandleL.objects.bulk_create(model_instances)
 
@@ -179,7 +181,7 @@ def sym_day_update_view(request,sysmarketcd,basedate):
     dt_basedate = current_tz.localize(pd.to_datetime(basedate))
     queryday = dt_basedate + datetime.timedelta(days=1)
 
-    print(queryday.strftime("%Y-%m-%d"))
+    logger.info(queryday.strftime("%Y-%m-%d"))
     candlelist = CandleL.objects.filter(BaseDate=basedate).order_by('Symbol','BaseDate')
 
     model_instances = []
@@ -188,7 +190,7 @@ def sym_day_update_view(request,sysmarketcd,basedate):
 
         #초기화
         before_candle = candlel
-        print(candlel.Symbol)
+        logger.info(candlel.Symbol)
 
         df_sym = fdr.DataReader(candlel.Symbol, queryday.strftime("%Y-%m-%d"))
         dict_sym = df_sym.to_records()
@@ -198,7 +200,7 @@ def sym_day_update_view(request,sysmarketcd,basedate):
             candle = create_anal_candle(candlel.Symbol, before_candle, record, current_tz, pd)
             model_instances.append(candle)
             before_candle = candle
-        #print(model_instances)
+        #logger.info(model_instances)
 
     CandleL.objects.bulk_create(model_instances)
 
@@ -218,7 +220,7 @@ def sym_anal_view(request,sysmarketcd,symbol,analdate):
     today =  current_tz.localize(datetime.datetime.now())
     queryday = today - datetime.timedelta(days=10)
 
-    print(dt_analdate)
+    logger.info(dt_analdate)
     candlelist = CandleL.objects.filter(Symbol__gte=symbol, BaseDate=analdate).order_by('Symbol')[0:50]
 
     dict_candlelist = []
@@ -227,7 +229,7 @@ def sym_anal_view(request,sysmarketcd,symbol,analdate):
     for candle in candlelist :
         #TODO 튜닝포인트
 
-        print("1::"+candle.Symbol + "::" + candle.Content3 + "::" + len(candle.Content3.split('207')).__str__())
+        logger.info("1::"+candle.Symbol + "::" + candle.Content3 + "::" + len(candle.Content3.split('207')).__str__())
 
         if candle.Content3 == '20C20C20C20C20C20C20C20C':
             continue
@@ -244,14 +246,14 @@ def sym_anal_view(request,sysmarketcd,symbol,analdate):
 
         del_sim_candlelist= SimCandleL.objects.filter(Symbol=candle.Symbol, BaseDate=candle.BaseDate)
         del_sim_candlelist.delete()
-        print("2::" + candle.Symbol)
+        logger.info("2::" + candle.Symbol)
         sim_candlelist = CandleL.objects.filter( Content3=candle.Content3, BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:5]
 
         if sim_candlelist.count() == 0:
             set_candle['mappingCon3'] = set_candle['mappingCon3'][9:]
             sim_candlelist = CandleL.objects.filter(~Q(Symbol=candle.Symbol),Content4=candle.Content4,BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:5]
 
-        print("3::" + candle.Symbol)
+        logger.info("3::" + candle.Symbol)
         #sim_candlelist = CandleL.objects.filter(~Q(Symbol=symbolM.Symbol),Content3=set_candle['mappingCon3'],BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:10]
         for sim_candle in sim_candlelist:
 
@@ -288,7 +290,7 @@ def sym_anal_view(request,sysmarketcd,symbol,analdate):
     SimCandleL.objects.bulk_create(model_instances)
 
 
-    #print(dict_candlelist)
+    #logger.info(dict_candlelist)
     context = {
         'candlelist' : dict_candlelist
     }
@@ -299,7 +301,7 @@ def sym_anal_view(request,sysmarketcd,symbol,analdate):
 #http://127.0.0.1:8000/symbol/anal2/KRX/2020-10-22
 def sym_anal2_view(request,sysmarketcd,analdate):
     template_name = 'survDjango/sym_anal.html'
-
+    logger.debug('3333')
     from django.utils import timezone
 
     current_tz = timezone.get_current_timezone()
@@ -314,14 +316,14 @@ def sym_anal2_view(request,sysmarketcd,analdate):
     #sim_candlelist = SimCandleL.objects.filter(BaseDate=analDateM.AnalDate).values('Symbol').annotate(SimCandleCnt=Count('Content1')).annotate(AvgContent1=Avg('Content1')).filter(BaseDate=analDateM.AnalDate, AvgContent1__gte=7).order_by('-SimCandleCnt','-AvgContent1')[0:10]
     #sim_candlelist = SimCandleL.objects.filter(BaseDate=analDateM.AnalDate, AvgContent1__gte=10).values(Symbol').annotate(SimCandleCnt=Count('Content1'), AvgContent1=Avg('Content1')).order_by('-AvgContent1')[0:10]
     #Product.objects.values('date_created')       .annotate(available=Count('available_quantity'))
-    #print(sim_candlelist)
+    #logger.info(sim_candlelist)
 
     del_simContentList = SimContentL.objects.filter(AnalDate=analdate)
     del_simContentList.delete()
-    #print(dt_analdate)
+    #logger.info(dt_analdate)
     #candlelist = CandleL.objects.filter(Symbol__gte=symbol, BaseDate=analdate).order_by('Symbol')[0:50]
     candleGrplist = CandleL.objects.filter(BaseDate=analdate).values('Content3').annotate(CandleCnt=Count('Content3')).order_by('-CandleCnt')
-    print(candleGrplist.count().__str__())
+    logger.info(candleGrplist.count().__str__())
 
     dict_candlelist = []
     model_instances = []
@@ -329,7 +331,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
     for candleGrp in candleGrplist :
         #TODO 튜닝포인트
 
-        print("1::"+ candleGrp["Content3"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
+        logger.info("1::"+ candleGrp["Content3"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
         index = index + 1
         # AnalDate = models.DateTimeField()
         # SimTypeCd = models.CharField(max_length=2, help_text="유사유형:01:Content3:02:Content4:03:안함:04:없음")
@@ -365,7 +367,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
 
         sim_candlelist = CandleL.objects.filter( Content3=candleGrp["Content3"], BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:5]
 
-        print("3::" + sim_candlelist.count().__str__())
+        logger.info("3::" + sim_candlelist.count().__str__())
 
         sum_content1 = 0
         #sim_candlelist = CandleL.objects.filter(~Q(Symbol=symbolM.Symbol),Content3=set_candle['mappingCon3'],BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:10]
@@ -410,7 +412,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
     SimContentL.objects.bulk_create(model_instances)
 
 
-    #print(dict_candlelist)
+    #logger.info(dict_candlelist)
     context = {
     }
     return HttpResponseRedirect('/symbol/anal3/' + sysmarketcd + '/' + analdate)
@@ -434,7 +436,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
     queryday = today - datetime.timedelta(days=10)
 
     candleGrplist = CandleL.objects.filter(BaseDate=analdate).values('Content4').annotate(CandleCnt=Count('Content4')).order_by('-CandleCnt')
-    print(candleGrplist.count().__str__())
+    logger.info(candleGrplist.count().__str__())
 
     dict_candlelist = []
     model_instances = []
@@ -442,7 +444,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
     for candleGrp in candleGrplist :
         #TODO 튜닝포인트
 
-        print("1::"+ candleGrp["Content4"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
+        logger.info("1::"+ candleGrp["Content4"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
         index = index + 1
 
         if len(candleGrp["Content4"].split('207')) > 3 \
@@ -459,7 +461,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
 
         sim_candlelist = CandleL.objects.filter( Content4=candleGrp["Content4"], BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:5]
 
-        print("3::" + sim_candlelist.count().__str__())
+        logger.info("3::" + sim_candlelist.count().__str__())
 
         sum_content1 = 0
         #sim_candlelist = CandleL.objects.filter(~Q(Symbol=symbolM.Symbol),Content3=set_candle['mappingCon3'],BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:10]
@@ -494,7 +496,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
     SimContentL.objects.bulk_create(model_instances)
 
 
-    #print(dict_candlelist)
+    #logger.info(dict_candlelist)
     context = {
     }
     return HttpResponseRedirect('/symbol/anal4/' + sysmarketcd + '/' + analdate)
@@ -543,7 +545,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
             end_date = sim_candle.BaseDate + datetime.timedelta(days=35)
 
             periode_sim_candlelist = CandleL.objects.filter(Symbol=sim_candle.Symbol, BaseDate__gte=start_date, BaseDate__lte=end_date).order_by('BaseDate')
-            print(candleCon1.Symbol+":::" + sim_candle.Symbol + ":::" + periode_sim_candlelist.count().__str__())
+            logger.info(candleCon1.Symbol+":::" + sim_candle.Symbol + ":::" + periode_sim_candlelist.count().__str__())
             for periode_sim_candle in periode_sim_candlelist:
                 RecoCandleL(
                     CandleId=periode_sim_candle.CandleId,
@@ -595,7 +597,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
             end_date = sim_candle.BaseDate + datetime.timedelta(days=35)
 
             periode_sim_candlelist = CandleL.objects.filter(Symbol=sim_candle.Symbol, BaseDate__gte=start_date, BaseDate__lte=end_date).order_by('BaseDate')
-            print(candleCon1.Symbol + ":::" + sim_candle.Symbol + ":::" + periode_sim_candlelist.count().__str__())
+            logger.info(candleCon1.Symbol + ":::" + sim_candle.Symbol + ":::" + periode_sim_candlelist.count().__str__())
             for periode_sim_candle in periode_sim_candlelist:
                 RecoCandleL(
                     CandleId=periode_sim_candle.CandleId,
@@ -648,9 +650,9 @@ def sym_reco_view(request,sysmarketcd,symbol):
     # current_tz = timezone.get_current_timezone()
     # dt_analdate = current_tz.localize(pd.to_datetime(analDateM.AnalDate))
     #
-    # print(dt_analdate)
+    # logger.info(dt_analdate)
     recoSymbolL = RecoSymbolL.objects.filter(Symbol=symbol, AnalDate=analDateM.AnalDate)[0]
-    print(recoSymbolL)
+    logger.info(recoSymbolL)
     queryday=analDateM.AnalDate - datetime.timedelta(days=20)
 
     candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__gte=queryday ,BaseDate__lte=analDateM.AnalDate).order_by('BaseDate')
@@ -677,7 +679,7 @@ def sym_reco_view(request,sysmarketcd,symbol):
     elif recoSymbolL.RecoTypeCd == '02':
         reco_candlelist = RecoCandleL.objects.filter(Content4=recoSymbolL.Content3, BaseDate__lt=queryday).order_by('-BaseDate')[0:5]
 
-    print(reco_candlelist)
+    logger.info(reco_candlelist)
 
     for reco_candle in reco_candlelist:
         sim_y_data = []
@@ -724,7 +726,7 @@ def sym_reupdate_view(request,sysmarketcd,symbol):
     symbolMlist = SymbolM.objects.filter(Symbol__gte=symbol).order_by('Symbol')[0:500]
 
     for symbolM in symbolMlist :
-        print(symbolM.Symbol)
+        logger.info(symbolM.Symbol)
         model_instances = []
         before_candle = CandleL().__init__()
         candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol).order_by('BaseDate')
@@ -845,7 +847,7 @@ def sym_reupdate_view(request,sysmarketcd,symbol):
 #         selectknightlist = SelectKnight.objects.filter(q)
 #
 #         #for selectknight in selectknightlist:
-#             #print(selectknight.username + selectknight.knightId.__str__() )
+#             #logger.info(selectknight.username + selectknight.knightId.__str__() )
 #
 #         selectknightcnt = weight * selectknightlist.count()
 #

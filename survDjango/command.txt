@@ -15,7 +15,7 @@ pip install wheel django djangorestframework pylint
 
 
 pip install plotly
-
+pip install sympy
 pip install -U finance_datareader
 
 django-admin startproject config .

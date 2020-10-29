@@ -1,3 +1,4 @@
+import logging
 from datetime import timezone
 from random import random, randint
 
@@ -25,6 +26,9 @@ from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM, ResultCommen
     AnalDateM, SimContentL, RecoSymbolL, RecoCandleL
 
 from .serializers import RegistrationUserSerializer
+
+logger = logging.getLogger(__name__)
+
 
 #http://127.0.0.1:8000/chart/
 def chart_index_view(request):
@@ -62,7 +66,7 @@ def chart_index_view(request):
         set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
-    print(dict_symbollist)
+    logger.debug(dict_symbollist)
 
     context = {
         'dict_recolist': dict_recolist,
@@ -84,9 +88,9 @@ def chart_reco_view(request,sysmarketcd,symbol):
     # current_tz = timezone.get_current_timezone()
     # dt_analdate = current_tz.localize(pd.to_datetime(analDateM.AnalDate))
     #
-    # print(dt_analdate)
+    # logger.debug((dt_analdate)
     recoSymbolL = RecoSymbolL.objects.filter(Symbol=symbol).order_by('-AnalDate')[0]
-    print(recoSymbolL)
+    logger.debug(recoSymbolL)
     queryday=recoSymbolL.AnalDate - datetime.timedelta(days=20)
 
     candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__gte=queryday ,BaseDate__lte=recoSymbolL.AnalDate).order_by('BaseDate')
@@ -171,17 +175,17 @@ def chart_disp_view(request,sysmarketcd,symbol):
 
     queryday = analDateM.AnalDate - datetime.timedelta(days=20)
 
-    print(analDateM.AnalDate)
+    logger.info(analDateM.AnalDate)
 
     now_candle = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__lte=analDateM.AnalDate).order_by('-BaseDate')[0]
 
     dict_simconlist = []
     simCon1List = SimContentL.objects.filter(Q(Content=now_candle.Content3) or Q(Content=now_candle.Content4)).order_by('-AnalDate')[0:5]
-    print(simCon1List)
+    logger.debug(simCon1List)
     for simCon in  simCon1List:
         dict_simconlist.append(simCon.__dict__)
 
-    print(dict_simconlist)
+    logger.debug(dict_simconlist)
 
     context = {
         'analdate': now_candle.BaseDate,

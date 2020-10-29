@@ -36,7 +36,7 @@ def surv_view(request,survid):
         if surv.survType == '01' :          # 점수제
             point = 0
             for i in range(1,int(questionNum)+1):
-                #print(request.POST.get('radio'+i.__str__(), ''))
+                #logger.info(request.POST.get('radio'+i.__str__(), ''))
                 ansId = request.POST.get('radio'+i.__str__())
 
                 # 여기 튜닝 원쿼리로
@@ -59,7 +59,7 @@ def surv_view(request,survid):
             # TODO 동적으로 바꾸자 지금은 4개만됨
             typeArr = [0,0,0,0]
             for i in range(1, int(questionNum) + 1):
-                # print(request.POST.get('radio'+i.__str__(), ''))
+                # logger.info(request.POST.get('radio'+i.__str__(), ''))
                 ansId = request.POST.get('radio' + i.__str__())
 
                 # 여기 튜닝 원쿼리로
@@ -76,7 +76,7 @@ def surv_view(request,survid):
 
             # 결과
             typeStr = ""
-            #print(typeArr)
+            #logger.info(typeArr)
             for typeInt in typeArr:
                 if typeInt > 0:
                     typeStr = typeStr + "1"
@@ -85,8 +85,8 @@ def surv_view(request,survid):
 
             historyContent = historyContent + ":::" + typeArr.__str__()
             historyContent2 = typeStr
-            #print(historyContent)
-            #print(historyContent2)
+            #logger.info(historyContent)
+            #logger.info(historyContent2)
             # 여기 튜닝 원쿼리로
             result = get_object_or_404(ResultM, survId=survid, matchingPattern=typeStr)
             result.cnt = result.cnt + 1
@@ -97,14 +97,14 @@ def surv_view(request,survid):
 
         request.session['completeYn'] = 'Y'
         # 내역 저장 - 속도,용량 맞추려고 당분간 아웃
-        resultHstoryL = ResultHstoryL.objects.create()
-
-        resultHstoryL.survId = survId
-        resultHstoryL.resultId = result.resultId
-        resultHstoryL.content = historyContent
-        resultHstoryL.content2 = historyContent2
-
-        resultHstoryL.save()
+        # resultHstoryL = ResultHstoryL.objects.create()
+        #
+        # resultHstoryL.survId = survId
+        # resultHstoryL.resultId = result.resultId
+        # resultHstoryL.content = historyContent
+        # resultHstoryL.content2 = historyContent2
+        #
+        # resultHstoryL.save()
 
 
         return HttpResponseRedirect(
@@ -175,7 +175,7 @@ def result_view(request,survid,resultid):
         rank = ResultM.objects.filter(survId=survid,pointTop__gt=result.pointTop).aggregate(totalcnt=Sum('cnt'))
 
         #rank = ResultM.objects.filter(survId=survid,resultId=resultid).aggregate(totalcnt=Sum('cnt'))
-        #print(rank)
+        #logger.info(rank)
 
         if rank['totalcnt'] :
             rate = (rank['totalcnt'].__int__() / surv.cnt) * 100
@@ -221,8 +221,8 @@ def index_view(request):
 
     survlist = SurvM.objects.order_by('orderNum')
 
-    resultHstoryL = ResultHstoryL.objects.all()
-    resultHstoryL.delete()
+    #resultHstoryL = ResultHstoryL.objects.all()
+    #resultHstoryL.delete()
 
     context = {
         'survlist': survlist,
