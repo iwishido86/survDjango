@@ -363,7 +363,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
         # Content3 = models.CharField(max_length=100, blank=True, null=True)
         # Content4 = models.CharField(max_length=100, blank=True, null=True)
         # 20개 이상
-        if candleGrp["CandleCnt"] > 5 \
+        if candleGrp["CandleCnt"] > 10 \
             or len(candleGrp["Content3"]) < 24:
             simcandle = SimContentL(
                 AnalDate=analdate,
@@ -433,7 +433,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
                 AnalDate=analdate,
                 SimTypeCd='01',
                 Content=candleGrp["Content3"],
-                SimSymbolCnt=candleGrp["CandleCnt"],
+                SimSymbolCnt=candleGrp["CandleCnt"]-1,
                 Content1=sum_content1/sim_candlelist.count(),
                 Content2=0,
                 Content3='',
@@ -494,7 +494,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
         logger.info("1::"+ candleGrp["Content4"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
         index = index + 1
 
-        if candleGrp["CandleCnt"] > 5 \
+        if candleGrp["CandleCnt"] > 10 \
                 or len(candleGrp["Content4"]) < 12:
 
             continue
@@ -530,7 +530,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
                 AnalDate=analdate,
                 SimTypeCd='02',
                 Content=candleGrp["Content4"],
-                SimSymbolCnt=sim_candlelist.count(),
+                SimSymbolCnt=candleGrp["CandleCnt"]-1,
                 Content1=sum_content1/sim_candlelist.count(),
                 Content2=0,
                 Content3='',

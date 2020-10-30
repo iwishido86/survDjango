@@ -66,7 +66,7 @@ def chart_index_view(request):
         set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
-    recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday, RecoDispYn='Y').annotate(Prorate=((F('NowClose')-F('Close'))/F('Close'))).order_by('Prorate')[0:3]
+    recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday, RecoDispYn='Y').annotate(Prorate=((F('NowClose')-F('Close'))/F('Close'))).order_by('-Prorate')[0:5]
     dict_recolist2 = []
     set_reco2 = {}
 
