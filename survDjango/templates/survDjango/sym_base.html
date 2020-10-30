@@ -15,26 +15,26 @@
 
     <link rel="stylesheet" href="/static/css/sym_common.css">
     <link rel="icon" href="/static/img/favicon.png" />
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     {% block headblock %}
-    <link rel="image_src" href="https://kimsudal.com/static/img/{{ surv.imgFile }}">
+    <link rel="image_src" href="https://kimsudal.com/static/img/favicon.png">
 
-    <meta itemprop="image" content="https://kimsudal.com/static/img/{{surv.imgFile}}">
-    <meta property="og:image" content="https://kimsudal.com/static/img/{{surv.imgFile}}">
-    <meta property="twitter:image" content="https://kimsudal.com/static/img/{{surv.imgFile}}">
+    <meta itemprop="image" content="https://kimsudal.com/static/img/favicon.png">
+    <meta property="og:image" content="https://kimsudal.com/static/img/favicon.png">
+    <meta property="twitter:image" content="https://kimsudal.com/static/img/favicon.png">
 
-    <meta name="title" content="{{surv.title}}">
-    <meta property="og:title" content="{{surv.title}}">
-    <meta property="twitter:title" content="{{surv.title}}">
+    <meta name="title" content="수달 로보어드바이저">
+    <meta property="og:title" content="수달 로보어드바이저">
+    <meta property="twitter:title" content="수달 로보어드바이저">
 
-    <meta name="description" content="{{surv.content}}">
-    <meta property="og:description" content="{{surv.content}}">
-    <meta property="twitter:description" content="{{surv.content}}">
+    <meta name="description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
+    <meta property="og:description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
+    <meta property="twitter:description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
     <meta name="keywords" content="주식차트,주식차트분석,로보어드바이저,차트분석">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kimsudal.com">
-    <meta property="twitter:url" content="https://kimsudal.com">
+    <meta property="og:url" content="https://kimsudal.com/chart">
+    <meta property="twitter:url" content="https://kimsudal.com/chart">
     {% endblock headblock %}
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -98,8 +98,8 @@
 
 </head>
 <body>
-    <div class="body_cont_box">
-    {% include "./top_layout.html" %}
+    <div class="container">
+    {% include "./sym_menu.html" %}
     {% load static %}
 
 

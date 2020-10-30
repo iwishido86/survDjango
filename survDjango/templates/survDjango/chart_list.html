@@ -1,0 +1,56 @@
+{# knight_login.html #}
+{% extends 'survDjango/sym_base.html' %}
+
+{% block script %}
+
+
+{% endblock script %}
+
+
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    <div class="analdate_box">
+    분석기준일 : {{analdate|date:"m/d"}}
+    </div>
+
+    {{ form.as_p }}
+    {% for dict_reco in dict_recolist %}
+        <div class="reco_list_box">
+            <table class="reco_table_box">
+                <tr>
+                    <td class="reco_td_box1">
+                        <span class="small_font_span">분석일</span>
+                        <br>
+                        {{ dict_reco.AnalDate|date:"m/d"}}
+                    </td>
+                    <td class="reco_td_box2">
+                        <span class="symbol_name_span">{{ dict_reco.Name}}</span><br>
+                        <span class="reco_td_box_span">
+                            <span class="small_font_span">예상수익률 : </span>
+                            {%if dict_reco.Content1 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
+                            {%elif dict_reco.Content1 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
+                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                            {%endif%}
+                        </span>
+                        <span class="reco_td_box_span" >
+                            <span class="small_font_span">현재수익률 : </span>
+                            {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
+                            {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
+                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                            {%endif%}
+                        </span>
+                    </td>
+                    <td class="reco_td_box3">
+                        <a onclick="submitReco('KRX' ,'{{ dict_reco.Symbol}}');">
+                            <div class="recoBtn">분 석</div>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    {% endfor %}
+
+</form>
+{% endblock body %}
+

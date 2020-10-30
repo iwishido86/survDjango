@@ -26,7 +26,8 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = 'kqtkh=@^mzr_(8h4b*9f$9n7=h7)lv9ss88h*pt^t&yjpig(zs'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -136,26 +137,26 @@ REST_FRAMEWORK = {
 }
 # ...
 
-LOG_FILE = os.path.join(os.path.dirname(__file__), '..', 'myLog.log')
-LOGGING = { 'version': 1,
-            'disable_existing_loggers': False,
-            'formatters':
-                { 'verbose':    {  'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s", 'datefmt' : "%d/%b/%Y %H:%M:%S" },
-                  'simple': { 'format': '%(levelname)s %(message)s' },
-                },
-            'handlers':
-                { 'file':
-                      { 'level': 'DEBUG', 'class': 'logging.handlers.RotatingFileHandler', 'filename': LOG_FILE, 'formatter': 'verbose', 'maxBytes':1024*1024*10, 'backupCount':5, },
-                  },
-            'loggers':
-                { 'django':
-                    {
-                        'handlers':['file'], 'propagate': True, 'level':'INFO',
-                    },
-                  'django.request':
-                    {
-                        'handlers':['file'], 'propagate': False, 'level':'INFO',
-                    },
-                  'survDjango': { 'handlers': ['file'], 'level': 'DEBUG', },
-                  }
-            }
+# LOG_FILE = os.path.join(os.path.dirname(__file__), '..', 'myLog.log')
+# LOGGING = { 'version': 1,
+#             'disable_existing_loggers': False,
+#             'formatters':
+#                 { 'verbose':    {  'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s", 'datefmt' : "%d/%b/%Y %H:%M:%S" },
+#                   'simple': { 'format': '%(levelname)s %(message)s' },
+#                 },
+#             'handlers':
+#                 { 'file':
+#                       { 'level': 'DEBUG', 'class': 'logging.handlers.RotatingFileHandler', 'filename': LOG_FILE, 'formatter': 'verbose', 'maxBytes':1024*1024*10, 'backupCount':5, },
+#                   },
+#             'loggers':
+#                 { 'django':
+#                     {
+#                         'handlers':['file'], 'propagate': True, 'level':'INFO',
+#                     },
+#                   'django.request':
+#                     {
+#                         'handlers':['file'], 'propagate': False, 'level':'INFO',
+#                     },
+#                   'survDjango': { 'handlers': ['file'], 'level': 'DEBUG', },
+#                   }
+#             }

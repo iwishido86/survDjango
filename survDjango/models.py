@@ -150,6 +150,13 @@ class AnalDateM(models.Model):
     AnalDate = models.DateTimeField(blank=True, null=True)
 
 
+class AnalMasterH(models.Model):
+    AnalDate = models.DateTimeField(blank=True, null=True)
+    AnalTypeCd = models.CharField(max_length=2, help_text="01:차트로드02:중기03:단기:04:종목선정")
+    CompleteYn = models.CharField(max_length=2, blank=True, null=True, help_text="완료여부")
+    createDate = models.DateTimeField(auto_now=True, blank=True)
+
+
 class SimContentL(models.Model):
     AnalDate = models.DateTimeField()
     SimTypeCd = models.CharField(max_length=2, help_text="유사유형:01:Content3:02:Content4:03:안함:04:없음")

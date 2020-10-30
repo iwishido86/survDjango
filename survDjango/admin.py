@@ -3,7 +3,8 @@ from django.contrib.admin.views.main import ChangeList
 from django.db.models import Count
 
 from .models import SurvM, QuestionM, AnsM, ResultM, \
-    ResultHstoryL, ResultCommentL, SymbolM, CandleL, SimCandleL, SimContentL, RecoSymbolL, RecoCandleL, AnalDateM  # 추가
+    ResultHstoryL, ResultCommentL, SymbolM, CandleL, SimCandleL, SimContentL, RecoSymbolL, RecoCandleL, AnalDateM, \
+    AnalMasterH  # 추가
 
 # Register your models here.
 
@@ -85,6 +86,13 @@ class AnalDateMAdmin(admin.ModelAdmin):
     search_fields = ('AnalDate',)
 
 
+class AnalMasterHAdmin(admin.ModelAdmin):
+    list_display = ('AnalDate','AnalTypeCd','CompleteYn','createDate',)
+    list_filter = ('AnalDate',)
+    search_fields = ('AnalDate',)
+
+
+admin.site.register(AnalMasterH,AnalMasterHAdmin)  # 추가
 admin.site.register(AnalDateM,AnalDateMAdmin)  # 추가
 admin.site.register(RecoSymbolL,RecoSymbolLAdmin)  # 추가
 admin.site.register(RecoCandleL,RecoCandleLAdmin)  # 추가

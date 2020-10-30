@@ -3,7 +3,7 @@ from datetime import timezone
 from random import random, randint
 
 from astropy.io.votable.converters import Int
-from django.db.models import Q, Max, Count, Sum, Avg
+from django.db.models import Q, Max, Count, Sum, Avg, F
 from django.db.models.functions import Substr
 from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
@@ -23,7 +23,7 @@ import datetime
 from .candle_func import update_anal_candle, create_anal_candle
 from .forms import UserLoginForm, SurvForm
 from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM, ResultCommentL, SymbolM, CandleL, SimCandleL, \
-    AnalDateM, SimContentL, RecoSymbolL, RecoCandleL
+    AnalDateM, SimContentL, RecoSymbolL, RecoCandleL, AnalMasterH
 
 from .serializers import RegistrationUserSerializer
 
@@ -53,7 +53,7 @@ def chart_index_view(request):
 
     queryday = analDateM.AnalDate - datetime.timedelta(days=10)
 
-    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=queryday, RecoDispYn='Y').order_by('-AnalDate')
+    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate=analDateM.AnalDate, RecoDispYn='Y').order_by('-AnalDate')
 
     dict_recolist = []
     set_reco = {}
@@ -66,12 +66,52 @@ def chart_index_view(request):
         set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
-    logger.debug(dict_symbollist)
+    recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday, RecoDispYn='Y').annotate(Prorate=((F('NowClose')-F('Close'))/F('Close'))).order_by('Prorate')[0:3]
+    dict_recolist2 = []
+    set_reco2 = {}
+
+    for recoSymbolL in recoSymbolLlist2:
+
+        set_reco = recoSymbolL.__dict__
+        sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
+        set_reco['Name'] = sim_symbolM.Name
+        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        dict_recolist2.append(set_reco)
+
+    context = {
+        'dict_recolist': dict_recolist,
+        'dict_recolist2': dict_recolist2,
+        'analdate': analDateM.AnalDate,
+        'symbollist': dict_symbollist,
+    }
+
+    return render(request, template_name, context)
+
+
+#http://127.0.0.1:8000/chart/list
+def chart_list_view(request):
+    template_name = 'survDjango/chart_list.html'
+
+    analDateM = get_object_or_404(AnalDateM)
+
+    queryday = analDateM.AnalDate - datetime.timedelta(days=10)
+
+    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=queryday, RecoDispYn='Y').order_by('-AnalDate','Content1')
+
+    dict_recolist = []
+    set_reco = {}
+
+    for recoSymbolL in recoSymbolLlist:
+
+        set_reco = recoSymbolL.__dict__
+        sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
+        set_reco['Name'] = sim_symbolM.Name
+        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        dict_recolist.append(set_reco)
 
     context = {
         'dict_recolist': dict_recolist,
         'analdate': analDateM.AnalDate,
-        'symbollist': dict_symbollist,
     }
 
     return render(request, template_name, context)
@@ -100,7 +140,7 @@ def chart_index_admin_view(request):
 
     queryday = analDateM.AnalDate - datetime.timedelta(days=10)
 
-    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=queryday).order_by('-AnalDate')
+    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=queryday).order_by('-AnalDate')[0:40]
 
     dict_recolist = []
     set_reco = {}
@@ -113,12 +153,14 @@ def chart_index_admin_view(request):
         set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
-    logger.debug(dict_symbollist)
+    analMasterHlist = AnalMasterH.objects.filter().order_by('-createDate')[0:5]
+
 
     context = {
         'dict_recolist': dict_recolist,
         'analdate': analDateM.AnalDate,
         'symbollist': dict_symbollist,
+        'analhlist': analMasterHlist,
     }
 
     return render(request, template_name, context)
@@ -198,7 +240,8 @@ def chart_reco_view(request,sysmarketcd,symbol):
         set_reco['Name'] = sim_symbolM.Name
         dict_recolist.append(set_reco)
 
-    plot_div = plot(graph,output_type='div')
+    plot_conf = {'showLink': False, 'displayModeBar': False, 'responsive': True}
+    plot_div = plot(graph,output_type='div', config=plot_conf)
 
     context = {
         'plot_div': plot_div,

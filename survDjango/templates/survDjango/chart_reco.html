@@ -19,84 +19,82 @@
 
 {% block body %}
 <form method="post">
-    <div class="cont_box">
-        {% csrf_token %}
-        <div class="analdate_box">
-        분석기준일 : {{analdate|date:"m/d"}}
-        </div>
-
-        <table  class="reco_table_box">
-            <tr>
-                <td class="reco_cont_td_box1">종목 :</td>
-                <td class="reco_cont_td_box2">
-                    {{symbol.Name}} ({{symbol.Symbol}})
-                </td>
-            </tr>
-            <tr>
-                <td class="reco_cont_td_box1">예상수익률 :</td>
-                <td class="reco_cont_td_box2">
-                    {%if recoSymbol.Content1 == 0 %}<span class="prorate_zero_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
-                    {%elif recoSymbol.Content1 > 0 %}<span class="prorate_up_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
-                    {%else %}<span class="prorate_down_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
-                    {%endif%}
-                </td>
-            </tr>
-        </table>
-
-        {{ form.as_p }}
-        현재차트 :<BR>
-        <div class="reco_list_box">
-            <img class="reco_chart_img_box" src="https://ssl.pstatic.net/imgfinance/chart/item/candle/day/{{symbol.Symbol}}.png?sidcode=1603459099064">
-        </div>
-        <BR><BR><BR>
-        <div class="symbol_serch_box">
-            <span class="symbol_name_span">유사 차트 탐색 결과</span>
-        </div>
-        <table class="reco_table_box">
-            <tr>
-                <td class="reco_cont_td_box1">차트 분석유형 :</td>
-                <td class="reco_cont_td_box2">
-                    {%if recoSymbol.RecoTypeCd == '01' %}10일 차트 분석
-                    {%else %}5일 차트 분석
-                    {%endif%}
-                </td>
-            </tr>
-            <tr>
-                <td class="reco_cont_td_box1">유사한 차트 :</td>
-                <td class="reco_cont_td_box2">{{recoSymbol.SimSymbolCnt}}개 발견</td>
-            </tr>
-            <tr>
-                <td class="reco_cont_td_box1">평균수익률 :</td>
-                <td class="reco_cont_td_box2">{{ recoSymbol.Content1|stringformat:".2f%%"}}</td>
-            </tr>
-        </table>
-        {% autoescape off %}
-        {{ plot_div }}
-
-
-        {% for reco_candle in reco_candlelist %}
-            <div class="index_cont_box1">
-                <table class="reco_table_box">
-                    <tr>
-                        <td class="reco_td_box1">
-                            <span class="small_font_span">발생일</span>
-                            <br>
-                            {{ reco_candle.BaseDate|date:"y/m/d"}}
-                        </td>
-                        <td class="reco_td_box2">
-                            <span class="symbol_name_span">{{ reco_candle.Name}}</span><br>
-                        </td>
-                    </tr>
-                </table>
-
-            </div>
-        {% endfor %}
-
-
-        {% endautoescape %}
-        <span class="recoBtn" id="homeBtn" onclick="sendHome(homeBtn);">홈으로</span>
-        <span class="recoBtn" id="naverBtn" onclick="sendNaver(naverBtn,'{{recoSymbol.Symbol}}');">네이버</span>
+    {% csrf_token %}
+    <div class="analdate_box">
+    분석기준일 : {{analdate|date:"m/d"}}
     </div>
+
+    <table  class="reco_table_box">
+        <tr>
+            <td class="reco_cont_td_box1">종목 :</td>
+            <td class="reco_cont_td_box2">
+                {{symbol.Name}} ({{symbol.Symbol}})
+            </td>
+        </tr>
+        <tr>
+            <td class="reco_cont_td_box1">예상수익률 :</td>
+            <td class="reco_cont_td_box2">
+                {%if recoSymbol.Content1 == 0 %}<span class="prorate_zero_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
+                {%elif recoSymbol.Content1 > 0 %}<span class="prorate_up_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
+                {%else %}<span class="prorate_down_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
+                {%endif%}
+            </td>
+        </tr>
+    </table>
+
+    {{ form.as_p }}
+    현재차트 :<BR>
+    <div class="reco_list_box">
+        <img class="reco_chart_img_box" src="https://ssl.pstatic.net/imgfinance/chart/item/candle/day/{{symbol.Symbol}}.png?sidcode=1603459099064">
+    </div>
+    <BR><BR><BR>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">유사 차트 탐색 결과</span>
+    </div>
+    <table class="reco_table_box">
+        <tr>
+            <td class="reco_cont_td_box1">차트 분석유형 :</td>
+            <td class="reco_cont_td_box2">
+                {%if recoSymbol.RecoTypeCd == '01' %}10일 차트 분석
+                {%else %}5일 차트 분석
+                {%endif%}
+            </td>
+        </tr>
+        <tr>
+            <td class="reco_cont_td_box1">유사한 차트 :</td>
+            <td class="reco_cont_td_box2">{{recoSymbol.SimSymbolCnt|stringformat:"d%%"}}개 발견</td>
+        </tr>
+        <tr>
+            <td class="reco_cont_td_box1">평균수익률 :</td>
+            <td class="reco_cont_td_box2">{{ recoSymbol.Content1|stringformat:".2f%%"}}</td>
+        </tr>
+    </table>
+    {% autoescape off %}
+    {{ plot_div }}
+
+
+    {% for reco_candle in reco_candlelist %}
+        <div class="index_cont_box1">
+            <table class="reco_table_box">
+                <tr>
+                    <td class="reco_td_box1">
+                        <span class="small_font_span">발생일</span>
+                        <br>
+                        {{ reco_candle.BaseDate|date:"y/m/d"}}
+                    </td>
+                    <td class="reco_td_box2">
+                        <span class="symbol_name_span">{{ reco_candle.Name}}</span><br>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    {% endfor %}
+
+
+    {% endautoescape %}
+    <span class="recoBtn" id="homeBtn" onclick="sendHome(homeBtn);">홈으로</span>
+    <span class="recoBtn" id="naverBtn" onclick="sendNaver(naverBtn,'{{recoSymbol.Symbol}}');">네이버</span>
 </form>
 {% endblock body %}
 

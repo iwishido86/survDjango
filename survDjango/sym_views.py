@@ -23,7 +23,7 @@ import datetime
 from .candle_func import update_anal_candle, create_anal_candle
 from .forms import UserLoginForm, SurvForm
 from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM, ResultCommentL, SymbolM, CandleL, SimCandleL, \
-    AnalDateM, SimContentL, RecoSymbolL, RecoCandleL
+    AnalDateM, SimContentL, RecoSymbolL, RecoCandleL, AnalMasterH
 
 from .serializers import RegistrationUserSerializer
 logger = logging.getLogger(__name__)
@@ -176,6 +176,12 @@ def sym_bulk_view(request,sysmarketcd,symbol):
 def sym_day_update_view(request,sysmarketcd,basedate):
     template_name = 'survDjango/ca_init.html'
 
+    AnalMasterH(
+        AnalDate=basedate,
+        AnalTypeCd='01',
+        CompleteYn='N',
+    ).save()
+
     current_tz = timezone.get_current_timezone()
 
     dt_basedate = current_tz.localize(pd.to_datetime(basedate))
@@ -203,6 +209,12 @@ def sym_day_update_view(request,sysmarketcd,basedate):
         #logger.info(model_instances)
 
     CandleL.objects.bulk_create(model_instances)
+
+    AnalMasterH(
+        AnalDate=basedate,
+        AnalTypeCd='01',
+        CompleteYn='Y',
+    ).save()
 
 #    return HttpResponseRedirect('/symbol/bulk/' + symbolMlist[499].SysMarketCd + '/' + symbolMlist[499].Symbol )
     return render(request, template_name, {})
@@ -301,7 +313,13 @@ def sym_anal_view(request,sysmarketcd,symbol,analdate):
 #http://127.0.0.1:8000/symbol/anal2/KRX/2020-10-22
 def sym_anal2_view(request,sysmarketcd,analdate):
     template_name = 'survDjango/sym_anal.html'
-    logger.debug('3333')
+
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='02',
+        CompleteYn='N',
+    ).save()
+
     from django.utils import timezone
 
     current_tz = timezone.get_current_timezone()
@@ -345,7 +363,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
         # Content3 = models.CharField(max_length=100, blank=True, null=True)
         # Content4 = models.CharField(max_length=100, blank=True, null=True)
         # 20개 이상
-        if candleGrp["CandleCnt"] > 10 \
+        if candleGrp["CandleCnt"] > 5 \
             or len(candleGrp["Content3"]) < 24:
             simcandle = SimContentL(
                 AnalDate=analdate,
@@ -426,6 +444,11 @@ def sym_anal2_view(request,sysmarketcd,analdate):
 
     SimContentL.objects.bulk_create(model_instances)
 
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='02',
+        CompleteYn='Y',
+    ).save()
 
     #logger.info(dict_candlelist)
     context = {
@@ -438,6 +461,12 @@ def sym_anal2_view(request,sysmarketcd,analdate):
 #http://127.0.0.1:8000/symbol/anal3/KRX/2020-10-20
 def sym_anal3_view(request,sysmarketcd,analdate):
     template_name = 'survDjango/sym_anal.html'
+
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='03',
+        CompleteYn='N',
+    ).save()
 
     from django.utils import timezone
 
@@ -465,7 +494,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
         logger.info("1::"+ candleGrp["Content4"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
         index = index + 1
 
-        if candleGrp["CandleCnt"] > 10 \
+        if candleGrp["CandleCnt"] > 5 \
                 or len(candleGrp["Content4"]) < 12:
 
             continue
@@ -512,7 +541,11 @@ def sym_anal3_view(request,sysmarketcd,analdate):
 
     SimContentL.objects.bulk_create(model_instances)
 
-
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='03',
+        CompleteYn='Y',
+    ).save()
     #logger.info(dict_candlelist)
     context = {
     }
@@ -523,6 +556,12 @@ def sym_anal3_view(request,sysmarketcd,analdate):
 #추천종목 인서트
 def sym_anal4_view(request,sysmarketcd,analdate):
     template_name = 'survDjango/ca_init.html'
+
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='04',
+        CompleteYn='N',
+    ).save()
 
     AnalDateM.objects.filter().delete()
     AnalDateM(AnalDate=analdate).save()
@@ -651,6 +690,12 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     context = {
     }
 
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='04',
+        CompleteYn='Y',
+    ).save()
+
     return render(request, template_name, context)
 
 
@@ -760,6 +805,20 @@ def sym_reupdate_view(request,sysmarketcd,symbol):
 
     return HttpResponseRedirect('/symbol/reupdate/' + symbolMlist[499].SysMarketCd + '/' + symbolMlist[499].Symbol )
     #return render(request, template_name, {})
+
+
+
+def sym_reco_update_view(request,sysmarketcd,symbol):
+
+    analDateM = get_object_or_404(AnalDateM)
+
+    recoSymbolL = get_object_or_404(RecoSymbolL, AnalDate=analDateM.AnalDate, Symbol=symbol)
+    recoSymbolL.RecoDispYn = 'Y'
+    recoSymbolL.save()
+
+    return HttpResponseRedirect('/chart/manage/')
+#    return render(request, template_name, {})
+
 #
 #
 #
