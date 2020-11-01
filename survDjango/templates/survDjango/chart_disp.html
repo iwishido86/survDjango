@@ -88,18 +88,26 @@
             </td>
         </tr>
     </table>
-    <div id="coupang_add_box"></div>
+    <script src="https://ads-partners.coupang.com/g.js"></script>
+    <div id="coupang_add_box_pc">
+        new PartnersCoupang.G({ id:354999 });
+    </div>
+    <div id="coupang_add_box_mobile">
+        new PartnersCoupang.G({ id:326670 });
+    </div>
 </form>
 {% endblock body %}
 
 {% block script2 %}
 
     if (typeof navigator.share == "undefined") {
-        var coupangId = 354999;
+        coupang_add_box_pc.style.display = '';
+        coupang_add_box_mobile.style.display = 'none';
     }else{
-        var coupangId = 326670;
+        coupang_add_box_pc.style.display = 'none';
+        coupang_add_box_mobile.style.display = '';
     }
-    coupang_add_box.innerHTML = new PartnersCoupang.G({ id:coupangId });
+
 
 
 {% endblock script2 %}

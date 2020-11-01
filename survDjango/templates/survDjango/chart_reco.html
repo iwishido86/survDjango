@@ -117,9 +117,13 @@
             </td>
         </tr>
     </table>
-    <div id="coupang_add_box"></div>
     <script src="https://ads-partners.coupang.com/g.js"></script>
-
+    <div id="coupang_add_box_pc">
+        new PartnersCoupang.G({ id:354999 });
+    </div>
+    <div id="coupang_add_box_mobile">
+        new PartnersCoupang.G({ id:326670 });
+    </div>
     <br>
 * 투자의 책임은 본인에게 있습니다. <br>&nbsp;&nbsp;신중한 투자를 하세요.
     <br>
@@ -129,12 +133,12 @@
 {% block script2 %}
 
     if (typeof navigator.share == "undefined") {
-        var coupangId = 354999;
+        coupang_add_box_pc.style.display = '';
+        coupang_add_box_mobile.style.display = 'none';
     }else{
-        var coupangId = 326670;
+        coupang_add_box_pc.style.display = 'none';
+        coupang_add_box_mobile.style.display = '';
     }
-
-    coupang_add_box.innerHTML = new PartnersCoupang.G({ id:coupangId });
 
     if (typeof navigator.share == "undefined") {
         // 공유하기 버튼을 지원하지 않는 경우에 대한 폴백 처리
