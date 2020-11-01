@@ -88,15 +88,19 @@
             </td>
         </tr>
     </table>
-    <script>
-        if (typeof navigator.share == "undefined") {
-            var coupangId = 354999;
-        }else{
-            var coupangId = 326670;
-        }
-
-        new PartnersCoupang.G({ id:coupangId });
-    </script>
+    <div id="coupang_add_box"></div>
 </form>
 {% endblock body %}
+
+{% block script2 %}
+
+    if (typeof navigator.share == "undefined") {
+        var coupangId = 354999;
+    }else{
+        var coupangId = 326670;
+    }
+    coupang_add_box.innerHTML = new PartnersCoupang.G({ id:coupangId });
+
+
+{% endblock script2 %}
 
