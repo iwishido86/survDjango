@@ -9,7 +9,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title>{{surv.title}}</title>
 
     <meta name="naver-site-verification" content="6c40c1beed5cb7d1b535150c2209f310a1704763" />
 
@@ -17,20 +16,21 @@
     <link rel="icon" href="/static/img/favicon.png" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     {% block headblock %}
+    <title>수달 차트검색엔진</title>
     <link rel="image_src" href="https://kimsudal.com/static/img/favicon.png">
 
     <meta itemprop="image" content="https://kimsudal.com/static/img/favicon.png">
     <meta property="og:image" content="https://kimsudal.com/static/img/favicon.png">
     <meta property="twitter:image" content="https://kimsudal.com/static/img/favicon.png">
 
-    <meta name="title" content="수달 로보어드바이저">
-    <meta property="og:title" content="수달 로보어드바이저">
-    <meta property="twitter:title" content="수달 로보어드바이저">
+    <meta name="title" content="수달 차트검색엔진">
+    <meta property="og:title" content="수달 차트검색엔진">
+    <meta property="twitter:title" content="수달 차트검색엔진">
 
     <meta name="description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
     <meta property="og:description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
     <meta property="twitter:description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
-    <meta name="keywords" content="주식차트,주식차트분석,로보어드바이저,차트분석">
+    <meta name="keywords" content="주식차트,주식차트분석,로보어드바이저,차트분석,차트검색엔진">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kimsudal.com/chart">
@@ -56,17 +56,23 @@
 
 
         function submitFrom(submitBtn){
-
+            main_cont_box.style.display = "none";
+            loading_cont_box.style.display = "";
             document.forms[0].submit();
         }
 
         function submitDisp(SysMarketCd,Symbol){
+            main_cont_box.style.display = "none";
+            loading_cont_box.style.display = "";
             //setTimeout(function() {
                 document.location.href='/chart/disp/'+ SysMarketCd + '/' + Symbol;
             //}, 1000);
         }
 
         function submitReco(SysMarketCd,Symbol){
+            main_cont_box.style.display = "none";
+            loading_cont_box.style.display = "";
+
             //setTimeout(function() {
                 document.location.href='/chart/reco/'+ SysMarketCd + '/' + Symbol;
             //}, 1000);
@@ -85,7 +91,7 @@
             //}, 1000);
         }
 
-        function sendNaver(homeBtn, symbol){
+        function sendNaver(symbol){
             //setTimeout(function() {
                 window.open("https://finance.naver.com/item/main.nhn?code=" + symbol,"left=0, top=0");
             //}, 1000);
@@ -98,15 +104,32 @@
 
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="container">
     {% include "./sym_menu.html" %}
     {% load static %}
 
+        <div class="main_cont_box" id="main_cont_box">
+        {% block body %}
+        BASE_BODY
+        {% endblock body %}
+        </div>
+        <div class=loading_cont_box" id="loading_cont_box" style="display:none;">
+            <div class="loading_gif_box">
+                <img src="/static/img/loading.gif">
+            </div>
 
-    {% block body %}
-    BASE_BODY
-    {% endblock body %}
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <div class="start_cont_box2">
+                <div class="result_content">
+                    <b>분석보고서 불러오는 중...</b><BR>
+                    <b>데이터 너무 많아서 느림... 지성</b><BR>
+                </div>
+            </div>
+            <br><br><br>
+        </div>
     </div>
+
+
     {% include "./bottom_layout.html" %}
 </body>
 

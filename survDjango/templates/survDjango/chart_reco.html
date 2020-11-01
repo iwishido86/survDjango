@@ -1,6 +1,28 @@
 {# knight_login.html #}
 {% extends 'survDjango/sym_base.html' %}
 
+{% block headblock %}
+    <title>{{symbol.Name}} 차트분석보고서</title>
+    <link rel="image_src" href="https://kimsudal.com/static/img/favicon.png">
+
+    <meta itemprop="image" content="https://kimsudal.com/static/img/favicon.png">
+    <meta property="og:image" content="https://kimsudal.com/static/img/favicon.png">
+    <meta property="twitter:image" content="https://kimsudal.com/static/img/favicon.png">
+
+    <meta name="title" content="{{symbol.Name}} 차트분석보고서">
+    <meta property="og:title" content="{{symbol.Name}} 차트분석보고서">
+    <meta property="twitter:title" content="{{symbol.Name}} 차트분석보고서">
+
+    <meta name="description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
+    <meta property="og:description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
+    <meta property="twitter:description" content="주식차트분석으로 유사차트 선정,수익률 상위 종목 추천">
+    <meta name="keywords" content="주식차트,주식차트분석,로보어드바이저,차트분석,차트검색엔진">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kimsudal.com/chart/reco/KRX/{{symbol.Symbol}}">
+    <meta property="twitter:url" content="https://kimsudal.com/chart/reco/KRX/{{symbol.Symbol}}">
+{% endblock headblock %}
+
 {% block script %}
     function sendHome(homeBtn){
         //setTimeout(function() {
@@ -8,7 +30,7 @@
         //}, 1000);
     }
 
-    function sendNaver(homeBtn, symbol){
+    function sendNaver(symbol){
         //setTimeout(function() {
             window.open("https://finance.naver.com/item/main.nhn?code=" + symbol,"left=0, top=0");
         //}, 1000);
@@ -23,7 +45,9 @@
     <div class="analdate_box">
     분석기준일 : {{analdate|date:"m/d"}}
     </div>
-
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">분석 보고서</span>
+    </div>
     <table  class="reco_table_box">
         <tr>
             <td class="reco_cont_td_box1">종목 :</td>
@@ -43,17 +67,16 @@
     </table>
 
     {{ form.as_p }}
-    현재차트 :<BR>
     <div class="reco_list_box">
         <img class="reco_chart_img_box" src="https://ssl.pstatic.net/imgfinance/chart/item/candle/day/{{symbol.Symbol}}.png?sidcode=1603459099064">
     </div>
-    <BR><BR><BR>
+    <br>
     <div class="symbol_serch_box">
         <span class="symbol_name_span">유사 차트 탐색 결과</span>
     </div>
     <table class="reco_table_box">
         <tr>
-            <td class="reco_cont_td_box1">차트 분석유형 :</td>
+            <td class="reco_cont_td_box1">분석유형 :</td>
             <td class="reco_cont_td_box2">
                 {%if recoSymbol.RecoTypeCd == '01' %}10일 차트 분석
                 {%else %}5일 차트 분석
@@ -62,39 +85,68 @@
         </tr>
         <tr>
             <td class="reco_cont_td_box1">유사한 차트 :</td>
-            <td class="reco_cont_td_box2">{{recoSymbol.SimSymbolCnt|stringformat:"d%"}}개 발견</td>
+            <td class="reco_cont_td_box2">{{recoSymbol.SimSymbolCnt|stringformat:".d"}}개 발견</td>
         </tr>
         <tr>
             <td class="reco_cont_td_box1">평균수익률 :</td>
             <td class="reco_cont_td_box2">{{ recoSymbol.Content1|stringformat:".2f%%"}}</td>
         </tr>
+        <tr>
+            <td class="reco_cont_td_box1">유사종목 :</td>
+            <td class="reco_cont_td_box2">
+                {% for reco_candle in reco_candlelist %}
+                    {{ reco_candle.Name}}<span class="small_font_span">({{ reco_candle.BaseDate|date:"y/m/d"}})</span><br>
+                {% endfor %}
+            </td>
+        </tr>
     </table>
     {% autoescape off %}
     {{ plot_div }}
-
-
-    {% for reco_candle in reco_candlelist %}
-        <div class="index_cont_box1">
-            <table class="reco_table_box">
-                <tr>
-                    <td class="reco_td_box1">
-                        <span class="small_font_span">발생일</span>
-                        <br>
-                        {{ reco_candle.BaseDate|date:"y/m/d"}}
-                    </td>
-                    <td class="reco_td_box2">
-                        <span class="symbol_name_span">{{ reco_candle.Name}}</span><br>
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-    {% endfor %}
-
-
     {% endautoescape %}
-    <span class="recoBtn" id="homeBtn" onclick="sendHome(homeBtn);">홈으로</span>
-    <span class="recoBtn" id="naverBtn" onclick="sendNaver(naverBtn,'{{recoSymbol.Symbol}}');">네이버</span>
+    <table class="reco_table_box">
+        <tr>
+            <td class="reco_cont_td_box1">네이버주식 :</td>
+            <td class="reco_cont_td_box2">
+                <a href="javascript:sendNaver('{{recoSymbol.Symbol}}');"><img src="/static/img/naver_link.jpg" width="50" class="link_img_box"/></a>
+            </td>
+        </tr>
+        <tr id="link_copy_tr" >
+            <td class="reco_cont_td_box1">보고서공유 :</td>
+            <td class="reco_cont_td_box2">
+                <a href="javascript:copyShareLink()"><img id="link_copy_btn" src="/static/img/share_api.png" width="50" class="link_img_box"/></a>
+            </td>
+        </tr>
+    </table>
+    <script src="https://ads-partners.coupang.com/g.js"></script>
+    <script>
+        if (typeof navigator.share == "undefined") {
+            var coupangId = 354999;
+        }else{
+            var coupangId = 326670;
+        }
+
+        new PartnersCoupang.G({ id:coupangId });
+    </script>
+    <br>
+* 투자의 책임은 본인에게 있습니다. <br>&nbsp;&nbsp;신중한 투자를 하세요.
+    <br>
 </form>
 {% endblock body %}
+
+{% block script2 %}
+
+    if (typeof navigator.share == "undefined") {
+        // 공유하기 버튼을 지원하지 않는 경우에 대한 폴백 처리
+        link_copy_tr.style.display = 'none';
+    }
+
+    function copyShareLink() {
+        navigator.share({
+            title: document.title,
+            text: document.title + '차트검색엔진 결과, 유사차트탐색, 이후 평균수익률, 상승확률 보고서',
+            url: document.location.href,
+        });
+    }
+
+{% endblock script2 %}
 

@@ -1,0 +1,106 @@
+{# knight_login.html #}
+{% extends 'survDjango/sym_base.html' %}
+
+{% block script %}
+
+
+{% endblock script %}
+
+
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    <br>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">수달차트검색엔진 알고리즘</span>
+    </div>
+    <div class="chart_manual_box">
+        - 수달검색엔진은 현재 종목의 5~10일의 <B>일봉모양과 거래량</B>, KOSPI변동 등을 고려하여 모든 차트를 패턴화합니다.<br>
+        - 과거의 차트에서 동일한 패턴을 찾아 그 패턴의 <B>향후 수익률을 계산</B>합니다.<br>
+        - 매일 모든 종목을 분석하여 최상위 수익률 종목을 추천합니다.<br>
+    </div>
+    {{ form.as_p }}
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">검색엔진 사용법 예시</span>
+    </div>
+    <div class="reco_list_box">
+        <table class="reco_table_box">
+            <tr>
+                <td class="manual_td_box1">
+                    <img src="/static/img/chart_list_1.jpg" width="100%" class="chart_list_img">
+                </td>
+                <td class="manual_td_box2">
+                    <span class="symbol_name_span">삼성바이오로직스</span><br>
+                    <span class="reco_td_box_span">
+                        과거에 이것과 똑같은 패턴이 있지 않았을까?<BR>
+                        검색해보자.
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">삼성바이오로직스 검색결과 2건</span>
+    </div>
+    <div class="reco_list_box">
+        <table class="reco_table_box">
+            <tr>
+                <td class="manual_td_box1">
+                    <img src="/static/img/chart_list_2.jpg" width="100%" class="chart_list_img">
+                </td>
+                <td class="manual_td_box2">
+                    <span class="symbol_name_span">서울반도체</span><br>
+                    <span class="reco_td_box_span">
+                        15년 6월 16일 발견<BR>
+                        이후 수익률 : <span class="prorate_up_font_span">10%</span> <BR>
+                        올랐네?
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="reco_list_box">
+        <table class="reco_table_box">
+            <tr>
+                <td class="manual_td_box1">
+                    <img src="/static/img/chart_list_3.jpg" width="100%" class="chart_list_img">
+                </td>
+                <td class="manual_td_box2">
+                    <span class="symbol_name_span">팜스코</span><br>
+                    <span class="reco_td_box_span">
+                        16년 4월 1일 발견<BR>
+                        이후 수익률 : <span class="prorate_up_font_span">11%</span> <BR>
+                        살만한데?
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">투자 가이드</span>
+    </div>
+    <div class="chart_manual_box">
+        - 검색엔진을 전적으로 신뢰하기 보다 투자 근거중 하나로 씁시다..<br>
+        - 차트분석은 단기투자를 위한 근거로 10%먹으면 바로 팝시다.<br>
+        - 패턴찾기는 완벽한 알고리즘을 위해 업그레이드 중입니다. <br>
+        - 아니다 싶으면 바로 팝시다.<br>
+    </div>
+        <div class="symbol_serch_box">
+        <span class="symbol_name_span">투자 유의사항</span>
+    </div>
+    <div class="chart_manual_box">
+        * 투자알고리즘 변경으로 유사차트검색 알고리즘은 수시로 변합니다.<br>
+        * 검색결과는 알고리즘에 따라 변경됩니다.<br>
+        <B>* 투자의 책임과 결과는 모두 본인에게 귀속됩니다.</B><br>
+    </div>
+        </div>
+        <div class="symbol_serch_box">
+        <span class="symbol_name_span">추천 목록</span>
+    </div>
+    <div class="chart_manual_box">
+        - 매일 모든 종목 차트패턴과 수익률 검색<br>
+        - 상위 수익률 종목 추천
+    </div>
+</form>
+{% endblock body %}
+

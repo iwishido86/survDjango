@@ -11,7 +11,9 @@
     <div class="analdate_box">
     분석기준일 : {{analdate|date:"m/d"}}
     </div>
-
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">분석 보고서</span>
+    </div>
     <table  class="reco_table_box">
         <tr>
             <td class="reco_cont_td_box1">종목 :</td>
@@ -24,11 +26,10 @@
 
     {{ form.as_p }}
 
-    현재차트 :<BR>
     <div class="reco_list_box">
         <img class="reco_chart_img_box" src="https://ssl.pstatic.net/imgfinance/chart/item/candle/day/{{symbol.Symbol}}.png?sidcode=1603459099064">
     </div>
-    <BR><BR><BR>
+        <br>
     <div class="symbol_serch_box">
         <span class="symbol_name_span">유사 차트 탐색 결과</span>
     </div>
@@ -46,7 +47,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="reco_cont_td_box1">차트 분석유형 :</td>
+                    <td class="reco_cont_td_box1">분석유형 :</td>
                     <td class="reco_cont_td_box2">
                         {%if simcon.SimTypeCd == '01' %}10일 차트 분석
                         {%elif simcon.SimTypeCd == '02' %}5일 차트 분석
@@ -58,7 +59,7 @@
                 </tr>
                 <tr>
                     <td class="reco_cont_td_box1">유사한 차트 :</td>
-                    <td class="reco_cont_td_box2">{{simcon.SimSymbolCnt|stringformat:"d%"}}개 발견</td>
+                    <td class="reco_cont_td_box2">{{simcon.SimSymbolCnt|stringformat:".d"}}개 발견</td>
                 </tr>
                 <tr>
                     <td class="reco_cont_td_box1">평균수익률 :</td>
@@ -79,8 +80,23 @@
         분석결과 없음.<br>
     * 분석데이터 저장 중이라 없는 종목이 많습니다.<br>
     {% endif %}
-    <span class="recoBtn" id="homeBtn" onclick="sendHome(homeBtn);">홈으로</span>
-    <span class="recoBtn" id="naverBtn" onclick="sendNaver(naverBtn,'{{recoSymbol.Symbol}}');">네이버</span>
+    <table class="reco_table_box">
+        <tr>
+            <td class="reco_cont_td_box1">네이버주식 :</td>
+            <td class="reco_cont_td_box2">
+                <a href="javascript:sendNaver('{{symbol.Symbol}}');"><img src="/static/img/naver_link.jpg" width="50" class="link_img_box"/></a>
+            </td>
+        </tr>
+    </table>
+    <script>
+        if (typeof navigator.share == "undefined") {
+            var coupangId = 354999;
+        }else{
+            var coupangId = 326670;
+        }
+
+        new PartnersCoupang.G({ id:coupangId });
+    </script>
 </form>
 {% endblock body %}
 

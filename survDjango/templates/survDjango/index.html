@@ -69,6 +69,14 @@
         }
     }
 
+    function submitChart(btn){
+        btn.className = btn.className +  "  animate__animated animate__fadeIn selected";
+        setTimeout(function() {
+            document.location.href="/chart/";
+        }, 1000);
+    }
+
+
     {% endblock script %}
     </script>
 
@@ -81,13 +89,32 @@
         {% csrf_token %}
 
     {{ form.as_p }}
-    <div class="result_cont_box4">수달 연구소의 연구과제</div>
+    <div class="result_cont_box4">수달 차트 분석</div>
+        <div class="index_cont_box1">
+        <div class="index_title_box1">
+            <B>차트 검색엔진/추천주 제공</B>
+        </div>
+        <div class="index_cont_box2" id="index_cont_box_chart" style="background-image:url('/static/img/chart_icon.jpg');">
+
+            <div>
+                <div class="index_title_box2">
+                    내 종목의 차트패턴, 과거에 있었을까?<br>
+                    이 패턴의 수익률 평균은?<br>
+                    전체종목 분석 후 매일 종목추천
+                </div>
+                <div class="start_box2" id="add_start_box_chart" onclick="submitChart(add_start_box_chart);">
+                    분석시작
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="result_cont_box4">수달 연구소의 심리테스트</div>
     {% for surv2 in survlist %}
         <div class="index_cont_box1">
             <div class="index_title_box1">
                 <B>{{ surv2.title|linebreaks }}</B>
             </div>
-            <div class="index_cont_box2" id="index_cont_box" style="background-image:url('/static/img/{{ surv2.iconImgFile }}');">
+            <div class="index_cont_box2" id="index_cont_box{{surv2.survId}}" style="background-image:url('/static/img/{{ surv2.iconImgFile }}');">
 
                 <div>
                     <div class="index_title_box2">
@@ -102,27 +129,27 @@
     {% endfor %}
 
 
-<div id="add_mobile_box">
-    <div class="result_cont_box4">수달 연구소 혜 택 존</div>
-    <div class="index_cont_box1">
-        <div class="index_title_box1">
-            <B>케이뱅크 신규 계좌개설</B>
-        </div>
-        <div class="index_cont_box2" id="index_cont_box2" style="background-image:url('/static/img/kbank_add.jpg');">
+    <div id="add_mobile_box">
+        <div class="result_cont_box4">수달 연구소 혜 택 존</div>
+        <div class="index_cont_box1">
+            <div class="index_title_box1">
+                <B>케이뱅크 신규 계좌개설</B>
+            </div>
+            <div class="index_cont_box2" id="index_cont_box2" style="background-image:url('/static/img/kbank_add.jpg');">
 
-            <div>
-                <div class="index_title_box2">
-                    행운상자 100개 제공<br>
-                    100만원 당첨 기회<br>
-                    평균 7천원 GET!
-                </div>
-                <div class="start_box2" id="add_start_box" onclick="submitFrom(add_start_box,'https://m.kbanknow.com/banking/k/JGpJUfx');">
-                    가입하기
+                <div>
+                    <div class="index_title_box2">
+                        행운상자 100개 제공<br>
+                        100만원 당첨 기회<br>
+                        평균 7천원 GET!
+                    </div>
+                    <div class="start_box2" id="add_start_box" onclick="submitFrom(add_start_box,'https://m.kbanknow.com/banking/k/JGpJUfx');">
+                        가입하기
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
     </div>
     {% include "./bottom_layout.html" %}
 </body>

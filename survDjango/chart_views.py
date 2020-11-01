@@ -299,7 +299,12 @@ def chart_reco_view(request,sysmarketcd,symbol):
     # dt_analdate = current_tz.localize(pd.to_datetime(analDateM.AnalDate))
     #
     # logger.debug((dt_analdate)
-    recoSymbolL = RecoSymbolL.objects.filter(Symbol=symbol).order_by('-AnalDate')[0]
+    recoSymbolLlist = RecoSymbolL.objects.filter(Symbol=symbol).order_by('-AnalDate')
+    if not recoSymbolLlist:
+        return render(request, template_name, {})
+    else:
+        recoSymbolL = recoSymbolLlist[0]
+
     logger.debug(recoSymbolL)
     queryday=recoSymbolL.AnalDate - datetime.timedelta(days=20)
 
@@ -370,6 +375,32 @@ def chart_reco_view(request,sysmarketcd,symbol):
         'recoSymbol': recoSymbolL,
         'reco_candlelist': dict_recolist,
 
+    }
+
+    return render(request, template_name, context)
+
+
+def chart_manual_view(request):
+
+    template_name = 'survDjango/chart_manual.html'
+
+    analDateM = get_object_or_404(AnalDateM)
+
+    context = {
+        'analdate': analDateM.AnalDate,
+    }
+
+    return render(request, template_name, context)
+
+
+def dev_note_view(request):
+
+    template_name = 'survDjango/dev_note.html'
+
+    analDateM = get_object_or_404(AnalDateM)
+
+    context = {
+        'analdate': analDateM.AnalDate,
     }
 
     return render(request, template_name, context)

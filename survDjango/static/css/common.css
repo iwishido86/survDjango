@@ -40,6 +40,10 @@ p{
     padding                 : 0;
 }
 
+.dev_note_span {
+    font-size           : 0.8em;
+    color               : #bbb;
+}
 
 .body_cont_box {
     min-height      : 90%;

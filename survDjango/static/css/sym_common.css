@@ -14,6 +14,12 @@ body{
     align           : center;
 }
 
+
+pre {
+    text-align          : left;
+}
+
+
 .basic_cont_box {
     text-align          : center;
 }
@@ -27,6 +33,10 @@ body{
 
 a{
 }
+
+.no_style{
+}
+
 p{
     display                 : block;
     margin-block-start      : 0em;
@@ -49,21 +59,45 @@ p{
 }
 
 .reco_td_box1 {
-     width           : 18%;
+    width               : 18%;
+    font-size           : 1em;
+    font-weight         : bolder;
+    color               : #BBB;
+}
+
+.manual_td_box1 {
+     width           : 50%;
+}
+
+.manual_td_box2 {
+     text-align          : center;
 }
 
 .reco_td_box2 {
-     width           : *;
 }
 
 .reco_td_box3 {
      width           : 15%;
 }
 .reco_cont_td_box1 {
-     width           : 28%;
+    padding             : 0.3em 0em 0.3em 0em ;
+    font-size           : 1em;
+    font-weight         : bolder;
+    color               : #BBB;
+     width              : 28%;
 }
 .reco_cont_td_box2 {
      width           : *;
+}
+
+
+.chart_manual_box{
+    font-size           : 0.8em;
+    border              : 2px solid #DDECFE;
+    border-radius       : 0.5rem;
+    margin              : 0em 0em 1em 0em;
+    padding             : 0.5rem 0.5rem;
+    line-height         : 2.5rem;
 }
 
 .symbol_serch_box{
@@ -298,6 +332,11 @@ p{
     border-top          : 1px dashed #bbb;
 }
 
+.dev_note_span {
+    font-size           : 0.8em;
+    color               : #bbb;
+}
+
 .index_cont_box1{
     position            : relative;
     text-align          : center;
@@ -315,7 +354,7 @@ p{
     display             : inline-block;
     color               : #999;
     text-align          : center;
-    margin              : 0em 1em 0em 1em;
+    margin              : 0em 0em 0em 1em;
     padding             : 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 
@@ -329,3 +368,10 @@ p{
     height : 0.5rem;
 }
 
+.loading_gif_box {
+    position        : absolute;
+    top             : 25%;
+    left            : 25%;
+    z-index         : 9999;
+
+}

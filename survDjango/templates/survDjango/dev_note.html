@@ -1,0 +1,82 @@
+{# knight_login.html #}
+{% extends 'survDjango/sym_base.html' %}
+
+{% block script %}
+
+
+{% endblock script %}
+
+
+{% block body %}
+<form method="post">
+    {% csrf_token %}
+    <br>
+        {{ form.as_p }}
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">김수달 약력</span>
+    </div>
+<pre>
+증권사 한 8년다님. 개같은 그.
+주식 한 10년함.
+첨에 ELW로 한 장 말아먹고
+그 뒤로는 평소엔 짤짤이
+주가 떨어졌을 떄 풀스윙 반복.
+
+주식적성검사 - 잠룡
+롤티어 - 골드
+</pre>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">차트검색엔진</span>
+    </div>
+<pre>
+밤 새 프로그램돌려서 추천주 찾아야된다.
+AWS 싼거 써서 넘 느리다.
+</pre>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">주식적성검사</span>
+    </div>
+<pre>
+나름 대박나서 기분좋다.
+반 장난인 컨텐츠인데 낮은거 나와서
+ㅂㄷㅂㄷ하면서 악플 다는 사람많음.
+상처받는다...
+
+* 수익률 왜케 낮냐는 사람 많음.
+개미는 -4%도 잘한거야~
+
+* 진짜 주신유형은 이런 유사과학 안 믿는다.
+그니까 본인이 주신이라 믿으면 주신이 아님.
+본인이 진짜 주신이면 적성검사를 안 믿어서 주신이 아님.
+</pre>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">효도재판</span>
+    </div>
+<pre>
+쥰내 신나서 만들었는데
+왜 망했냐...
+</pre>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">파이썬</span>
+    </div>
+<pre>
+- 이거하면서 첨해봄
+- 증권사에서 그지같은 프로프레임만 쳐하다가 이거하니까 신세경이다.
+- 근데 SQLite 개구림
+</pre>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">TODO 리스트</span>
+    </div>
+<pre>
+- 댓글 시스템 페이징 해야댐. 개귀찬
+- 메뉴 선택메뉴 CSS 작업.
+- BOOTSTRAP... 그게 먼데 싯ㅍ
+</pre>
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">게임 이야기</span>
+    </div>
+<pre>
+담원 롤드컵 우승!!!!!!!!
+</pre>
+</form>
+{% endblock body %}
+

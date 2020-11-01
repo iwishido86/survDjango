@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token
 
 from survDjango.chart_views import chart_index_view, chart_reco_view, chart_disp_view, chart_index_admin_view, \
-    chart_list_view
+    chart_list_view, chart_manual_view, dev_note_view
 from survDjango.views import surv_view, result_view, start_view, index_view
 from survDjango.sym_views import ca_init_view, sym_anal_view, sym_bulk_view, \
     sym_reupdate_view, sym_index_view, sym_day_update_view, sym_anal2_view, sym_anal3_view, sym_anal4_view, \
@@ -48,7 +48,10 @@ urlpatterns = [
     path('chart/', chart_index_view, name='chart_index_view'),  # 추가
     path('chart/manage/', chart_index_admin_view, name='chart_index_admin_view'),  # 추가
     path('chart/list/', chart_list_view, name='chart_list_view'),  # 추가
+    path('chart/manual/', chart_manual_view, name='chart_manual_view'),  # 추가
     path('chart/reco/<str:sysmarketcd>/<str:symbol>', chart_reco_view, name='chart_reco_view'),  # 추가
     path('chart/disp/<str:sysmarketcd>/<str:symbol>', chart_disp_view, name='chart_disp_view'),  # 추가
+    #개발자노트
+    path('devnote/', dev_note_view, name='dev_note_view'),  # 추가
 
     ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
