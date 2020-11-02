@@ -161,6 +161,7 @@ def chart_index_admin_view(request):
         set_reco = recoSymbolL.__dict__
         sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
         set_reco['Name'] = sim_symbolM.Name
+        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist2.append(set_reco)
 
     analMasterHlist = AnalMasterH.objects.filter().order_by('-createDate')[0:5]
