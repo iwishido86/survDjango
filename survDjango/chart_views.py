@@ -153,11 +153,22 @@ def chart_index_admin_view(request):
         set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
+    recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday).annotate(Prorate=((F('NowClose') - F('Close')) / F('Close'))).order_by('-Prorate')[0:15]
+    dict_recolist2 = []
+    set_reco2 = {}
+
+    for recoSymbolL in recoSymbolLlist2:
+        set_reco = recoSymbolL.__dict__
+        sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
+        set_reco['Name'] = sim_symbolM.Name
+        dict_recolist2.append(set_reco)
+
     analMasterHlist = AnalMasterH.objects.filter().order_by('-createDate')[0:5]
 
 
     context = {
         'dict_recolist': dict_recolist,
+        'dict_recolist2': dict_recolist2,
         'analdate': analDateM.AnalDate,
         'symbollist': dict_symbollist,
         'analhlist': analMasterHlist,

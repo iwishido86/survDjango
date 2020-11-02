@@ -81,7 +81,7 @@
                         {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%endif%}
                         <br>
-                        유형:{{ dict_reco.RecoTypeCd}}, 유사갯수:{{ dict_reco.SimSymbolCnt}}
+                        유형:{{ dict_reco.RecoTypeCd}}, 유사갯수:{{ dict_reco.SimSymbolCnt}} ,{{ dict_reco.Content3}}
                     </td>
                     <td class="reco_td_box3">
                         <a onclick="submitRecoUpdate('KRX' ,'{{ dict_reco.Symbol}}');">
@@ -96,6 +96,40 @@
         </div>
     {% endfor %}
 
+    {% for dict_reco in dict_recolist2 %}
+        <div class="reco_list_box">
+            <table class="reco_table_box">
+                <tr>
+                    <td class="reco_td_box1">
+                        <span class="small_font_span">분석일</span>
+                        <br>
+                        {{ dict_reco.AnalDate|date:"m/d"}}
+                    </td>
+                    <td class="reco_td_box2">
+                        <span class="symbol_name_span">{{ dict_reco.Name}}</span>({{ dict_reco.Symbol}})<br>
+                        <span class="small_font_span">예상수익률 : </span>
+                        {%if dict_reco.Content1 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                        {%elif dict_reco.Content1 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                        {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                        {%endif%}
+                        &nbsp;&nbsp;&nbsp;
+                        <span class="small_font_span">현재수익률 : </span>
+                        {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                        {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                        {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                        {%endif%}
+                        <br>
+                        유형:{{ dict_reco.RecoTypeCd}}, 유사갯수:{{ dict_reco.SimSymbolCnt}} ,{{ dict_reco.Content3}}
+                    </td>
+                    <td class="reco_td_box3">
+                        <a onclick="submitReco('KRX' ,'{{ dict_reco.Symbol}}');">
+                            <div class="recoBtn">분석</div>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    {% endfor %}
 
 </form>
 {% endblock body %}

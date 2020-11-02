@@ -41,42 +41,48 @@
     <!-- 종목검색 종료 -->
 <BR>
     * 오늘의 추천종목
-    {% for dict_reco in dict_recolist %}
-        <div class="reco_list_box">
-            <table class="reco_table_box">
-                <tr>
-                    <td class="reco_td_box1">
-                        <span class="small_font_span">분석일</span>
-                        <br>
-                        {{ dict_reco.AnalDate|date:"m/d"}}
-                    </td>
-                    <td class="reco_td_box2">
-                        <span class="symbol_name_span">{{ dict_reco.Name}}</span><br>
-                        <span class="reco_td_box_span">
-                            <span class="small_font_span">예상수익률 : </span>
-                            {%if dict_reco.Content1 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
-                            {%elif dict_reco.Content1 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
-                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
-                            {%endif%}
-                        </span>
-                        <span class="reco_td_box_span" >
-                            <span class="small_font_span">현재수익률 : </span>
-                            {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
-                            {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
-                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
-                            {%endif%}
-                        </span>
-                    </td>
-                    <td class="reco_td_box3">
-                        <a onclick="submitReco('KRX' ,'{{ dict_reco.Symbol}}');">
-                            <div class="recoBtn">분 석</div>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    {% endfor %}
-
+    {% if dict_recolist %}
+        {% for dict_reco in dict_recolist %}
+            <div class="reco_list_box">
+                <table class="reco_table_box">
+                    <tr>
+                        <td class="reco_td_box1">
+                            <span class="small_font_span">분석일</span>
+                            <br>
+                            {{ dict_reco.AnalDate|date:"m/d"}}
+                        </td>
+                        <td class="reco_td_box2">
+                            <span class="symbol_name_span">{{ dict_reco.Name}}</span><br>
+                            <span class="reco_td_box_span">
+                                <span class="small_font_span">예상수익률 : </span>
+                                {%if dict_reco.Content1 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
+                                {%elif dict_reco.Content1 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
+                                {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                                {%endif%}
+                            </span>
+                            <span class="reco_td_box_span" >
+                                <span class="small_font_span">현재수익률 : </span>
+                                {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
+                                {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
+                                {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                                {%endif%}
+                            </span>
+                        </td>
+                        <td class="reco_td_box3">
+                            <a onclick="submitReco('KRX' ,'{{ dict_reco.Symbol}}');">
+                                <div class="recoBtn">분 석</div>
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
+    {% else %}
+    <div class="reco_list_box" style="text-align:center;">
+        <br><span class="symbol_name_span">금일 차트 분석 중...<br>
+            조금만 기다려주세요.<br><br></span>
+    </div>
+    {% endif %}
 
 <BR>
     * 수익률 상위 추천주

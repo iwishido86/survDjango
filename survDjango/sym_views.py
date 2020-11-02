@@ -572,7 +572,8 @@ def sym_anal4_view(request,sysmarketcd,analdate):
 
     # 8개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
     # 3개 이상 수익률 우선
-    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01').order_by('-Content1')[0:20]
+    # 수익률 5보다 큰거
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01',Content1__gte=5).order_by('-Content1')[0:20]
 
     for simCon1 in simCon1List:
 
@@ -623,7 +624,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
 
     # 4개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
     # 3개 이상 수익률 우선
-    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02').order_by('-Content1')[0:20]
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02',Content1__gte=5).order_by('-Content1')[0:20]
 
     for simCon1 in simCon1List:
 
