@@ -32,14 +32,14 @@
                             <span class="small_font_span">예상수익률 : </span>
                             {%if dict_reco.Content1 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
                             {%elif dict_reco.Content1 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
-                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
+                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:"d%%"}}</span>
                             {%endif%}
                         </span>
                         <span class="reco_td_box_span" >
                             <span class="small_font_span">현재수익률 : </span>
                             {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
                             {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
-                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                            {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
                             {%endif%}
                         </span>
                     </td>

@@ -187,6 +187,9 @@ def sym_day_update_view(request,sysmarketcd,basedate):
     dt_basedate = current_tz.localize(pd.to_datetime(basedate))
     queryday = dt_basedate + datetime.timedelta(days=1)
 
+    delcandlelist = CandleL.objects.filter(BaseDate__gt=basedate)
+    delcandlelist.delete()
+
     logger.info(queryday.strftime("%Y-%m-%d"))
     candlelist = CandleL.objects.filter(BaseDate=basedate).order_by('Symbol','BaseDate')
 
