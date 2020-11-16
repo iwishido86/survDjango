@@ -247,12 +247,9 @@ def sym_anal2_view(request,sysmarketcd,analdate):
 
     del_simContentList = SimContentL.objects.filter(AnalDate=analdate)
     del_simContentList.delete()
-    #logger.info(dt_analdate)
-    #candlelist = CandleL.objects.filter(Symbol__gte=symbol, BaseDate=analdate).order_by('Symbol')[0:50]
-    #candleGrplist = CandleL.objects.filter(BaseDate=analdate).values('Content3').annotate(CandleCnt=Count('Content3')).order_by('-CandleCnt')
-    candleGrplist = CandleL.objects.filter().values('Content3').annotate(CandleCnt=Count('Content3')).annotate(
-        MaxBaseDate=Max('BaseDate')).filter(MaxBaseDate=analdate).order_by('-CandleCnt')
 
+    candleGrplist = CandleL.objects.filter().values('Content3').annotate(CandleCnt=Count('Content3')).annotate(
+        MaxBaseDate=Max('BaseDate')).annotate(AvgHigh=Avg('Content1')).annotate(AvgClose=Avg('Content2')).filter(MaxBaseDate=analdate).order_by('-CandleCnt')
     logger.info(candleGrplist.count().__str__())
 
     dict_candlelist = []
@@ -266,14 +263,14 @@ def sym_anal2_view(request,sysmarketcd,analdate):
 
         # 20개 이상
         if candleGrp["CandleCnt"] > 10 \
-            or len(candleGrp["Content3"]) < 24:
+            or len(candleGrp["Content3"]) < 18:
             simcandle = SimContentL(
                 AnalDate=analdate,
                 SimTypeCd='03',
                 Content=candleGrp["Content3"],
-                SimSymbolCnt=candleGrp["CandleCnt"],
-                Content1=0,
-                Content2=0,
+                SimSymbolCnt=candleGrp["CandleCnt"]-1,
+                Content1=candleGrp["AvgHigh"],
+                Content2=candleGrp["AvgClose"],
                 Content3='',
                 Content4='',
             )
@@ -281,7 +278,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
             continue
 
         #하나만 있는 경우
-        elif candleGrp["CandleCnt"] <= 1:
+        elif candleGrp["CandleCnt"] == 0:
             simcandle = SimContentL(
                 AnalDate=analdate,
                 SimTypeCd='04',
@@ -295,54 +292,19 @@ def sym_anal2_view(request,sysmarketcd,analdate):
             model_instances.append(simcandle)
             continue
 
-        dict_sim_candle = []
-        set_sim_candle = {}
 
-        sim_query_day = dt_analdate - datetime.timedelta(days=30)
-
-        sim_candlelist = CandleL.objects.filter( Content3=candleGrp["Content3"], BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:5]
-
-        logger.info("3::" + sim_candlelist.count().__str__())
-
-        sum_content1 = 0
-        #sim_candlelist = CandleL.objects.filter(~Q(Symbol=symbolM.Symbol),Content3=set_candle['mappingCon3'],BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:10]
-        for sim_candle in sim_candlelist:
-
-            #candle = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__gt=queryday).order_by('-BaseDate')[0:1]
-
-            startday = sim_candle.BaseDate + datetime.timedelta(days=1)
-            endday = sim_candle.BaseDate + datetime.timedelta(days=10)
-
-            avg_close = CandleL.objects.filter(Symbol=sim_candle.Symbol, BaseDate__gte=startday , BaseDate__lte=endday ).aggregate(AvgClose=Avg('Close'))
-            if avg_close['AvgClose']:
-                sum_content1 = sum_content1 + (avg_close['AvgClose'] - sim_candle.Close ) * 100 / sim_candle.Close
-
-        if sim_candlelist.count() == 0:
-            simcandle = SimContentL(
-                AnalDate=analdate,
-                SimTypeCd='04',
-                Content=candleGrp["Content3"],
-                SimSymbolCnt=0,
-                Content1=0,
-                Content2=0,
-                Content3='',
-                Content4='',
-            )
-            model_instances.append(simcandle)
         else:
-
             simcandle = SimContentL(
                 AnalDate=analdate,
                 SimTypeCd='01',
                 Content=candleGrp["Content3"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=sum_content1/sim_candlelist.count(),
-                Content2=0,
+                Content1=candleGrp["AvgHigh"],
+                Content2=candleGrp["AvgClose"],
                 Content3='',
                 Content4='',
             )
-            model_instances.append(simcandle)
-
+        model_instances.append(simcandle)
 
     SimContentL.objects.bulk_create(model_instances)
 
@@ -403,20 +365,20 @@ def sym_anal3_view(request,sysmarketcd,analdate):
                 AnalDate=analdate,
                 SimTypeCd='05',
                 Content=candleGrp["Content4"],
-                SimSymbolCnt=candleGrp["CandleCnt"],
+                SimSymbolCnt=candleGrp["CandleCnt"]-1,
                 Content1=candleGrp["AvgHigh"],
                 Content2=candleGrp["AvgClose"],
                 Content3='',
                 Content4='',
             )
-        elif candleGrp["CandleCnt"] <= 1 :
+        elif candleGrp["CandleCnt"] == 0:
             simcandle = SimContentL(
                 AnalDate=analdate,
                 SimTypeCd='06',
                 Content=candleGrp["Content4"],
-                SimSymbolCnt=candleGrp["CandleCnt"],
-                Content1=candleGrp["AvgHigh"],
-                Content2=candleGrp["AvgClose"],
+                SimSymbolCnt=0,
+                Content1=0,
+                Content2=0,
                 Content3='',
                 Content4='',
             )
