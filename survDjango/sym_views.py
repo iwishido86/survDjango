@@ -3,7 +3,7 @@ from datetime import timezone
 from random import random, randint
 
 from astropy.io.votable.converters import Int
-from django.db.models import Q, Max, Count, Sum, Avg
+from django.db.models import Q, Max, Count, Sum, Avg, F
 from django.db.models.functions import Substr
 from django.forms import model_to_dict
 from django.http import HttpResponseRedirect
@@ -174,7 +174,7 @@ def sym_bulk_view(request,sysmarketcd,symbol):
 
 #http://127.0.0.1:8000/symbol/day_update/KRX/2020-10-20
 def sym_day_update_view(request,sysmarketcd,basedate):
-    template_name = 'survDjango/ca_init.html'
+    template_name = 'survDjango/chart_index_admin.html'
 
     AnalMasterH(
         AnalDate=basedate,
@@ -223,99 +223,10 @@ def sym_day_update_view(request,sysmarketcd,basedate):
     return render(request, template_name, {})
 
 
-def sym_anal_view(request,sysmarketcd,symbol,analdate):
-    template_name = 'survDjango/sym_anal.html'
-
-    current_tz = timezone.get_current_timezone()
-    dt_analdate = current_tz.localize(pd.to_datetime(analdate))
-    #최근영업일
-    AnalDateM.objects.filter().delete()
-    AnalDateM(AnalDate=dt_analdate).save()
-
-    today =  current_tz.localize(datetime.datetime.now())
-    queryday = today - datetime.timedelta(days=10)
-
-    logger.info(dt_analdate)
-    candlelist = CandleL.objects.filter(Symbol__gte=symbol, BaseDate=analdate).order_by('Symbol')[0:50]
-
-    dict_candlelist = []
-    model_instances = []
-
-    for candle in candlelist :
-        #TODO 튜닝포인트
-
-        logger.info("1::"+candle.Symbol + "::" + candle.Content3 + "::" + len(candle.Content3.split('207')).__str__())
-
-        if candle.Content3 == '20C20C20C20C20C20C20C20C':
-            continue
-        if len(candle.Content3.split('207')) > 6:
-            continue
-
-        set_candle = candle.__dict__
-        set_candle['mappingCon3'] = candle.Content3
-
-        dict_sim_candle = []
-        set_sim_candle = {}
-
-        sim_query_day = candle.BaseDate - datetime.timedelta(days=30)
-
-        del_sim_candlelist= SimCandleL.objects.filter(Symbol=candle.Symbol, BaseDate=candle.BaseDate)
-        del_sim_candlelist.delete()
-        logger.info("2::" + candle.Symbol)
-        sim_candlelist = CandleL.objects.filter( Content3=candle.Content3, BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:5]
-
-        if sim_candlelist.count() == 0:
-            set_candle['mappingCon3'] = set_candle['mappingCon3'][9:]
-            sim_candlelist = CandleL.objects.filter(~Q(Symbol=candle.Symbol),Content4=candle.Content4,BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:5]
-
-        logger.info("3::" + candle.Symbol)
-        #sim_candlelist = CandleL.objects.filter(~Q(Symbol=symbolM.Symbol),Content3=set_candle['mappingCon3'],BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:10]
-        for sim_candle in sim_candlelist:
-
-            #candle = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__gt=queryday).order_by('-BaseDate')[0:1]
-
-            startday = sim_candle.BaseDate + datetime.timedelta(days=1)
-            endday = sim_candle.BaseDate + datetime.timedelta(days=10)
-
-            avg_close = CandleL.objects.filter(Symbol=sim_candle.Symbol, BaseDate__gt=startday , BaseDate__lt=endday ).aggregate(AvgClose=Avg('Close'))
-            if avg_close['AvgClose']:
-                content1 = (avg_close['AvgClose'] - sim_candle.Close ) * 100 / sim_candle.Close
-            else:
-                content1 = 0
-
-            set_sim_candle = sim_candle.__dict__
-            dict_sim_candle.append(set_sim_candle)
-
-            simcandle = SimCandleL(
-                BaseDate=candle.BaseDate,
-                Symbol=candle.Symbol,
-                SimBaseDate=sim_candle.BaseDate,
-                SimSymbol=sim_candle.Symbol,
-                SimTypeCd='01',
-                ChartNum=candle.Close/sim_candle.Close,
-                Content1=content1,
-                Content2=0,
-            )
-            model_instances.append(simcandle)
-
-        set_candle['simCandlelist'] = dict_sim_candle
-
-        dict_candlelist.append(set_candle)
-
-    SimCandleL.objects.bulk_create(model_instances)
-
-
-    #logger.info(dict_candlelist)
-    context = {
-        'candlelist' : dict_candlelist
-    }
-    return HttpResponseRedirect('/symbol/anal/' + sysmarketcd + '/' + candlelist[49].Symbol  + '/' + analdate )
-    #return render(request, template_name, context)
-
-
 #http://127.0.0.1:8000/symbol/anal2/KRX/2020-10-22
 def sym_anal2_view(request,sysmarketcd,analdate):
-    template_name = 'survDjango/sym_anal.html'
+
+    template_name = 'survDjango/chart_index_admin.html'
 
     AnalMasterH(
         AnalDate=analdate,
@@ -333,11 +244,6 @@ def sym_anal2_view(request,sysmarketcd,analdate):
 
     today =  current_tz.localize(datetime.datetime.now())
     queryday = today - datetime.timedelta(days=10)
-
-    #sim_candlelist = SimCandleL.objects.filter(BaseDate=analDateM.AnalDate).values('Symbol').annotate(SimCandleCnt=Count('Content1')).annotate(AvgContent1=Avg('Content1')).filter(BaseDate=analDateM.AnalDate, AvgContent1__gte=7).order_by('-SimCandleCnt','-AvgContent1')[0:10]
-    #sim_candlelist = SimCandleL.objects.filter(BaseDate=analDateM.AnalDate, AvgContent1__gte=10).values(Symbol').annotate(SimCandleCnt=Count('Content1'), AvgContent1=Avg('Content1')).order_by('-AvgContent1')[0:10]
-    #Product.objects.values('date_created')       .annotate(available=Count('available_quantity'))
-    #logger.info(sim_candlelist)
 
     del_simContentList = SimContentL.objects.filter(AnalDate=analdate)
     del_simContentList.delete()
@@ -357,14 +263,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
 
         logger.info("1::"+ candleGrp["Content3"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
         index = index + 1
-        # AnalDate = models.DateTimeField()
-        # SimTypeCd = models.CharField(max_length=2, help_text="유사유형:01:Content3:02:Content4:03:안함:04:없음")
-        # Content = models.CharField(max_length=100, blank=True, null=True)
-        # SimSymbolCnt = models.FloatField(default=0, help_text="갯수")
-        # Content1 = models.FloatField(default=0, help_text="단기수익률")
-        # Content2 = models.FloatField(default=0, help_text="장기수익률")
-        # Content3 = models.CharField(max_length=100, blank=True, null=True)
-        # Content4 = models.CharField(max_length=100, blank=True, null=True)
+
         # 20개 이상
         if candleGrp["CandleCnt"] > 10 \
             or len(candleGrp["Content3"]) < 24:
@@ -463,7 +362,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
 
 #http://127.0.0.1:8000/symbol/anal3/KRX/2020-10-20
 def sym_anal3_view(request,sysmarketcd,analdate):
-    template_name = 'survDjango/sym_anal.html'
+    template_name = 'survDjango/chart_index_admin.html'
 
     AnalMasterH(
         AnalDate=analdate,
@@ -484,7 +383,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
 
     #candleGrplist = CandleL.objects.filter(BaseDate=analdate).values('Content4').annotate(CandleCnt=Count('Content4')).order_by('-CandleCnt')
     candleGrplist = CandleL.objects.filter().values('Content4').annotate(CandleCnt=Count('Content4')).annotate(
-        MaxBaseDate=Max('BaseDate')).filter(MaxBaseDate=analdate).order_by('-CandleCnt')
+        MaxBaseDate=Max('BaseDate')).annotate(AvgHigh=Avg('Content1')).annotate(AvgClose=Avg('Content2')).filter(MaxBaseDate=analdate).order_by('-CandleCnt')
     logger.info(candleGrplist.count().__str__())
 
 
@@ -497,50 +396,43 @@ def sym_anal3_view(request,sysmarketcd,analdate):
         logger.info("1::"+ candleGrp["Content4"] + "::" + candleGrp["CandleCnt"].__str__() + "::" + index.__str__())
         index = index + 1
 
-        if candleGrp["CandleCnt"] > 10 \
+        if candleGrp["CandleCnt"] > 15 \
                 or len(candleGrp["Content4"]) < 12:
 
-            continue
+            simcandle = SimContentL(
+                AnalDate=analdate,
+                SimTypeCd='05',
+                Content=candleGrp["Content4"],
+                SimSymbolCnt=candleGrp["CandleCnt"],
+                Content1=candleGrp["AvgHigh"],
+                Content2=candleGrp["AvgClose"],
+                Content3='',
+                Content4='',
+            )
         elif candleGrp["CandleCnt"] <= 1 :
-            continue
-        dict_sim_candle = []
-        set_sim_candle = {}
-
-        sim_query_day = dt_analdate - datetime.timedelta(days=30)
-
-        sim_candlelist = CandleL.objects.filter( Content4=candleGrp["Content4"], BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:5]
-
-        logger.info("3::" + sim_candlelist.count().__str__())
-
-        sum_content1 = 0
-        #sim_candlelist = CandleL.objects.filter(~Q(Symbol=symbolM.Symbol),Content3=set_candle['mappingCon3'],BaseDate__lt=sim_query_day).order_by('-BaseDate')[0:10]
-        for sim_candle in sim_candlelist:
-
-            #candle = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__gt=queryday).order_by('-BaseDate')[0:1]
-
-            startday = sim_candle.BaseDate + datetime.timedelta(days=1)
-            endday = sim_candle.BaseDate + datetime.timedelta(days=10)
-
-            avg_close = CandleL.objects.filter(Symbol=sim_candle.Symbol, BaseDate__gte=startday , BaseDate__lte=endday ).aggregate(AvgClose=Avg('Close'))
-            if avg_close['AvgClose']:
-                sum_content1 = sum_content1 + (avg_close['AvgClose'] - sim_candle.Close ) * 100 / sim_candle.Close
-
-        if sim_candlelist.count() == 0:
-            continue
+            simcandle = SimContentL(
+                AnalDate=analdate,
+                SimTypeCd='06',
+                Content=candleGrp["Content4"],
+                SimSymbolCnt=candleGrp["CandleCnt"],
+                Content1=candleGrp["AvgHigh"],
+                Content2=candleGrp["AvgClose"],
+                Content3='',
+                Content4='',
+            )
         else:
-
             simcandle = SimContentL(
                 AnalDate=analdate,
                 SimTypeCd='02',
                 Content=candleGrp["Content4"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=sum_content1/sim_candlelist.count(),
-                Content2=0,
+                Content1=candleGrp["AvgHigh"],
+                Content2=candleGrp["AvgClose"],
                 Content3='',
                 Content4='',
             )
-            model_instances.append(simcandle)
 
+        model_instances.append(simcandle)
 
     SimContentL.objects.bulk_create(model_instances)
 
@@ -558,7 +450,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
 #http://127.0.0.1:8000/symbol/anal4/KRX/2020-10-22
 #추천종목 인서트
 def sym_anal4_view(request,sysmarketcd,analdate):
-    template_name = 'survDjango/ca_init.html'
+    template_name = 'survDjango/chart_index_admin.html'
 
     AnalMasterH(
         AnalDate=analdate,
@@ -576,7 +468,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     # 8개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
     # 3개 이상 수익률 우선
     # 수익률 5보다 큰거
-    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01',Content1__gte=5).order_by('-Content1')[0:20]
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01',Content1__gte=5,Content2__gte=5).annotate(Prorate=(F('Content1')*F('Content2'))).order_by('-Prorate')[0:10]
 
     for simCon1 in simCon1List:
 
@@ -627,7 +519,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
 
     # 4개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
     # 3개 이상 수익률 우선
-    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02',Content1__gte=5).order_by('-Content1')[0:20]
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02',Content1__gte=5,Content2__gte=5).annotate(Prorate=(F('Content1')*F('Content2'))).order_by('-Prorate')[0:10]
 
     for simCon1 in simCon1List:
 
@@ -810,6 +702,80 @@ def sym_reupdate_view(request,sysmarketcd,symbol):
     return HttpResponseRedirect('/symbol/reupdate/' + symbolMlist[499].SysMarketCd + '/' + symbolMlist[499].Symbol )
     #return render(request, template_name, {})
 
+
+def sym_prorate_update_view(request,sysmarketcd,analdate,symbol):
+    template_name = 'survDjango/chart_index_admin.html'
+
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='05',
+        CompleteYn='N',
+    ).save()
+
+    symbol_cnt = 0
+    candlelist = CandleL.objects.filter(BaseDate__gte=analdate,Symbol__gte=symbol).order_by('Symbol','-BaseDate')
+    before_symbol = '000000'
+    model_instances = []
+
+    for candle in candlelist:
+        if len(candle.Content3) > 18:
+            candle.Content3 = candle.Content3[len(candle.Content3)-18:]
+
+        if not before_symbol == candle.Symbol:  # 심볼 바뀜
+            symbol_cnt = symbol_cnt + 1
+            logger.info(symbol_cnt.__str__() + ':::' + candle.Symbol)
+            before_symbol = candle.Symbol
+
+            high_sum = 0
+            high_index = 0  # 5일새 고가
+            close_sum = 0
+            close_index = 0  # 9일종가 평균
+
+            candle.Content1 = 0     # 5일새 고가
+            candle.Content2 = 0     # 9일종가 누적
+
+        elif candle.Close == 0:       # 종가가 0임
+            high_sum = 0
+            high_index = 0  # 5일새 고가
+            close_sum = 0
+            close_index = 0  # 9일종가 평균
+
+            candle.Content1 = 0  # 5일새 고가
+            candle.Content2 = 0  # 9일종가 누적
+
+        else:
+            candle.Content1 = ((high_sum / high_index)  - candle.Close) * 100 / candle.Close
+            candle.Content2 = ((close_sum / close_index) - candle.Close) * 100 / candle.Close
+
+        logger.info(candle.Symbol + ':' + candle.BaseDate.strftime("%Y-%m-%d") + ':' + high_sum.__str__() + ':' + high_index.__str__()+ ':' + close_sum.__str__() + ':' + close_index.__str__())
+        if high_index < 3:     # 3일 까지
+            high_sum = high_sum + candle.High
+            high_index = high_index + 1
+        else:
+            # 누적 high * (n-1/n) + high
+            high_sum = ( high_sum * ((high_index-1)/high_index )) + candle.High
+
+        if close_index < 5:     # 5일 까지
+            close_sum = close_sum + candle.Close
+            close_index = close_index + 1
+        else:
+            # 누적 high * (n-1/n) + high
+            close_sum = ( close_sum * ((close_index-1)/close_index )) + candle.Close
+
+        model_instances.append(candle)
+
+    delcandlelist = CandleL.objects.filter(BaseDate__gte=analdate, Symbol__gte=symbol , Symbol__lte=before_symbol)
+    delcandlelist.delete()
+
+    CandleL.objects.bulk_create(model_instances)
+
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='05',
+        CompleteYn='Y',
+    ).save()
+
+    return HttpResponseRedirect('/chart/manage/')
 
 
 def sym_reco_update_view(request,sysmarketcd,symbol):

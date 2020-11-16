@@ -78,9 +78,21 @@ def chart_index_view(request):
         set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist2.append(set_reco)
 
+    recoSymbolLlist3 = RecoSymbolL.objects.filter(AnalDate__lt=analDateM.AnalDate ,AnalDate__gte=queryday, RecoDispYn='Y').annotate(
+        Prorate=((F('NowClose') - F('Close')) / F('Close'))).order_by('-AnalDate')[0:5]
+    dict_recolist3 = []
+
+    for recoSymbolL in recoSymbolLlist3:
+        set_reco = recoSymbolL.__dict__
+        sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
+        set_reco['Name'] = sim_symbolM.Name
+        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        dict_recolist3.append(set_reco)
+
     context = {
         'dict_recolist': dict_recolist,
         'dict_recolist2': dict_recolist2,
+        'dict_recolist3': dict_recolist3,
         'analdate': analDateM.AnalDate,
         'symbollist': dict_symbollist,
     }

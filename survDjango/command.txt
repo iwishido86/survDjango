@@ -114,3 +114,14 @@ git clone https://github.com/iwishido86/survDjango.git
 python3 manage.py runserver
 
 
+
+덕우전자
+
+오늘의 추천주로 선정되었습니다.
+
+내일 장은 미 대선에 따라 달려있겠지만..
+
+과연 오를 것인가.. 기대하시라
+
+분석보고서 보기
+https://kimsudal.com/chart/reco/KRX/263600

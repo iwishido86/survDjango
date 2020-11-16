@@ -58,19 +58,19 @@ class CandleLAdmin(admin.ModelAdmin):
 
 class SimCandleLAdmin(admin.ModelAdmin):
     list_display = ('BaseDate', 'Symbol', 'SimBaseDate', 'SimSymbol', 'ChartNum' ,'Content1','Content2',)
-    list_filter = ( 'BaseDate','Symbol', 'SimBaseDate', 'SimSymbol',)
+    list_filter = ( 'BaseDate',)
     search_fields = ( 'BaseDate','Symbol',)
 
 
 class SimContentLAdmin(admin.ModelAdmin):
     list_display = ('AnalDate', 'SimTypeCd', 'Content', 'SimSymbolCnt', 'Content1' ,'Content2','Content3',)
-    list_filter = ('AnalDate','Content',)
+    list_filter = ('AnalDate',)
     search_fields = ('AnalDate','Content',)
 
 
 class RecoSymbolLAdmin(admin.ModelAdmin):
     list_display = ('AnalDate', 'Symbol', 'RecoTypeCd', 'SimSymbolCnt', 'Content1' ,'Content2','Content3','Content4',)
-    list_filter = ('AnalDate','Symbol',)
+    list_filter = ('AnalDate',)
     search_fields = ('AnalDate','Symbol',)
 
 

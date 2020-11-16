@@ -21,6 +21,13 @@
             //}, 1000);
         }
 
+        function anal5Click(clickBtn){
+            //setTimeout(function() {
+                document.location.href='/symbol/prorate_update/KRX/'+adminAnaldate.value+ '/000000';
+            //}, 1000);
+        }
+
+
         function anal1Click(clickBtn){
             //setTimeout(function() {
                 document.location.href='/symbol/day_update/KRX/'+adminAnaldate.value;
@@ -33,6 +40,11 @@
             //}, 1000);
         }
 
+        function sendNaver(symbol){
+            //setTimeout(function() {
+                window.open("https://finance.naver.com/item/main.nhn?code=" + symbol,"left=0, top=0");
+            //}, 1000);
+        }
 
 {% endblock script %}
 
@@ -52,6 +64,7 @@
         <span class="serchBtn" id="anal2Btn" onclick="anal2Click(anal2Btn);">중기분석</span>
         <span class="serchBtn" id="anal3Btn" onclick="anal3Click(anal3Btn);">단기분석</span>
         <span class="serchBtn" id="anal4Btn" onclick="anal4Click(anal4Btn);">종목선정</span>
+        <span class="serchBtn" id="anal5Btn" onclick="anal5Click(anal5Btn);">수익생성</span>
         {% for analh in analhlist.all %}
             <div class="symbol_serch_list_box">
                 {{ analh.createDate|date:"yymd h:m:s"}} : {{ analh.AnalDate|date:"yy-m-d"}} : {{ analh.AnalTypeCd}} : {{ analh.CompleteYn}}
@@ -63,25 +76,25 @@
             <table class="reco_table_box">
                 <tr>
                     <td class="reco_td_box1">
-                        <span class="small_font_span">분석일</span>
-                        <br>
                         {{ dict_reco.AnalDate|date:"m/d"}}
                     </td>
                     <td class="reco_td_box2">
-                        <span class="symbol_name_span">{{ dict_reco.Name}}</span>({{ dict_reco.Symbol}})<br>
-                        <span class="small_font_span">예상수익률 : </span>
+                        <span class="symbol_name_span">{{ dict_reco.Name}}</span> ({{ dict_reco.Symbol}})<br>
                         {%if dict_reco.Content1 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
                         {%elif dict_reco.Content1 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
                         {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
                         {%endif%}
-                        &nbsp;&nbsp;&nbsp;
-                        <span class="small_font_span">현재수익률 : </span>
+                        /&nbsp;&nbsp;&nbsp;
+                        {%if dict_reco.Content2 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content2|stringformat:".2f%%"}}</span>
+                        {%elif dict_reco.Content2 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content2|stringformat:".2f%%"}}</span>
+                        {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content2|stringformat:".2f%%"}}</span>
+                        {%endif%}
+                        /&nbsp;&nbsp;&nbsp;
                         {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%endif%}
-                        <br>
-                        유형:{{ dict_reco.RecoTypeCd}}, 유사갯수:{{ dict_reco.SimSymbolCnt}} ,{{ dict_reco.Content3}}
+                        / {{ dict_reco.RecoTypeCd}} / {{ dict_reco.SimSymbolCnt}}건 / {{ dict_reco.Content3}}
                     </td>
                     <td class="reco_td_box3">
                         <a onclick="submitRecoUpdate('KRX' ,'{{ dict_reco.Symbol}}');">
@@ -90,6 +103,7 @@
                         <a onclick="submitReco('KRX' ,'{{ dict_reco.Symbol}}');">
                             <div class="recoBtn">분석</div>
                         </a>
+                        <a href="javascript:sendNaver('{{dict_reco.Symbol}}');"><img src="/static/img/naver_link.jpg" width="50" class="link_img_box"/></a>
                     </td>
                 </tr>
             </table>
@@ -102,30 +116,31 @@
             <table class="reco_table_box">
                 <tr>
                     <td class="reco_td_box1">
-                        <span class="small_font_span">분석일</span>
-                        <br>
                         {{ dict_reco.AnalDate|date:"m/d"}}
                     </td>
                     <td class="reco_td_box2">
-                        <span class="symbol_name_span">{{ dict_reco.Name}}</span>({{ dict_reco.Symbol}})<br>
-                        <span class="small_font_span">예상수익률 : </span>
+                        <span class="symbol_name_span">{{ dict_reco.Name}}</span> ({{ dict_reco.Symbol}})<br>
                         {%if dict_reco.Content1 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
                         {%elif dict_reco.Content1 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
                         {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content1|stringformat:".2f%%"}}</span>
                         {%endif%}
-                        &nbsp;&nbsp;&nbsp;
-                        <span class="small_font_span">현재수익률 : </span>
+                        /&nbsp;&nbsp;&nbsp;
+                        {%if dict_reco.Content2 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Content2|stringformat:".2f%%"}}</span>
+                        {%elif dict_reco.Content2 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Content2|stringformat:".2f%%"}}</span>
+                        {%else %}<span class="prorate_down_font_span">{{ dict_reco.Content2|stringformat:".2f%%"}}</span>
+                        {%endif%}
+                        /&nbsp;&nbsp;&nbsp;
                         {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%endif%}
-                        <br>
-                        유형:{{ dict_reco.RecoTypeCd}}, 유사갯수:{{ dict_reco.SimSymbolCnt}} ,{{ dict_reco.Content3}}
+                        / {{ dict_reco.RecoTypeCd}} / {{ dict_reco.SimSymbolCnt}}건 / {{ dict_reco.Content3}}
                     </td>
                     <td class="reco_td_box3">
                         <a onclick="submitReco('KRX' ,'{{ dict_reco.Symbol}}');">
                             <div class="recoBtn">분석</div>
                         </a>
+                        <a href="javascript:sendNaver('{{dict_reco.Symbol}}');"><img src="/static/img/naver_link.jpg" width="50" class="link_img_box"/></a>
                     </td>
                 </tr>
             </table>

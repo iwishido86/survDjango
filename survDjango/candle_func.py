@@ -68,17 +68,17 @@ def create_anal_candle(symbol, before_candle, record, current_tz, pd):
 
         str_candle_content3 = chk_3_1 + chk_3_2 + chk_3_3
 
-        if len(before_candle.Content3) < 24:
+        if len(before_candle.Content3) < 18:
             str_content3 = before_candle.Content3 + str_candle_content3
         else:
             str_content3 = before_candle.Content3[3:len(before_candle.Content3)] + str_candle_content3
     else:
         str_content3 = ""
 
-    if len(str_content3) < 24:
-        str_content4 = ""
+    if len(str_content3) < 12:
+        str_content4 = str_content3
     else:
-        str_content4 = str_content3[12:]
+        str_content4 = str_content3[len(str_content3)-12:]
 
     candle = CandleL(
         BaseDate=current_tz.localize(pd.to_datetime(record[0].tolist())),
@@ -249,17 +249,17 @@ def update_anal_candle(symbol, before_candle, candle):
 
         str_candle_content3 = chk_3_1 + chk_3_2 + chk_3_3
 
-        if len(before_candle.Content3) < 24:
+        if len(before_candle.Content3) < 18:
             str_content3 = before_candle.Content3 + str_candle_content3
         else:
             str_content3 = before_candle.Content3[3:len(before_candle.Content3)] + str_candle_content3
     else:
         str_content3 = ""
 
-    if len(str_content3) < 24:
-        candle.str_content4 = ""
+    if len(str_content3) < 12:
+        candle.str_content4 = str_content3
     else:
-        candle.str_content4 = str_content3[12:]
+        candle.str_content4 = str_content3[len(str_content3)-12:]
 
     candle.Content3 = str_content3
 
