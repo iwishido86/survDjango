@@ -685,7 +685,7 @@ def sym_prorate_update_view(request,sysmarketcd,analdate,symbol):
 
         if not before_symbol == candle.Symbol:  # 심볼 바뀜
             symbol_cnt = symbol_cnt + 1
-            logger.info(symbol_cnt.__str__() + ':::' + candle.Symbol)
+            #logger.info(symbol_cnt.__str__() + ':::' + candle.Symbol)
             before_symbol = candle.Symbol
 
             high_sum = 0
