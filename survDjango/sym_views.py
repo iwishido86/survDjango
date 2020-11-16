@@ -430,7 +430,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     # 8개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
     # 3개 이상 수익률 우선
     # 수익률 5보다 큰거
-    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01',Content1__gte=5,Content2__gte=5).annotate(Prorate=(F('Content1')*F('Content2'))).order_by('-Prorate')[0:10]
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
 
     for simCon1 in simCon1List:
 
@@ -481,7 +481,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
 
     # 4개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
     # 3개 이상 수익률 우선
-    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02',Content1__gte=5,Content2__gte=5).annotate(Prorate=(F('Content1')*F('Content2'))).order_by('-Prorate')[0:10]
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
 
     for simCon1 in simCon1List:
 
@@ -535,7 +535,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     # 과거 RecoSymbolL NowClose 업데이트
     # 과거 RecoSymbolL NowClose 업데이트
     analDateM = get_object_or_404(AnalDateM)
-    query_date = analDateM.AnalDate - datetime.timedelta(days=10)
+    query_date = analDateM.AnalDate - datetime.timedelta(days=7)
 
     recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=query_date, AnalDate__lt=analDateM.AnalDate)
 
