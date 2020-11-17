@@ -355,7 +355,7 @@ def chart_reco2_view(request,sysmarketcd,symbol):
         '-AnalDate')
     if sim_conlist:
         sim_con2 = sim_conlist[0]
-        if sim_con2.SimTypeCd == '01':
+        if sim_con2.SimTypeCd == '02':
             reco_candlelist2 = CandleL.objects.filter(~Q(Symbol=now_candle.Symbol),Content4=now_candle.Content4).order_by('-BaseDate')
 
 

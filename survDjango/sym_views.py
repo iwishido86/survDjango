@@ -278,7 +278,7 @@ def sym_anal2_view(request,sysmarketcd,analdate):
             continue
 
         #하나만 있는 경우
-        elif candleGrp["CandleCnt"] == 0:
+        elif candleGrp["CandleCnt"] == 1:
             simcandle = SimContentL(
                 AnalDate=analdate,
                 SimTypeCd='04',
@@ -371,7 +371,7 @@ def sym_anal3_view(request,sysmarketcd,analdate):
                 Content3='',
                 Content4='',
             )
-        elif candleGrp["CandleCnt"] == 0:
+        elif candleGrp["CandleCnt"] == 1:
             simcandle = SimContentL(
                 AnalDate=analdate,
                 SimTypeCd='06',
