@@ -430,11 +430,15 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     # 8개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
     # 3개 이상 수익률 우선
     # 수익률 5보다 큰거
+    logger.info('start')
+
     simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
 
     for simCon1 in simCon1List:
         # 그 candle 찾음
         candleCon1 = CandleL.objects.filter(BaseDate=analdate,Content3=simCon1.Content).order_by('Symbol', 'BaseDate')[0]
+
+        logger.info(candleCon1.Symbol + "::" + simCon1.Content)
 
         #sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=candleCon1.Symbol)
         RecoSymbolL(
@@ -451,12 +455,16 @@ def sym_anal4_view(request,sysmarketcd,analdate):
 
     # 4개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
     # 3개 이상 수익률 우선
+    logger.info('start22')
+
     simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
 
     for simCon1 in simCon1List:
         # 그 candle 찾음
         candleCon1 = \
         CandleL.objects.filter(BaseDate=analdate, Content4=simCon1.Content).order_by('Symbol', 'BaseDate')[0]
+
+        logger.info(candleCon1.Symbol + "::" + simCon1.Content)
 
         # sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=candleCon1.Symbol)
         RecoSymbolL(
@@ -471,6 +479,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
             NowClose=candleCon1.Close,
         ).save()
 
+    logger.info('start33')
     # 과거 RecoSymbolL NowClose 업데이트
     # 과거 RecoSymbolL NowClose 업데이트
     analDateM = get_object_or_404(AnalDateM)
