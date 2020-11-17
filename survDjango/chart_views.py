@@ -336,7 +336,7 @@ def chart_reco2_view(request,sysmarketcd,symbol):
     if sim_conlist:
         sim_con = sim_conlist[0]
         if sim_con.SimTypeCd == '01':
-            reco_candlelist = CandleL.objects.filter(Content3=now_candle.Content3).order_by('-BaseDate')
+            reco_candlelist = CandleL.objects.filter(~Q(Symbol=now_candle.Symbol),Content3=now_candle.Content3).order_by('-BaseDate')
 
 
             for reco_candle in reco_candlelist:
@@ -356,7 +356,7 @@ def chart_reco2_view(request,sysmarketcd,symbol):
     if sim_conlist:
         sim_con2 = sim_conlist[0]
         if sim_con2.SimTypeCd == '01':
-            reco_candlelist2 = CandleL.objects.filter(Content4=now_candle.Content4).order_by('-BaseDate')
+            reco_candlelist2 = CandleL.objects.filter(~Q(Symbol=now_candle.Symbol),Content4=now_candle.Content4).order_by('-BaseDate')
 
 
             for reco_candle in reco_candlelist2:

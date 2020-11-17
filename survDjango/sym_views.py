@@ -269,8 +269,8 @@ def sym_anal2_view(request,sysmarketcd,analdate):
                 SimTypeCd='03',
                 Content=candleGrp["Content3"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=candleGrp["AvgHigh"],
-                Content2=candleGrp["AvgClose"],
+                Content1=candleGrp["AvgHigh"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
+                Content2=candleGrp["AvgClose"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
                 Content3='',
                 Content4='',
             )
@@ -299,8 +299,8 @@ def sym_anal2_view(request,sysmarketcd,analdate):
                 SimTypeCd='01',
                 Content=candleGrp["Content3"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=candleGrp["AvgHigh"],
-                Content2=candleGrp["AvgClose"],
+                Content1=candleGrp["AvgHigh"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
+                Content2=candleGrp["AvgClose"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
                 Content3='',
                 Content4='',
             )
@@ -365,9 +365,9 @@ def sym_anal3_view(request,sysmarketcd,analdate):
                 AnalDate=analdate,
                 SimTypeCd='05',
                 Content=candleGrp["Content4"],
-                SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=candleGrp["AvgHigh"],
-                Content2=candleGrp["AvgClose"],
+                SimSymbolCnt=candleGrp["CandleCnt"]-1,  # 자기 빼기
+                Content1=candleGrp["AvgHigh"] * ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),  # 자기 빼기
+                Content2=candleGrp["AvgClose"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
                 Content3='',
                 Content4='',
             )
@@ -388,8 +388,8 @@ def sym_anal3_view(request,sysmarketcd,analdate):
                 SimTypeCd='02',
                 Content=candleGrp["Content4"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=candleGrp["AvgHigh"],
-                Content2=candleGrp["AvgClose"],
+                Content1=candleGrp["AvgHigh"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
+                Content2=candleGrp["AvgClose"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
                 Content3='',
                 Content4='',
             )
