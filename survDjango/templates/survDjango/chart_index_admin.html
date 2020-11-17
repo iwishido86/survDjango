@@ -67,7 +67,7 @@
         <span class="serchBtn" id="anal5Btn" onclick="anal5Click(anal5Btn);">수익생성</span>
         {% for analh in analhlist.all %}
             <div class="symbol_serch_list_box">
-                {{ analh.createDate|date:"yymd h:m:s"}} : {{ analh.AnalDate|date:"yy-m-d"}} : {{ analh.AnalTypeCd}} : {{ analh.CompleteYn}}
+                {{ analh.createDate|date:"yymd h:i:s"}} : {{ analh.AnalDate|date:"yy-m-d"}} : {{ analh.AnalTypeCd}} : {{ analh.CompleteYn}}
             </div>
         {% endfor %}
     </div>

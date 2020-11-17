@@ -15,6 +15,7 @@ body{
 }
 
 
+
 pre {
     text-align          : left;
     font-family     : 'NEXON Gothic Bold', 'Nanum Gothic', 'Malgun Gothic', '돋움', 'dotum', 'AppleGothic', Helvetica, Arial, Sans-Serif !important;
@@ -97,7 +98,8 @@ p{
      width              : 28%;
 }
 .reco_cont_td_box2 {
-     width           : *;
+    padding             : 0.5em 0em 0.5em 0em ;
+     width              : *;
 }
 
 

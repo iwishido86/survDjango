@@ -433,6 +433,95 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
 
     for simCon1 in simCon1List:
+        # 그 candle 찾음
+        candleCon1 = CandleL.objects.filter(BaseDate=analdate,Content3=simCon1.Content).order_by('Symbol', 'BaseDate')[0]
+
+        #sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=candleCon1.Symbol)
+        RecoSymbolL(
+            AnalDate=analdate,
+            Symbol=candleCon1.Symbol,
+            RecoTypeCd='01',##8개비교
+            SimSymbolCnt=simCon1.SimSymbolCnt,
+            Content1=simCon1.Content1,
+            Content2=simCon1.Content2,
+            Content3=simCon1.Content,
+            Close=candleCon1.Close,
+            NowClose=candleCon1.Close,
+        ).save()
+
+    # 4개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
+    # 3개 이상 수익률 우선
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
+
+    for simCon1 in simCon1List:
+        # 그 candle 찾음
+        candleCon1 = \
+        CandleL.objects.filter(BaseDate=analdate, Content4=simCon1.Content).order_by('Symbol', 'BaseDate')[0]
+
+        # sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=candleCon1.Symbol)
+        RecoSymbolL(
+            AnalDate=analdate,
+            Symbol=candleCon1.Symbol,
+            RecoTypeCd='02',  ##4개비교
+            SimSymbolCnt=simCon1.SimSymbolCnt,
+            Content1=simCon1.Content1,
+            Content2=simCon1.Content2,
+            Content3=simCon1.Content,
+            Close=candleCon1.Close,
+            NowClose=candleCon1.Close,
+        ).save()
+
+    # 과거 RecoSymbolL NowClose 업데이트
+    # 과거 RecoSymbolL NowClose 업데이트
+    analDateM = get_object_or_404(AnalDateM)
+    query_date = analDateM.AnalDate - datetime.timedelta(days=7)
+
+    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=query_date, AnalDate__lt=analDateM.AnalDate)
+
+    for recoSymbolL in recoSymbolLlist:
+
+        recoSymbol_candel = CandleL.objects.filter(BaseDate=analdate, Symbol=recoSymbolL.Symbol).order_by('BaseDate')[0]
+        recoSymbolL.NowClose = recoSymbol_candel.Close
+        recoSymbolL.save()
+
+    context = {
+    }
+
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='04',
+        CompleteYn='Y',
+    ).save()
+
+    return render(request, template_name, context)
+
+
+
+
+#http://127.0.0.1:8000/symbol/anal4/KRX/2020-10-22
+#추천종목 인서트
+def sym_anal4_view_save(request,sysmarketcd,analdate):
+    template_name = 'survDjango/chart_index_admin.html'
+
+    AnalMasterH(
+        AnalDate=analdate,
+        AnalTypeCd='04',
+        CompleteYn='N',
+    ).save()
+
+    AnalDateM.objects.filter().delete()
+    AnalDateM(AnalDate=analdate).save()
+
+    #analDateM = AnalDateM.objects.filter()[0]
+
+    RecoSymbolL.objects.filter(AnalDate=analdate).delete()
+
+    # 8개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
+    # 3개 이상 수익률 우선
+    # 수익률 5보다 큰거
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
+
+    for simCon1 in simCon1List:
 
         sim_queryday = simCon1.AnalDate - datetime.timedelta(days=20)
         # 그 candle 찾음
@@ -555,7 +644,6 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     ).save()
 
     return render(request, template_name, context)
-
 
 
 #http://127.0.0.1:8000/symbol/reco/KRX/256840
@@ -750,6 +838,19 @@ def sym_reco_update_view(request,sysmarketcd,symbol):
 
     return HttpResponseRedirect('/chart/manage/')
 #    return render(request, template_name, {})
+
+
+def sym_reco_cancel_view(request,sysmarketcd,symbol):
+
+    analDateM = get_object_or_404(AnalDateM)
+
+    recoSymbolL = get_object_or_404(RecoSymbolL, AnalDate=analDateM.AnalDate, Symbol=symbol)
+    recoSymbolL.RecoDispYn = 'N'
+    recoSymbolL.save()
+
+    return HttpResponseRedirect('/chart/manage/')
+#    return render(request, template_name, {})
+
 
 #
 #

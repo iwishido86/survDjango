@@ -152,7 +152,7 @@ def chart_index_admin_view(request):
 
     queryday = analDateM.AnalDate - datetime.timedelta(days=10)
 
-    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=queryday).order_by('-AnalDate')[0:40]
+    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=queryday).order_by('-AnalDate','RecoDispYn')[0:40]
 
     dict_recolist = []
     set_reco = {}
@@ -311,18 +311,11 @@ def chart_disp_view(request,sysmarketcd,symbol):
     return render(request, template_name, context)
 
 
-
-def chart_reco_view(request,sysmarketcd,symbol):
-    template_name = 'survDjango/chart_reco.html'
+def chart_reco2_view(request,sysmarketcd,symbol):
+    template_name = 'survDjango/chart_reco2.html'
 
     symbolM = get_object_or_404(SymbolM, SysMarketCd=sysmarketcd,Symbol=symbol)
 
-    # from django.utils import timezone
-    #
-    # current_tz = timezone.get_current_timezone()
-    # dt_analdate = current_tz.localize(pd.to_datetime(analDateM.AnalDate))
-    #
-    # logger.debug((dt_analdate)
     recoSymbolLlist = RecoSymbolL.objects.filter(Symbol=symbol).order_by('-AnalDate')
     if not recoSymbolLlist:
         return render(request, template_name, {})
@@ -332,72 +325,55 @@ def chart_reco_view(request,sysmarketcd,symbol):
     logger.debug(recoSymbolL)
     queryday=recoSymbolL.AnalDate - datetime.timedelta(days=20)
 
-    candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__gte=queryday ,BaseDate__lte=recoSymbolL.AnalDate).order_by('BaseDate')
+    candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol ,BaseDate=recoSymbolL.AnalDate).order_by('-BaseDate')
 
-    candlelist = candlelist[candlelist.count()-10:candlelist.count()]
+    now_candle = candlelist[0]
 
-    now_candle = candlelist[candlelist.count()-1]
-
-    x_data = [x for x in range(0, 19)]
-
-    graph= []
-    y_data = []
-    list_marker_color = ['gray', 'blue', 'green', 'purple', 'pink', 'navy']
-    list_marker_color_index = 0
-    for candle in candlelist:
-        y_data.append(candle.Close)
-
-    graph.append(Scatter(x=x_data, y=y_data,
-            mode='lines', name=symbolM.Name,
-            opacity=0.8, marker_color='red'))
-
-    if recoSymbolL.RecoTypeCd == '01':
-        reco_candlelist = RecoCandleL.objects.filter(Content3=recoSymbolL.Content3, BaseDate__lt=queryday).order_by('-BaseDate')[0:5]
-    elif recoSymbolL.RecoTypeCd == '02':
-        reco_candlelist = RecoCandleL.objects.filter(Content4=recoSymbolL.Content3, BaseDate__lt=queryday).order_by('-BaseDate')[0:5]
-
-
-
+    sim_con = []
     dict_recolist = []
     set_reco = {}
+    sim_conlist = SimContentL.objects.filter(AnalDate=recoSymbolL.AnalDate,Content=now_candle.Content3).order_by('-AnalDate')
+    if sim_conlist:
+        sim_con = sim_conlist[0]
+        if sim_con.SimTypeCd == '01':
+            reco_candlelist = CandleL.objects.filter(Content3=now_candle.Content3).order_by('-BaseDate')
 
-    for reco_candle in reco_candlelist:
-        sim_y_data = []
 
-        reco_queryday = reco_candle.BaseDate - datetime.timedelta(days=20)
-        period_reco_candlelist = RecoCandleL.objects.filter(Symbol=reco_candle.Symbol, BaseDate__gte=reco_queryday, BaseDate__lte=reco_candle.BaseDate).order_by('BaseDate')
-        if period_reco_candlelist.count() < 10:
-            continue
+            for reco_candle in reco_candlelist:
 
-        period_reco_candlelist = period_reco_candlelist[period_reco_candlelist.count() - 10:period_reco_candlelist.count()]
-        for period_reco_candle in period_reco_candlelist:
-            sim_y_data.append((period_reco_candle.Close /reco_candle.Close) * now_candle.Close)
+                sim_symbolM = get_object_or_404(SymbolM, SysMarketCd=sysmarketcd, Symbol=reco_candle.Symbol)
 
-        period_reco_candlelist2 = RecoCandleL.objects.filter(Symbol=reco_candle.Symbol, BaseDate__gt=reco_candle.BaseDate).order_by('BaseDate')[0:9]
+                set_reco = reco_candle.__dict__
+                set_reco['Name'] = sim_symbolM.Name
+                dict_recolist.append(set_reco)
 
-        for period_reco_candle2 in period_reco_candlelist2:
-            sim_y_data.append((period_reco_candle2.Close / reco_candle.Close) * now_candle.Close)
+    # 5일분석
+    sim_con2 = []
+    dict_recolist2 = []
+    set_reco = {}
+    sim_conlist = SimContentL.objects.filter(AnalDate=recoSymbolL.AnalDate, Content=now_candle.Content4).order_by(
+        '-AnalDate')
+    if sim_conlist:
+        sim_con2 = sim_conlist[0]
+        if sim_con2.SimTypeCd == '01':
+            reco_candlelist2 = CandleL.objects.filter(Content4=now_candle.Content4).order_by('-BaseDate')
 
-        sim_symbolM = get_object_or_404(SymbolM, SysMarketCd=sysmarketcd, Symbol=reco_candle.Symbol)
 
-        graph.append(Scatter(x=x_data, y=sim_y_data,
-                             mode='lines', name=sim_symbolM.Name,
-                             opacity=0.6, marker_color=list_marker_color[list_marker_color_index]))
+            for reco_candle in reco_candlelist2:
+                sim_symbolM = get_object_or_404(SymbolM, SysMarketCd=sysmarketcd, Symbol=reco_candle.Symbol)
 
-        list_marker_color_index = list_marker_color_index + 1
-
-        set_reco = reco_candle.__dict__
-        set_reco['Name'] = sim_symbolM.Name
-        dict_recolist.append(set_reco)
-
-    plot_div = plot(graph,output_type='div')
+                set_reco = reco_candle.__dict__
+                set_reco['Name'] = sim_symbolM.Name
+                dict_recolist2.append(set_reco)
 
     context = {
-        'plot_div': plot_div,
         'analdate': recoSymbolL.AnalDate,
         'symbol': symbolM,
+        'sim_con': sim_con,
+        'sim_con2': sim_con2,
         'recoSymbol': recoSymbolL,
         'reco_candlelist': dict_recolist,
+        'reco_candlelist2': dict_recolist2,
 
     }
 

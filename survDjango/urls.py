@@ -20,11 +20,11 @@ from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token
 
 from survDjango.chart_views import chart_index_view, chart_reco_view, chart_disp_view, chart_index_admin_view, \
-    chart_list_view, chart_manual_view, dev_note_view
+    chart_list_view, chart_manual_view, dev_note_view, chart_reco2_view
 from survDjango.views import surv_view, result_view, start_view, index_view
 from survDjango.sym_views import ca_init_view, sym_bulk_view, \
     sym_reupdate_view, sym_index_view, sym_day_update_view, sym_anal2_view, sym_anal3_view, sym_anal4_view, \
-    sym_reco_view, sym_reco_update_view, sym_prorate_update_view
+    sym_reco_view, sym_reco_update_view, sym_prorate_update_view, sym_reco_cancel_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -43,6 +43,7 @@ urlpatterns = [
     path('symbol/reco/<str:sysmarketcd>/<str:symbol>', sym_reco_view, name='sym_reco_view'),  # 추가
     path('symbol/reupdate/<str:sysmarketcd>/<str:symbol>', sym_reupdate_view, name='sym_reupdate_view'), # 추가
     path('symbol/reco_update/<str:sysmarketcd>/<str:symbol>', sym_reco_update_view, name='sym_reco_update_view'), # 추가
+    path('symbol/reco_cancel/<str:sysmarketcd>/<str:symbol>', sym_reco_cancel_view, name='sym_reco_cancel_view'), # 추가
     path('symbol/prorate_update/<str:sysmarketcd>/<str:analdate>/<str:symbol>', sym_prorate_update_view, name='sym_prorate_update_view'), # 추가
 
     #주식차트고객
@@ -51,6 +52,7 @@ urlpatterns = [
     path('chart/list/', chart_list_view, name='chart_list_view'),  # 추가
     path('chart/manual/', chart_manual_view, name='chart_manual_view'),  # 추가
     path('chart/reco/<str:sysmarketcd>/<str:symbol>', chart_reco_view, name='chart_reco_view'),  # 추가
+    path('chart/reco2/<str:sysmarketcd>/<str:symbol>', chart_reco2_view, name='chart_reco2_view'),  # 추가
     path('chart/disp/<str:sysmarketcd>/<str:symbol>', chart_disp_view, name='chart_disp_view'),  # 추가
 
     #개발자노트
