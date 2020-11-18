@@ -152,7 +152,7 @@ def chart_index_admin_view(request):
 
     queryday = analDateM.AnalDate - datetime.timedelta(days=10)
 
-    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=queryday).order_by('-AnalDate','RecoDispYn')[0:40]
+    recoSymbolLlist = RecoSymbolL.objects.filter(AnalDate__gte=queryday).order_by('-AnalDate','-RecoDispYn')[0:40]
 
     dict_recolist = []
     set_reco = {}

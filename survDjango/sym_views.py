@@ -269,8 +269,8 @@ def sym_anal2_view(request,sysmarketcd,analdate):
                 SimTypeCd='03',
                 Content=candleGrp["Content3"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=candleGrp["AvgHigh"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
-                Content2=candleGrp["AvgClose"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
+                Content1=candleGrp["AvgHigh"]* (candleGrp["CandleCnt"]/(candleGrp["CandleCnt"] -1)),
+                Content2=candleGrp["AvgClose"]*(candleGrp["CandleCnt"]/(candleGrp["CandleCnt"] -1)),
                 Content3='',
                 Content4='',
             )
@@ -299,8 +299,8 @@ def sym_anal2_view(request,sysmarketcd,analdate):
                 SimTypeCd='01',
                 Content=candleGrp["Content3"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=candleGrp["AvgHigh"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
-                Content2=candleGrp["AvgClose"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
+                Content1=candleGrp["AvgHigh"]* (candleGrp["CandleCnt"]/(candleGrp["CandleCnt"] -1)),
+                Content2=candleGrp["AvgClose"]* (candleGrp["CandleCnt"]/(candleGrp["CandleCnt"] -1)),
                 Content3='',
                 Content4='',
             )
@@ -366,8 +366,8 @@ def sym_anal3_view(request,sysmarketcd,analdate):
                 SimTypeCd='05',
                 Content=candleGrp["Content4"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,  # 자기 빼기
-                Content1=candleGrp["AvgHigh"] * ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),  # 자기 빼기
-                Content2=candleGrp["AvgClose"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
+                Content1=candleGrp["AvgHigh"] * (candleGrp["CandleCnt"]/(candleGrp["CandleCnt"] -1)),
+                Content2=candleGrp["AvgClose"]* (candleGrp["CandleCnt"]/(candleGrp["CandleCnt"] -1)),
                 Content3='',
                 Content4='',
             )
@@ -388,8 +388,8 @@ def sym_anal3_view(request,sysmarketcd,analdate):
                 SimTypeCd='02',
                 Content=candleGrp["Content4"],
                 SimSymbolCnt=candleGrp["CandleCnt"]-1,
-                Content1=candleGrp["AvgHigh"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
-                Content2=candleGrp["AvgClose"]* ((candleGrp["CandleCnt"] -1)/candleGrp["CandleCnt"]),
+                Content1=candleGrp["AvgHigh"]* (candleGrp["CandleCnt"]/(candleGrp["CandleCnt"] -1)),
+                Content2=candleGrp["AvgClose"]* (candleGrp["CandleCnt"]/(candleGrp["CandleCnt"] -1)),
                 Content3='',
                 Content4='',
             )
