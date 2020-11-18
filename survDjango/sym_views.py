@@ -841,7 +841,7 @@ def sym_reco_update_view(request,sysmarketcd,symbol):
 
     analDateM = get_object_or_404(AnalDateM)
 
-    recoSymbolL = RecoSymbolL.objects.filter(RecoSymbolL, AnalDate=analDateM.AnalDate, Symbol=symbol)[0]
+    recoSymbolL = RecoSymbolL.objects.filter(AnalDate=analDateM.AnalDate, Symbol=symbol)[0]
 
     recoSymbolL.RecoDispYn = 'Y'
     recoSymbolL.save()
