@@ -841,7 +841,8 @@ def sym_reco_update_view(request,sysmarketcd,symbol):
 
     analDateM = get_object_or_404(AnalDateM)
 
-    recoSymbolL = get_object_or_404(RecoSymbolL, AnalDate=analDateM.AnalDate, Symbol=symbol)
+    recoSymbolL = RecoSymbolL.objects.filter(RecoSymbolL, AnalDate=analDateM.AnalDate, Symbol=symbol)[0]
+
     recoSymbolL.RecoDispYn = 'Y'
     recoSymbolL.save()
 
@@ -853,7 +854,7 @@ def sym_reco_cancel_view(request,sysmarketcd,symbol):
 
     analDateM = get_object_or_404(AnalDateM)
 
-    recoSymbolL = get_object_or_404(RecoSymbolL, AnalDate=analDateM.AnalDate, Symbol=symbol)
+    recoSymbolL = get_object_or_404(RecoSymbolL, AnalDate=analDateM.AnalDate, Symbol=symbol,RecoDispYn='Y')
     recoSymbolL.RecoDispYn = 'N'
     recoSymbolL.save()
 
