@@ -67,7 +67,7 @@ def chart_index_view(request):
         set_reco['Prorate2'] = (recoSymbolL.MaxHigh - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
-    recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday, RecoDispYn='Y').annotate(Prorate=((F('NowClose')-F('Close'))/F('Close'))).order_by('-Prorate')[0:5]
+    recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday, RecoDispYn='Y').annotate(Prorate=((F('MaxClose')-F('Close'))/F('Close'))).order_by('-Prorate')[0:5]
     dict_recolist2 = []
     set_reco2 = {}
 
@@ -81,7 +81,7 @@ def chart_index_view(request):
         dict_recolist2.append(set_reco)
 
     recoSymbolLlist3 = RecoSymbolL.objects.filter(AnalDate__lt=analDateM.AnalDate ,AnalDate__gte=queryday, RecoDispYn='Y').annotate(
-        Prorate=((F('NowClose') - F('Close')) / F('Close'))).order_by('-AnalDate')[0:5]
+        Prorate=((F('MaxClose') - F('Close')) / F('Close'))).order_by('-AnalDate')[0:5]
     dict_recolist3 = []
 
     for recoSymbolL in recoSymbolLlist3:
@@ -170,7 +170,7 @@ def chart_index_admin_view(request):
         set_reco['Prorate2'] = (recoSymbolL.MaxHigh - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
-    recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday).annotate(Prorate=((F('NowClose') - F('Close')) / F('Close'))).order_by('-Prorate')[0:15]
+    recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday).annotate(Prorate=((F('MaxClose') - F('Close')) / F('Close'))).order_by('-Prorate')[0:15]
     dict_recolist2 = []
     set_reco2 = {}
 

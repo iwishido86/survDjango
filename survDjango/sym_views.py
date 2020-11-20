@@ -189,19 +189,22 @@ def sym_day_update_view(request,sysmarketcd,basedate):
 
     delcandlelist = CandleL.objects.filter(BaseDate__gt=basedate)
     delcandlelist.delete()
-
+    str_queryday = queryday.strftime("%Y-%m-%d")
     logger.info(queryday.strftime("%Y-%m-%d"))
     candlelist = CandleL.objects.filter(BaseDate=basedate).order_by('Symbol','BaseDate')
 
     model_instances = []
-
+    # logger.info('start;')
+    # df_list = [fdr.DataReader(candlel.Symbol, str_queryday) for candlel in candlelist]
+    # logger.info('end;')
+    logger.info('start;')
     for candlel in candlelist :
 
         #초기화
         before_candle = candlel
         logger.info(candlel.Symbol)
 
-        df_sym = fdr.DataReader(candlel.Symbol, queryday.strftime("%Y-%m-%d"))
+        df_sym = fdr.DataReader(candlel.Symbol, str_queryday)
         dict_sym = df_sym.to_records()
 
         for record in dict_sym:
@@ -210,6 +213,8 @@ def sym_day_update_view(request,sysmarketcd,basedate):
             model_instances.append(candle)
             before_candle = candle
         #logger.info(model_instances)
+
+    logger.info('end;')
 
     CandleL.objects.bulk_create(model_instances)
 
@@ -220,7 +225,7 @@ def sym_day_update_view(request,sysmarketcd,basedate):
     ).save()
 
 #    return HttpResponseRedirect('/symbol/bulk/' + symbolMlist[499].SysMarketCd + '/' + symbolMlist[499].Symbol )
-    return render(request, template_name, {})
+    return HttpResponseRedirect('/chart/manage/')
 
 
 #http://127.0.0.1:8000/symbol/anal2/KRX/2020-10-22
@@ -451,6 +456,8 @@ def sym_anal4_view(request,sysmarketcd,analdate):
             Content3=simCon1.Content,
             Close=candleCon1.Close,
             NowClose=candleCon1.Close,
+            MaxClose=candleCon1.Close,
+            MaxHigh=candleCon1.Close,
         ).save()
 
     # 4개 캔들 찾기 -> RecoSymbolL 저장 , RecoCandleL저장
@@ -477,6 +484,8 @@ def sym_anal4_view(request,sysmarketcd,analdate):
             Content3=simCon1.Content,
             Close=candleCon1.Close,
             NowClose=candleCon1.Close,
+            MaxClose=candleCon1.Close,
+            MaxHigh=candleCon1.Close,
         ).save()
 
     logger.info('start33')

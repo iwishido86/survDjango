@@ -62,7 +62,7 @@ def create_anal_candle(symbol, before_candle, record, current_tz, pd):
 
     if before_candle:
 
-        chk_3_1 = func_chk_3_1(before_candle,record)
+        chk_3_1 = func_chk_3_1(before_candle, record)
         chk_3_2 = func_chk_3_2(before_candle, record)
         chk_3_3 = func_chk_3_3(before_candle, record)
 
