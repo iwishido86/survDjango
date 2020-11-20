@@ -490,7 +490,14 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     for recoSymbolL in recoSymbolLlist:
 
         recoSymbol_candel = CandleL.objects.filter(BaseDate=analdate, Symbol=recoSymbolL.Symbol).order_by('BaseDate')[0]
+
         recoSymbolL.NowClose = recoSymbol_candel.Close
+
+        if recoSymbolL.MaxClose < recoSymbol_candel.Close:  # MAX만 저장
+            recoSymbolL.MaxClose = recoSymbol_candel.Close
+        if recoSymbolL.MaxHigh < recoSymbol_candel.High:  # MAX만 저장
+            recoSymbolL.MaxHigh = recoSymbol_candel.High
+
         recoSymbolL.save()
 
     context = {
@@ -640,8 +647,16 @@ def sym_anal4_view_save(request,sysmarketcd,analdate):
     for recoSymbolL in recoSymbolLlist:
 
         recoSymbol_candel = CandleL.objects.filter(BaseDate=analdate, Symbol=recoSymbolL.Symbol).order_by('BaseDate')[0]
+        
         recoSymbolL.NowClose = recoSymbol_candel.Close
+
+        if recoSymbolL.MaxClose < recoSymbol_candel.Close:  # MAX만 저장
+            recoSymbolL.MaxClose = recoSymbol_candel.Close
+        if recoSymbolL.MaxHigh < recoSymbol_candel.High:  # MAX만 저장
+            recoSymbolL.MaxHigh = recoSymbol_candel.High
+
         recoSymbolL.save()
+            
 
     context = {
     }
@@ -652,7 +667,7 @@ def sym_anal4_view_save(request,sysmarketcd,analdate):
         CompleteYn='Y',
     ).save()
 
-    return render(request, template_name, context)
+    return HttpResponseRedirect('/chart/manage/')
 
 
 #http://127.0.0.1:8000/symbol/reco/KRX/256840

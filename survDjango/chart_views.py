@@ -63,7 +63,8 @@ def chart_index_view(request):
         set_reco = recoSymbolL.__dict__
         sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
         set_reco['Name'] = sim_symbolM.Name
-        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate'] = (recoSymbolL.MaxClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate2'] = (recoSymbolL.MaxHigh - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
     recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday, RecoDispYn='Y').annotate(Prorate=((F('NowClose')-F('Close'))/F('Close'))).order_by('-Prorate')[0:5]
@@ -75,7 +76,8 @@ def chart_index_view(request):
         set_reco = recoSymbolL.__dict__
         sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
         set_reco['Name'] = sim_symbolM.Name
-        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate'] = (recoSymbolL.MaxClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate2'] = (recoSymbolL.MaxHigh - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist2.append(set_reco)
 
     recoSymbolLlist3 = RecoSymbolL.objects.filter(AnalDate__lt=analDateM.AnalDate ,AnalDate__gte=queryday, RecoDispYn='Y').annotate(
@@ -86,7 +88,8 @@ def chart_index_view(request):
         set_reco = recoSymbolL.__dict__
         sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
         set_reco['Name'] = sim_symbolM.Name
-        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate'] = (recoSymbolL.MaxClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate2'] = (recoSymbolL.MaxHigh - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist3.append(set_reco)
 
     context = {
@@ -118,7 +121,8 @@ def chart_list_view(request):
         set_reco = recoSymbolL.__dict__
         sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
         set_reco['Name'] = sim_symbolM.Name
-        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate'] = (recoSymbolL.MaxClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate2'] = (recoSymbolL.MaxHigh - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
     context = {
@@ -162,7 +166,8 @@ def chart_index_admin_view(request):
         set_reco = recoSymbolL.__dict__
         sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
         set_reco['Name'] = sim_symbolM.Name
-        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate'] = (recoSymbolL.MaxClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate2'] = (recoSymbolL.MaxHigh - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist.append(set_reco)
 
     recoSymbolLlist2 = RecoSymbolL.objects.filter(AnalDate__gte=queryday).annotate(Prorate=((F('NowClose') - F('Close')) / F('Close'))).order_by('-Prorate')[0:15]
@@ -173,7 +178,8 @@ def chart_index_admin_view(request):
         set_reco = recoSymbolL.__dict__
         sim_symbolM = get_object_or_404(SymbolM, SysMarketCd='KRX', Symbol=recoSymbolL.Symbol)
         set_reco['Name'] = sim_symbolM.Name
-        set_reco['Prorate'] = (recoSymbolL.NowClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate'] = (recoSymbolL.MaxClose - recoSymbolL.Close) * 100 / recoSymbolL.Close
+        set_reco['Prorate2'] = (recoSymbolL.MaxHigh - recoSymbolL.Close) * 100 / recoSymbolL.Close
         dict_recolist2.append(set_reco)
 
     analMasterHlist = AnalMasterH.objects.filter().order_by('-createDate')[0:5]
@@ -283,28 +289,66 @@ def chart_disp_view(request,sysmarketcd,symbol):
 
     template_name = 'survDjango/chart_disp.html'
 
-    analDateM = get_object_or_404(AnalDateM)
-
     symbolM = get_object_or_404(SymbolM, SysMarketCd=sysmarketcd, Symbol=symbol)
 
-    queryday = analDateM.AnalDate - datetime.timedelta(days=20)
+    recoSymbolLlist = RecoSymbolL.objects.filter(Symbol=symbol).order_by('-AnalDate')
+    if not recoSymbolLlist:
+        return render(request, template_name, {})
+    else:
+        recoSymbolL = recoSymbolLlist[0]
 
-    logger.info(analDateM.AnalDate)
+    logger.debug(recoSymbolL)
+    queryday = recoSymbolL.AnalDate - datetime.timedelta(days=20)
 
-    now_candle = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__lte=analDateM.AnalDate).order_by('-BaseDate')[0]
+    candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate=recoSymbolL.AnalDate).order_by('-BaseDate')
 
-    dict_simconlist = []
-    simCon1List = SimContentL.objects.filter(Q(Content=now_candle.Content3) or Q(Content=now_candle.Content4)).order_by('-AnalDate')[0:5]
-    logger.debug(simCon1List)
-    for simCon in  simCon1List:
-        dict_simconlist.append(simCon.__dict__)
+    now_candle = candlelist[0]
 
-    logger.debug(dict_simconlist)
+    sim_con = []
+    dict_recolist = []
+    set_reco = {}
+    sim_conlist = SimContentL.objects.filter(AnalDate=recoSymbolL.AnalDate, Content=now_candle.Content3).order_by(
+        '-AnalDate')
+    if sim_conlist:
+        sim_con = sim_conlist[0]
+        if sim_con.SimTypeCd == '01':
+            reco_candlelist = CandleL.objects.filter(~Q(Symbol=now_candle.Symbol),
+                                                     Content3=now_candle.Content3).order_by('-BaseDate')
+
+            for reco_candle in reco_candlelist:
+                sim_symbolM = get_object_or_404(SymbolM, SysMarketCd=sysmarketcd, Symbol=reco_candle.Symbol)
+
+                set_reco = reco_candle.__dict__
+                set_reco['Name'] = sim_symbolM.Name
+                dict_recolist.append(set_reco)
+
+    # 5일분석
+    sim_con2 = []
+    dict_recolist2 = []
+    set_reco = {}
+    sim_conlist = SimContentL.objects.filter(AnalDate=recoSymbolL.AnalDate, Content=now_candle.Content4).order_by(
+        '-AnalDate')
+    if sim_conlist:
+        sim_con2 = sim_conlist[0]
+        if sim_con2.SimTypeCd == '02':
+            reco_candlelist2 = CandleL.objects.filter(~Q(Symbol=now_candle.Symbol),
+                                                      Content4=now_candle.Content4).order_by('-BaseDate')
+
+            for reco_candle in reco_candlelist2:
+                sim_symbolM = get_object_or_404(SymbolM, SysMarketCd=sysmarketcd, Symbol=reco_candle.Symbol)
+
+                set_reco = reco_candle.__dict__
+                set_reco['Name'] = sim_symbolM.Name
+                dict_recolist2.append(set_reco)
 
     context = {
-        'analdate': now_candle.BaseDate,
+        'analdate': recoSymbolL.AnalDate,
         'symbol': symbolM,
-        'simconlist':dict_simconlist,
+        'sim_con': sim_con,
+        'sim_con2': sim_con2,
+        'recoSymbol': recoSymbolL,
+        'reco_candlelist': dict_recolist,
+        'reco_candlelist2': dict_recolist2,
 
     }
 

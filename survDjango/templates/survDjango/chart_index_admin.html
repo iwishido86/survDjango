@@ -94,6 +94,11 @@
                         {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%endif%}
+                        /
+                        {%if dict_reco.Prorate2 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate2|stringformat:".2f%%"}}</span>
+                        {%elif dict_reco.Prorate2 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate2|stringformat:".2f%%"}}</span>
+                        {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate2|stringformat:".2f%%"}}</span>
+                        {%endif%}
                         / {{ dict_reco.RecoTypeCd}} / {{ dict_reco.SimSymbolCnt}}건 / {{ dict_reco.Content3}}
                     </td>
                     <td class="reco_td_box3">
@@ -103,7 +108,6 @@
                         <a onclick="submitReco('KRX' ,'{{ dict_reco.Symbol}}');">
                             <div class="recoBtn">분석</div>
                         </a>
-                        <a href="javascript:sendNaver('{{dict_reco.Symbol}}');"><img src="/static/img/naver_link.jpg" width="50" class="link_img_box"/></a>
                     </td>
                 </tr>
             </table>
@@ -133,6 +137,11 @@
                         {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
                         {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
+                        {%endif%}
+                        /
+                        {%if dict_reco.Prorate2 == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate2|stringformat:".2f%%"}}</span>
+                        {%elif dict_reco.Prorate2 > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate2|stringformat:".2f%%"}}</span>
+                        {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate2|stringformat:".2f%%"}}</span>
                         {%endif%}
                         / {{ dict_reco.RecoTypeCd}} / {{ dict_reco.SimSymbolCnt}}건 / {{ dict_reco.Content3}}
                     </td>

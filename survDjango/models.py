@@ -180,6 +180,8 @@ class RecoSymbolL(models.Model):
     RecoDispYn = models.CharField(max_length=2, blank=True, null=True, help_text="추천여부")
     Close = models.FloatField(default=0, help_text="종가")
     NowClose = models.FloatField(default=0, help_text="최근종가")
+    MaxClose = models.FloatField(default=0, help_text="최고종가")
+    MaxHigh = models.FloatField(default=0, help_text="최고고가")
 
 
 class RecoCandleL(models.Model):
