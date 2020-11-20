@@ -194,29 +194,30 @@ def sym_day_update_view(request,sysmarketcd,basedate):
     candlelist = CandleL.objects.filter(BaseDate=basedate).order_by('Symbol','BaseDate')
 
     model_instances = []
-    logger.info('start;')
-    df_list = [fdr.DataReader(candlel.Symbol, str_queryday) for candlel in candlelist]
-    logger.info('end;')
     # logger.info('start;')
-    # for candlel in candlelist :
-    #
-    #     #초기화
-    #     before_candle = candlel
-    #     logger.info(candlel.Symbol)
-    #
-    #     df_sym = fdr.DataReader(candlel.Symbol, str_queryday)
-    #     dict_sym = df_sym.to_records()
-    #
-    #     for record in dict_sym:
-    #
-    #         candle = create_anal_candle(candlel.Symbol, before_candle, record, current_tz, pd)
-    #         model_instances.append(candle)
-    #         before_candle = candle
-    #     #logger.info(model_instances)
-    #
+    # df_list = [fdr.DataReader(candlel.Symbol, str_queryday) for candlel in candlelist]
     # logger.info('end;')
-    #
-    # CandleL.objects.bulk_create(model_instances)
+
+    logger.info('start;')
+    for candlel in candlelist :
+
+        #초기화
+        before_candle = candlel
+        logger.info(candlel.Symbol)
+
+        df_sym = fdr.DataReader(candlel.Symbol, str_queryday)
+        dict_sym = df_sym.to_records()
+
+        for record in dict_sym:
+
+            candle = create_anal_candle(candlel.Symbol, before_candle, record, current_tz, pd)
+            model_instances.append(candle)
+            before_candle = candle
+        #logger.info(model_instances)
+
+    logger.info('end;')
+
+    CandleL.objects.bulk_create(model_instances)
 
     AnalMasterH(
         AnalDate=basedate,
