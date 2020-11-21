@@ -34,6 +34,12 @@
             //}, 1000);
         }
 
+        function anal12Click(clickBtn){
+            //setTimeout(function() {
+                document.location.href='/symbol/day_update2/KRX/'+adminAnaldate.value;
+            //}, 1000);
+        }
+
         function submitRecoUpdate(SysMarketCd,Symbol){
             //setTimeout(function() {
                 document.location.href='/symbol/reco_update/'+ SysMarketCd + '/' + Symbol;
@@ -59,15 +65,16 @@
     {{ form.as_p }}
     <div class="reco_list_box">
         분석일 :
-        <input name="adminAnaldate" class="serchInput" id="adminAnaldate" maxlength="20" value='{{analdate|date:"yy-m-d"}}'><br>
+        <input name="adminAnaldate" class="serchInput" id="adminAnaldate" maxlength="20" value='{{analdate|date:"Y-m-d"}}'><br>
         <span class="serchBtn" id="anal1Btn" onclick="anal1Click(anal1Btn);">차트로드</span>
+        <span class="serchBtn" id="anal12Btn" onclick="anal12Click(anal12Btn);">차트로드2</span>
         <span class="serchBtn" id="anal2Btn" onclick="anal2Click(anal2Btn);">중기분석</span>
         <span class="serchBtn" id="anal3Btn" onclick="anal3Click(anal3Btn);">단기분석</span>
         <span class="serchBtn" id="anal4Btn" onclick="anal4Click(anal4Btn);">종목선정</span>
         <span class="serchBtn" id="anal5Btn" onclick="anal5Click(anal5Btn);">수익생성</span>
         {% for analh in analhlist.all %}
             <div class="symbol_serch_list_box">
-                {{ analh.createDate|date:"yymd h:i:s"}} : {{ analh.AnalDate|date:"yy-m-d"}} : {{ analh.AnalTypeCd}} : {{ analh.CompleteYn}}
+                {{ analh.createDate|date:"Ymd h:i:s"}} : {{ analh.AnalDate|date:"Y-m-d"}} : {{ analh.AnalTypeCd}} : {{ analh.CompleteYn}}
             </div>
         {% endfor %}
     </div>

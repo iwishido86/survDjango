@@ -24,7 +24,7 @@ from survDjango.chart_views import chart_index_view, chart_reco_view, chart_disp
 from survDjango.views import surv_view, result_view, start_view, index_view
 from survDjango.sym_views import ca_init_view, sym_bulk_view, \
     sym_reupdate_view, sym_index_view, sym_day_update_view, sym_anal2_view, sym_anal3_view, sym_anal4_view, \
-    sym_reco_view, sym_reco_update_view, sym_prorate_update_view, sym_reco_cancel_view
+    sym_reco_view, sym_reco_update_view, sym_prorate_update_view, sym_reco_cancel_view, sym_day_update2_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,6 +37,7 @@ urlpatterns = [
     path('anal_init/<str:sysmarketcd>', ca_init_view, name='ca_init_view'), # 추가
     path('symbol/bulk/<str:sysmarketcd>/<str:symbol>', sym_bulk_view, name='sym_bulk_view'), # 추가
     path('symbol/day_update/<str:sysmarketcd>/<str:basedate>', sym_day_update_view, name='sym_day_update_view'), # 추가
+    path('symbol/day_update2/<str:sysmarketcd>/<str:basedate>', sym_day_update2_view, name='sym_day_update2_view'), # 추가
     path('symbol/anal2/<str:sysmarketcd>/<str:analdate>', sym_anal2_view, name='sym_anal2_view'), # 추가
     path('symbol/anal3/<str:sysmarketcd>/<str:analdate>', sym_anal3_view, name='sym_anal3_view'), # 추가
     path('symbol/anal4/<str:sysmarketcd>/<str:analdate>', sym_anal4_view, name='sym_anal4_view'),  # 추가

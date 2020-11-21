@@ -178,7 +178,7 @@ def sym_day_update_view(request,sysmarketcd,basedate):
 
     AnalMasterH(
         AnalDate=basedate,
-        AnalTypeCd='01',
+        AnalTypeCd='11',
         CompleteYn='N',
     ).save()
 
@@ -191,7 +191,7 @@ def sym_day_update_view(request,sysmarketcd,basedate):
     delcandlelist.delete()
     str_queryday = queryday.strftime("%Y-%m-%d")
     logger.info(queryday.strftime("%Y-%m-%d"))
-    candlelist = CandleL.objects.filter(BaseDate=basedate).order_by('Symbol','BaseDate')
+    candlelist = CandleL.objects.filter(BaseDate=basedate,Symbol__lte='080000').order_by('Symbol','BaseDate')
 
     model_instances = []
     # logger.info('start;')
@@ -221,7 +221,63 @@ def sym_day_update_view(request,sysmarketcd,basedate):
 
     AnalMasterH(
         AnalDate=basedate,
-        AnalTypeCd='01',
+        AnalTypeCd='11',
+        CompleteYn='Y',
+    ).save()
+
+#    return HttpResponseRedirect('/symbol/bulk/' + symbolMlist[499].SysMarketCd + '/' + symbolMlist[499].Symbol )
+    return HttpResponseRedirect('/chart/manage/')
+
+
+
+#http://127.0.0.1:8000/symbol/day_update/KRX/2020-10-20
+def sym_day_update2_view(request,sysmarketcd,basedate):
+    template_name = 'survDjango/chart_index_admin.html'
+
+    AnalMasterH(
+        AnalDate=basedate,
+        AnalTypeCd='12',
+        CompleteYn='N',
+    ).save()
+
+    current_tz = timezone.get_current_timezone()
+
+    dt_basedate = current_tz.localize(pd.to_datetime(basedate))
+    queryday = dt_basedate + datetime.timedelta(days=1)
+
+    str_queryday = queryday.strftime("%Y-%m-%d")
+    logger.info(queryday.strftime("%Y-%m-%d"))
+    candlelist = CandleL.objects.filter(BaseDate=basedate,Symbol__gt='080000').order_by('Symbol','BaseDate')
+
+    model_instances = []
+    # logger.info('start;')
+    # df_list = [fdr.DataReader(candlel.Symbol, str_queryday) for candlel in candlelist]
+    # logger.info('end;')
+
+    logger.info('start;')
+    for candlel in candlelist :
+
+        #초기화
+        before_candle = candlel
+        logger.info(candlel.Symbol)
+
+        df_sym = fdr.DataReader(candlel.Symbol, str_queryday)
+        dict_sym = df_sym.to_records()
+
+        for record in dict_sym:
+
+            candle = create_anal_candle(candlel.Symbol, before_candle, record, current_tz, pd)
+            model_instances.append(candle)
+            before_candle = candle
+        #logger.info(model_instances)
+
+    logger.info('end;')
+
+    CandleL.objects.bulk_create(model_instances)
+
+    AnalMasterH(
+        AnalDate=basedate,
+        AnalTypeCd='12',
         CompleteYn='Y',
     ).save()
 

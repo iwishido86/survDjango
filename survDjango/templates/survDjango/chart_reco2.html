@@ -123,7 +123,7 @@
                 <td class="reco_cont_td_box1">유사종목 :</td>
                 <td class="reco_cont_td_box2">
                     {% for reco_candle in reco_candlelist %}
-                        {{ reco_candle.Name}}<span class="small_font_span">({{ reco_candle.BaseDate|date:"yy/m/d"}})</span>
+                        {{ reco_candle.Name}}<span class="small_font_span">({{ reco_candle.BaseDate|date:"Y/m/d"}})</span>
                         <span class="prorate_up_font_span">{{ reco_candle.Content1|stringformat:".2f%%"}}</span>
                         <span class="prorate_up_font_span">{{ reco_candle.Content2|stringformat:".2f%%"}}</span>
                         / {{ reco_candle.Content3 }}
@@ -169,7 +169,7 @@
                 <td class="reco_cont_td_box1">유사종목 :</td>
                 <td class="reco_cont_td_box2">
                     {% for reco_candle in reco_candlelist2 %}
-                        {{ reco_candle.Name}}<span class="small_font_span">({{ reco_candle.BaseDate|date:"yy/m/d"}})</span>
+                        {{ reco_candle.Name}}<span class="small_font_span">({{ reco_candle.BaseDate|date:"Y/m/d"}})</span>
                         <span class="prorate_up_font_span">{{ reco_candle.Content1|stringformat:".2f%%"}}</span>
                         <span class="prorate_up_font_span">{{ reco_candle.Content2|stringformat:".2f%%"}}</span>
                         / {{ reco_candle.Content3 }}
