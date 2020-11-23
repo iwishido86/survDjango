@@ -55,21 +55,6 @@
                 {{symbol.Name}} ({{symbol.Symbol}})
             </td>
         </tr>
-        <tr>
-            <td class="reco_cont_td_box1">예상수익률 :</td>
-            <td class="reco_cont_td_box2">
-                {%if recoSymbol.Content1 == 0 %}<span class="prorate_zero_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
-                {%elif recoSymbol.Content1 > 0 %}<span class="prorate_up_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
-                {%else %}<span class="prorate_down_font_span">{{ recoSymbol.Content1|stringformat:".2f%%"}}</span>
-                {%endif%}
-                /
-                {%if recoSymbol.Content2 == 0 %}<span class="prorate_zero_font_span">{{ recoSymbol.Content2|stringformat:".2f%%"}}</span>
-                {%elif recoSymbol.Content2 > 0 %}<span class="prorate_up_font_span">{{ recoSymbol.Content2|stringformat:".2f%%"}}</span>
-                {%else %}<span class="prorate_down_font_span">{{ recoSymbol.Content2|stringformat:".2f%%"}}</span>
-                {%endif%}
-
-            </td>
-        </tr>
     </table>
 
     {{ form.as_p }}

@@ -291,23 +291,18 @@ def chart_disp_view(request,sysmarketcd,symbol):
 
     symbolM = get_object_or_404(SymbolM, SysMarketCd=sysmarketcd, Symbol=symbol)
 
-    recoSymbolLlist = RecoSymbolL.objects.filter(Symbol=symbol).order_by('-AnalDate')
-    if not recoSymbolLlist:
-        return render(request, template_name, {})
-    else:
-        recoSymbolL = recoSymbolLlist[0]
+    analDateM = get_object_or_404(AnalDateM)
 
-    logger.debug(recoSymbolL)
-    queryday = recoSymbolL.AnalDate - datetime.timedelta(days=20)
+    queryday = analDateM.AnalDate - datetime.timedelta(days=20)
 
-    candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate=recoSymbolL.AnalDate).order_by('-BaseDate')
+    candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate=analDateM.AnalDate).order_by('-BaseDate')
 
     now_candle = candlelist[0]
 
     sim_con = []
     dict_recolist = []
     set_reco = {}
-    sim_conlist = SimContentL.objects.filter(AnalDate=recoSymbolL.AnalDate, Content=now_candle.Content3).order_by(
+    sim_conlist = SimContentL.objects.filter(AnalDate=analDateM.AnalDate, Content=now_candle.Content3).order_by(
         '-AnalDate')
     if sim_conlist:
         sim_con = sim_conlist[0]
@@ -326,7 +321,7 @@ def chart_disp_view(request,sysmarketcd,symbol):
     sim_con2 = []
     dict_recolist2 = []
     set_reco = {}
-    sim_conlist = SimContentL.objects.filter(AnalDate=recoSymbolL.AnalDate, Content=now_candle.Content4).order_by(
+    sim_conlist = SimContentL.objects.filter(AnalDate=analDateM.AnalDate, Content=now_candle.Content4).order_by(
         '-AnalDate')
     if sim_conlist:
         sim_con2 = sim_conlist[0]
@@ -342,11 +337,10 @@ def chart_disp_view(request,sysmarketcd,symbol):
                 dict_recolist2.append(set_reco)
 
     context = {
-        'analdate': recoSymbolL.AnalDate,
+        'analdate': analDateM.AnalDate,
         'symbol': symbolM,
         'sim_con': sim_con,
         'sim_con2': sim_con2,
-        'recoSymbol': recoSymbolL,
         'reco_candlelist': dict_recolist,
         'reco_candlelist2': dict_recolist2,
 

@@ -69,7 +69,7 @@ class SimContentLAdmin(admin.ModelAdmin):
 
 
 class RecoSymbolLAdmin(admin.ModelAdmin):
-    list_display = ('AnalDate', 'Symbol', 'RecoTypeCd', 'SimSymbolCnt', 'Content1' ,'Content2','Content3','Content4',)
+    list_display = ('AnalDate', 'Symbol', 'RecoTypeCd', 'SimSymbolCnt', 'Content1', 'Content2', 'Content3', 'Content4', 'RecoDispYn', 'Close', 'NowClose', 'MaxClose','MaxHigh',)
     list_filter = ('AnalDate',)
     search_fields = ('AnalDate','Symbol',)
 
@@ -78,7 +78,6 @@ class RecoCandleLAdmin(admin.ModelAdmin):
     list_display = ('BaseDate', 'Symbol', 'Open', 'High', 'Low' ,'Close','Volume','Content3','Content4',)
     list_filter = ( 'BaseDate',)
     search_fields = ( 'BaseDate','Symbol','Content3',)
-
 
 class AnalDateMAdmin(admin.ModelAdmin):
     list_display = ('AnalDate',)
