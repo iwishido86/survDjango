@@ -494,7 +494,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     # 수익률 5보다 큰거
     logger.info('start')
 
-    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01').annotate(Prorate=(F('SimSymbolCnt')*2+F('Content1')+F('Content2'))).order_by('-Prorate')[0:5]
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='01').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:5]
 
     for simCon1 in simCon1List:
         # 그 candle 찾음
@@ -521,7 +521,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
     # 3개 이상 수익률 우선
     logger.info('start22')
 
-    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02').annotate(Prorate=(F('SimSymbolCnt')*2+F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
+    simCon1List = SimContentL.objects.filter(AnalDate=analdate, SimTypeCd='02').annotate(Prorate=(F('Content1')+F('Content2'))).order_by('-Prorate')[0:10]
 
     for simCon1 in simCon1List:
         # 그 candle 찾음

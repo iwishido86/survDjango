@@ -40,7 +40,7 @@ python3 manage.py createsuperuser
 
 python3 manage.py makemigrations survDjango
 python3 manage.py migrate survDjango
-python3 manage.py runserver --insecure 0.0.0.0:80 > survDjango.log
+python3 manage.py runserver --insecure 0.0.0.0:80 &
 
 
 python3 manage.py runserver 0.0.0.0:8000 > abalonDjango.log
