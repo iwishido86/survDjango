@@ -52,7 +52,7 @@
                         <td class="reco_td_box2">
                             <span class="symbol_name_span">{{ dict_reco.Name}}</span><br>
                             <span class="reco_td_box_span" >
-                                <span class="small_font_span">AVG : </span>
+                                <span class="small_font_span">CLOSE : </span>
                                 {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
                                 {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
                                 {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
@@ -94,7 +94,7 @@
                     <td class="reco_td_box2">
                         <span class="symbol_name_span">{{ dict_reco.Name}}</span><br>
                         <span class="reco_td_box_span" >
-                            <span class="small_font_span">AVG : </span>
+                            <span class="small_font_span">CLOSE : </span>
                             {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
                             {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
                             {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
@@ -130,7 +130,7 @@
                     <td class="reco_td_box2">
                         <span class="symbol_name_span">{{ dict_reco.Name}}</span><br>
                         <span class="reco_td_box_span" >
-                            <span class="small_font_span">AVG : </span>
+                            <span class="small_font_span">CLOSE : </span>
                             {%if dict_reco.Prorate == 0 %}<span class="prorate_zero_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
                             {%elif dict_reco.Prorate > 0 %}<span class="prorate_up_font_span">{{ dict_reco.Prorate|stringformat:"d%%"}}</span>
                             {%else %}<span class="prorate_down_font_span">{{ dict_reco.Prorate|stringformat:".2f%%"}}</span>
