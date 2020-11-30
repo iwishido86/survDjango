@@ -117,7 +117,7 @@
             </tr>
             <tr>
                 <td class="reco_cont_td_box1">차트패턴 :</td>
-                <td class="reco_cont_td_box2">{{ sim_con.Content3}} </td>
+                <td class="reco_cont_td_box2">{{ sim_con.Content}} </td>
             </tr>
             <tr>
                 <td class="reco_cont_td_box1">유사종목 :</td>
@@ -163,7 +163,7 @@
             </tr>
             <tr>
                 <td class="reco_cont_td_box1">차트패턴 :</td>
-                <td class="reco_cont_td_box2">{{ sim_con2.Content3}} </td>
+                <td class="reco_cont_td_box2">{{ sim_con2.Content}} </td>
             </tr>
             <tr>
                 <td class="reco_cont_td_box1">유사종목 :</td>
@@ -180,6 +180,36 @@
             </tr>
         </table>
     {%endif%}
+
+    <div class="symbol_serch_box">
+        <span class="symbol_name_span">히스토리 데이터</span>
+    </div>
+    <table class="reco_table_box">
+        <tr>
+            <td class="reco_cont_td_box1">중기</td>
+            <td class="reco_cont_td_box2">
+                {% for reco_candle in dict_historycandlelist %}
+                    <span class="small_font_span">({{ reco_candle.AnalDate|date:"Y/m/d"}})</span>
+                    <span class="prorate_up_font_span">{{ reco_candle.Content1|stringformat:".2f%%"}}</span>
+                    <span class="prorate_up_font_span">{{ reco_candle.Content2|stringformat:".2f%%"}}</span>
+                <br>
+                {% endfor %}
+
+            </td>
+        </tr>
+        <tr>
+            <td class="reco_cont_td_box1">단기</td>
+            <td class="reco_cont_td_box2">
+                {% for reco_candle in dict_historycandlelist2 %}
+                    <span class="small_font_span">({{ reco_candle.AnalDate|date:"Y/m/d"}})</span>
+                    <span class="prorate_up_font_span">{{ reco_candle.Content1|stringformat:".2f%%"}}</span>
+                    <span class="prorate_up_font_span">{{ reco_candle.Content2|stringformat:".2f%%"}}</span>
+                <br>
+                {% endfor %}
+
+            </td>
+        </tr>
+    </table>
 
     <table class="reco_table_box">
         <tr>

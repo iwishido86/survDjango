@@ -361,7 +361,6 @@ def chart_reco2_view(request,sysmarketcd,symbol):
         recoSymbolL = recoSymbolLlist[0]
 
     logger.debug(recoSymbolL)
-    queryday=recoSymbolL.AnalDate - datetime.timedelta(days=20)
 
     candlelist = CandleL.objects.filter(Symbol=symbolM.Symbol ,BaseDate=recoSymbolL.AnalDate).order_by('-BaseDate')
 
@@ -404,6 +403,42 @@ def chart_reco2_view(request,sysmarketcd,symbol):
                 set_reco['Name'] = sim_symbolM.Name
                 dict_recolist2.append(set_reco)
 
+
+    # 히스토리 분석1
+    dict_historycandlelist = []
+
+    queryday=recoSymbolL.AnalDate - datetime.timedelta(days=10)
+
+    historycandlelist = CandleL.objects.filter(Symbol=symbolM.Symbol ,BaseDate__gte=queryday ,BaseDate__lte=recoSymbolL.AnalDate).order_by('BaseDate')
+
+    historycandlelist = historycandlelist[len(historycandlelist)-4:]
+
+    for historycandle in historycandlelist:
+        sim_conlist = SimContentL.objects.filter(AnalDate=historycandle.BaseDate, Content=historycandle.Content3).order_by('-AnalDate')
+        if sim_conlist:
+            sim_con3 = sim_conlist[0]
+            set_reco = sim_con3.__dict__
+            dict_historycandlelist.append(set_reco)
+
+    # 히스토리 분석2
+    dict_historycandlelist2 = []
+
+    historycandlelist2 = CandleL.objects.filter(Symbol=symbolM.Symbol, BaseDate__gte=queryday,
+                                               BaseDate__lte=recoSymbolL.AnalDate).order_by('BaseDate')
+
+    historycandlelist2 = historycandlelist[len(historycandlelist) - 4:]
+
+    for historycandle in historycandlelist2:
+        sim_conlist = SimContentL.objects.filter(AnalDate=historycandle.BaseDate,
+                                                 Content=historycandle.Content4).order_by('-AnalDate')
+        if sim_conlist:
+            sim_con3 = sim_conlist[0]
+            set_reco = sim_con3.__dict__
+            dict_historycandlelist2.append(set_reco)
+
+    print(dict_historycandlelist)
+    print(dict_historycandlelist2)
+
     context = {
         'analdate': recoSymbolL.AnalDate,
         'symbol': symbolM,
@@ -412,6 +447,9 @@ def chart_reco2_view(request,sysmarketcd,symbol):
         'recoSymbol': recoSymbolL,
         'reco_candlelist': dict_recolist,
         'reco_candlelist2': dict_recolist2,
+        'dict_historycandlelist': dict_historycandlelist,
+        'dict_historycandlelist2': dict_historycandlelist2,
+
 
     }
 

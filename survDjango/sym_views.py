@@ -575,7 +575,7 @@ def sym_anal4_view(request,sysmarketcd,analdate):
         CompleteYn='Y',
     ).save()
 
-    return render(request, template_name, context)
+    return HttpResponseRedirect('/chart/manage/')
 
 
 
