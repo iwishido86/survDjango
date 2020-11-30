@@ -436,9 +436,6 @@ def chart_reco2_view(request,sysmarketcd,symbol):
             set_reco = sim_con3.__dict__
             dict_historycandlelist2.append(set_reco)
 
-    print(dict_historycandlelist)
-    print(dict_historycandlelist2)
-
     context = {
         'analdate': recoSymbolL.AnalDate,
         'symbol': symbolM,
