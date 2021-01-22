@@ -16,7 +16,7 @@ from plotly.graph_objs import Scatter
 
 
 from .forms import UserLoginForm, SurvForm
-from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM, ResultCommentL, SymbolM, CandleL, SimCandleL
+from .models import SurvM, QuestionM, AnsM, ResultHstoryL, ResultM, ResultCommentL
 
 from .serializers import RegistrationUserSerializer
 
@@ -219,7 +219,7 @@ def start_view(request,survid):
 def index_view(request):
     template_name = 'survDjango/index.html'
 
-    survlist = SurvM.objects.order_by('orderNum')
+    survlist = SurvM.objects.order_by('-cnt')
 
     #resultHstoryL = ResultHstoryL.objects.all()
     #resultHstoryL.delete()
